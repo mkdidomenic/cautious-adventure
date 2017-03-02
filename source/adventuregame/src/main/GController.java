@@ -19,8 +19,13 @@ public class GController {
 
     public GController() {
         this.game = new Game();
-        this.view = new View();
+        this.view = new View(this.game);
 
+    }
+
+    public void update() {
+        this.game.update();
+        this.view.update();
     }
 
 }

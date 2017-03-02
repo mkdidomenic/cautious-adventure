@@ -15,6 +15,22 @@ public class Spatial {
     public double y;
     public double z;
 
+    /**
+     * default constructor, zero in all dimensions
+     */
+    public Spatial() {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+
+    /**
+     * constructor with dimensions specified for container class spatial
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
     public Spatial(double x, double y, double z) {
         this.x = x;
         this.y = y;

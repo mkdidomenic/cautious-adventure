@@ -3,24 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package game.constructs;
 
-import game.Game;
+import utility.Spatial;
 
 /**
  *
  * @author Mike
  */
-public class View {
+public class Entity extends Construct {
 
-    public Game game;
-
-    public View(Game game) {
-        this.game = game;
-    }
-
-    public void update() {
-
+    public Entity(Spatial position) {
+        super(position);
     }
 
 }

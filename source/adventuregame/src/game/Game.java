@@ -11,8 +11,14 @@ package game;
  */
 public class Game {
 
-    public Game() {
+    public Space space;
 
+    public Game() {
+        this.space = new Space();
+    }
+
+    public void update() {
+        this.space.update();
     }
 
 }
