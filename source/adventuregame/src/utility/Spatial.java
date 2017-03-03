@@ -37,4 +37,28 @@ public class Spatial {
         this.z = x;
     }
 
+    ///////////////////////// END CONSTRUCTORS/////////////////////
+    public void add(Spatial s) {
+        this.x += s.x;
+        this.y += s.y;
+        this.z += s.z;
+    }
+
+    public void add(double d) {
+        this.x += d;
+        this.y += d;
+        this.z += d;
+    }
+
+    public void multiply(Spatial s) {
+        this.x *= s.x;
+        this.y *= s.y;
+        this.z *= s.z;
+    }
+
+    public void multiply(double d) {
+        this.x *= d;
+        this.y *= d;
+        this.z *= d;
+    }
 }

@@ -19,4 +19,8 @@ public class Construct {
         this.position = position;
     }
 
+    public void update() {
+
+    }
+
 }

@@ -6,6 +6,7 @@
 package game;
 
 import game.constructs.Construct;
+import game.constructs.Player;
 import java.util.LinkedList;
 import java.util.List;
 import utility.Spatial;
@@ -18,6 +19,7 @@ public class Space {
 
     public Spatial dimensions;
     public List<Construct> constructs;
+    public List<Player> players;
 
     /**
      * takes a dimensions parameter MAIN CONSTRUCTOR TO EDIT, influences all
@@ -28,6 +30,8 @@ public class Space {
     public Space(Spatial dimensions) {
         this.dimensions = dimensions;
         this.constructs = new LinkedList();
+        this.players = new LinkedList();
+
     }
 
     /**
@@ -49,12 +53,24 @@ public class Space {
     }
 
     ////////////////END CONSTRUCTORS/////////////
+    public void addPlayer(Player p) {
+        this.players.add(p);
+        this.addConstruct(p);
+    }
+
     public void addConstruct(Construct c) {
         this.constructs.add(c);
     }
 
     public void update() {
+        debug();
+        for (Construct c : this.constructs) {
+            c.update();
+        }
+    }
 
+    public void debug() {
+        System.out.println(this.players.get(0).toString());
     }
 
     public Spatial dims() {

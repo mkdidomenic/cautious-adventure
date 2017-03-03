@@ -6,20 +6,33 @@
 package view;
 
 import game.Game;
+import game.Space;
+import javax.swing.JFrame;
 
 /**
  *
  * @author Mike
  */
-public class View {
+public class View extends JFrame {
 
-    public Game game;
+    public SpacePanel panel;
 
-    public View(Game game) {
-        this.game = game;
+    public View() {
+        this.setSize(600, 600);
+        this.setVisible(true);
+        this.panel = new SpacePanel();
+        this.add(this.panel);
     }
 
     public void update() {
+
+    }
+
+    public void draw(Game game) {
+        this.render(game.space);
+    }
+
+    public void render(Space s) {
 
     }
 

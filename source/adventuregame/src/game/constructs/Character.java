@@ -3,20 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package game.constructs;
+
+import utility.Spatial;
 
 /**
  *
  * @author Mike
  */
-public class GMain {
+public class Character extends Entity {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        GController controller = new GController();
-        controller.run();
+    public Character(Spatial position) {
+        super(position);
     }
 
 }
