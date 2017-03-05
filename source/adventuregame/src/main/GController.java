@@ -25,7 +25,11 @@ public class GController {
 
     public GController() {
         this.game = new Game();
-        this.view = new View();
+
+        this.game.addPlayer("Mike");
+        this.game.setupSpace();
+
+        this.view = new View(game);
         this.keyHandler = new KeyHandler(this.view);
 
     }
@@ -48,7 +52,6 @@ public class GController {
         this.handleKeys();
         this.handleCommand();
         this.game.update();
-        this.view.draw(game);
         this.view.update();
 
     }
@@ -70,7 +73,7 @@ public class GController {
 
     public void handleCommand() {
         for (char key : this.keyHandler.getKeys()) {
-            game.handleCommand(Command.map(key));
+            game.handleCommand(0, Command.map(key));
 
         }
     }

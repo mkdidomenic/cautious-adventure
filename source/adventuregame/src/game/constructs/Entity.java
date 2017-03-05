@@ -16,8 +16,8 @@ public class Entity extends Construct {
     public Spatial velocity;
     public Spatial acceleration;
 
-    public Entity(Spatial position) {
-        super(position);
+    public Entity(Spatial position, Spatial size) {
+        super(position, size);
         this.velocity = new Spatial(0, 0, 0);
         this.acceleration = new Spatial(0, 0, 0);
     }
@@ -44,6 +44,10 @@ public class Entity extends Construct {
 
     public void move(Spatial s) {
         this.position.add(s);
+    }
+
+    public void move(double x, double y, double z) {
+        this.position.add(x, y, z);
     }
 
     public void gravity() {

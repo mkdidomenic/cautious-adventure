@@ -6,7 +6,7 @@
 package game;
 
 import game.constructs.Construct;
-import game.constructs.Player;
+import game.constructs.PlayerCharacter;
 import java.util.LinkedList;
 import java.util.List;
 import utility.Spatial;
@@ -19,7 +19,7 @@ public class Space {
 
     public Spatial dimensions;
     public List<Construct> constructs;
-    public List<Player> players;
+    public List<PlayerCharacter> players;
 
     /**
      * takes a dimensions parameter MAIN CONSTRUCTOR TO EDIT, influences all
@@ -53,9 +53,9 @@ public class Space {
     }
 
     ////////////////END CONSTRUCTORS/////////////
-    public void addPlayer(Player p) {
-        this.players.add(p);
-        this.addConstruct(p);
+    public void addPlayerC(PlayerCharacter pc) {
+        this.players.add(pc);
+        this.addConstruct(pc);
     }
 
     public void addConstruct(Construct c) {
@@ -63,14 +63,41 @@ public class Space {
     }
 
     public void update() {
-        debug();
+        //debug();
         for (Construct c : this.constructs) {
             c.update();
+            enforceBounds(c);
         }
     }
 
+    public void enforceBounds(Construct c) {
+        if (c.position.x > this.dimensions.x) {
+            c.position.x = this.dimensions.x - c.size.x;
+        }
+        if (c.position.y > this.dimensions.y) {
+            c.position.y = this.dimensions.y - c.size.y;
+        }
+        if (c.position.z > this.dimensions.z) {
+            c.position.z = this.dimensions.z - c.size.z;
+        }
+        //
+        if (c.position.x < 0) {
+            c.position.x = 0 + c.size.x;
+        }
+        if (c.position.y < 0) {
+            c.position.y = 0 + c.size.y;
+        }
+        if (c.position.z < 0) {
+            c.position.z = 0 + c.size.z;
+        }
+
+    }
+
     public void debug() {
-        System.out.println(this.players.get(0).toString());
+        //System.out.println(this.constructs);
+        for (Construct c : this.constructs) {
+            System.out.println(c.toString());
+        }
     }
 
     public Spatial dims() {

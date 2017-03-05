@@ -6,7 +6,6 @@
 package view;
 
 import game.Game;
-import game.Space;
 import javax.swing.JFrame;
 
 /**
@@ -16,24 +15,29 @@ import javax.swing.JFrame;
 public class View extends JFrame {
 
     public SpacePanel panel;
+    public Game game;
+    private int width;
+    private int height;
 
-    public View() {
-        this.setSize(600, 600);
+    public View(Game game) {
+        this.width = 600;
+        this.height = 600;
+        this.setSize(this.width, this.height);
         this.setVisible(true);
-        this.panel = new SpacePanel();
+
+        // spacepanel subcomponent
+        this.panel = new SpacePanel(game.space);
         this.add(this.panel);
+        this.panel.setSize(this.width, this.height);
+        this.panel.setScale();
     }
 
     public void update() {
-
-    }
-
-    public void draw(Game game) {
-        this.render(game.space);
-    }
-
-    public void render(Space s) {
-
+        if ((this.width != this.getWidth()) && (this.height != this.getHeight())) {
+            this.width = this.getWidth();
+            this.height = this.getHeight();
+            this.panel.setScale();
+        }
     }
 
 }

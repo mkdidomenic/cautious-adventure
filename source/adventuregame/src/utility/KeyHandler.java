@@ -5,6 +5,8 @@
  */
 package utility;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -22,6 +24,8 @@ public class KeyHandler implements KeyListener, MouseListener {
     public final boolean debug = false;
 
     public List<Character> currentkeys;
+    public int mouseX;
+    public int mouseY;
 
     public KeyHandler(View view) {
         view.addKeyListener(this);
@@ -51,6 +55,24 @@ public class KeyHandler implements KeyListener, MouseListener {
         return (ArrayList<Character>) k.clone();
     }
 
+    public synchronized void updateMouse() {
+        Point mp = MouseInfo.getPointerInfo().getLocation();
+        this.mouseX = mp.x;
+        this.mouseY = mp.y;
+        if (false) {
+            System.out.println("Mouse: " + mp.x + " : " + mp.y);
+        }
+    }
+
+    public synchronized int getMouseX() {
+        return this.mouseX;
+    }
+
+    public synchronized int getMouseY() {
+        return this.mouseY;
+    }
+
+    ///////////////////////////////////////////////////////////////
     @Override
     public void keyTyped(KeyEvent e) {
         if (debug) {
@@ -63,6 +85,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
         char c = e.getKeyChar();
         this.addkey(c);
+        this.updateMouse();
         if (debug) {
             System.out.println(c + " pressed");
         }
@@ -89,6 +112,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     public void mousePressed(MouseEvent e) {
         char c = Character.forDigit(e.getButton(), 10);
         this.addkey(c);
+        this.updateMouse();
         if (debug) {
             System.out.println(c + " mouse pressed");
         }
@@ -105,6 +129,7 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        this.updateMouse();
         if (debug) {
             System.out.println("Mouse entered window");
         }

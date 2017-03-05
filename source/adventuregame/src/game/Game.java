@@ -5,7 +5,8 @@
  */
 package game;
 
-import game.constructs.Player;
+import game.constructs.PlayerCharacter;
+import java.util.ArrayList;
 import main.Command;
 import utility.Spatial;
 
@@ -15,22 +16,41 @@ import utility.Spatial;
  */
 public class Game {
 
+    public ArrayList<Player> players;
     public Space space;
 
     public Game() {
+        this.players = new ArrayList();
+    }
+
+    public void setupSpace() {
         this.space = new Space(100, 100, 100);
-        this.space.addPlayer(new Player(new Spatial(this.space.dimensions.x / 2,
-                                                    this.space.dimensions.y / 2,
-                                                    0)));
+        for (Player p : this.players) {
+            Spatial pos = new Spatial(this.space.dimensions.x / 2,
+                                      this.space.dimensions.y / 2,
+                                      0);
+            //Spatial size = new Spatial(100, 100, 10);
+            this.space.addPlayerC(new PlayerCharacter(p, pos));
+        }
+    }
+
+    public void addPlayer(String name) {
+        Player p = new Player(name);
+        this.players.add(p);
+
     }
 
     public void update() {
         this.space.update();
     }
 
-    public void handleCommand(Command c) {
+    public void handleCommand(int playerID, Command c) {
         if (c.isPlayerCommand) {
-            this.space.players.get(0).handleCommand(c);
+            for (PlayerCharacter pc : this.space.players) {
+                if (playerID == pc.ID()) {
+                    pc.handleCommand(c);
+                }
+            }
         }
     }
 
