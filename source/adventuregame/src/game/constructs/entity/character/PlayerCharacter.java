@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.constructs;
+package game.constructs.entity.character;
 
 import game.Player;
 import utility.Spatial;

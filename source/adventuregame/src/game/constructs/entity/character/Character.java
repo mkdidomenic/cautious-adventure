@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.constructs;
+package game.constructs.entity.character;
 
 import game.Game;
+import game.constructs.entity.Entity;
+import game.constructs.entity.Projectile;
 import main.Command;
 import utility.Spatial;
 

@@ -5,7 +5,7 @@
  */
 package game;
 
-import game.constructs.PlayerCharacter;
+import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import main.Command;
 import utility.Spatial;

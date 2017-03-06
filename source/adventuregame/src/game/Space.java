@@ -6,7 +6,7 @@
 package game;
 
 import game.constructs.Construct;
-import game.constructs.PlayerCharacter;
+import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import utility.CollisionHandler;
