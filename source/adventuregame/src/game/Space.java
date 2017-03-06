@@ -93,7 +93,7 @@ public class Space {
     public void collisionCheck(Construct c) {
         for (Construct a : this.getConstructs()) {
             if (CollisionHandler.checkCollision(c.hitbox, a.hitbox)) {
-                c.onCollision(c);
+                c.onCollision(a);
             }
         }
     }

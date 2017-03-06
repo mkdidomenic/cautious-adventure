@@ -43,6 +43,7 @@ public class Gharacter extends Entity {
 
     private void setupAttr() {
         this.health = this.max_health;
+        this.move_speed = this.normal_move_speed;
     }
 
     @Override
@@ -72,17 +73,27 @@ public class Gharacter extends Entity {
     @Override
     public void onCollision(Construct c) {
         super.onCollision(c);
+        //System.out.println("Character");
+        System.out.println(this.getClass());
+        System.out.println(c.getClass());
         if (c.tangible()) {
             //back up
         }
-        this.damage(c.hurts());
+        this.damage(c.hurts(this));
     }
 
     @Override
     public void update() {
         super.update();
+        checkHealth();
+    }
+
+    private void checkHealth() {
         if (this.health <= 0) {
             this.die();
+        }
+        if (this.health > this.max_health){
+            this.health = this.max_health;
         }
     }
 
@@ -126,30 +137,33 @@ public class Gharacter extends Entity {
     }
 
     public void damage(double damage) {
-        this.health += damage;
+        this.health -= damage;
     }
 
     public void heal(double health) {
         this.health += health;
     }
+    
+    
+     public void action1() {
+         System.out.println("HI-YA");
 
-    public void action1() {
+    }
+
+    public void action2() {
         if (this.setAction(12)) {
-            Projectile p = new ProjectileArrow(this.position.copy(),
+            ProjectileArrow p = new ProjectileArrow(this.position.copy(),
                                                new Spatial(4, 2, 2));
-            p.position.x += this.x_orientation * (this.size.x / 2 + p.size.x / 2);
+            p.position.x += this.x_orientation * (this.size.x + p.size.x/2);
             p.velocity.x = this.x_orientation * (2);
             p.position.z += this.size.z / 2;
             p.acceleration.z = 0.19;
+            p.setParent(this);
             //System.out.println(p);
             Game.instance.space.addConstruct(p);
         }
     }
 
-    public void action2() {
-        NonPlayerCharacter npc = new NonPlayerCharacter(this.position.copy());
-        Game.instance.space.addConstruct(npc);
 
-    }
 
 }

@@ -13,12 +13,21 @@ import utility.Spatial;
  * @author Mike
  */
 public class Projectile extends Entity {
+    
+    protected Construct parent;
 
     public Projectile(Spatial position, Spatial size) {
         super(position, size);
+        parent = null;
         this.addpng("null");
     }
 
+    public void setParent(Construct parent) {
+        this.parent = parent;
+    }
+
+    
+    
     @Override
     public void update() {
         super.update();

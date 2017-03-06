@@ -12,8 +12,12 @@ import game.collision.Hitbox;
  * @author Mike
  */
 public class CollisionHandler {
+    
+    public static boolean checkCollision(Hitbox a, Hitbox b){
+        return checkCollisionA(a,b) || checkCollisionA(b,a);
+    }
 
-    public static boolean checkCollision(Hitbox a, Hitbox b) {
+    public static boolean checkCollisionA(Hitbox a, Hitbox b) {
         if (a == b) {
             return false;
         }

@@ -32,6 +32,7 @@ public class Construct implements Comparable {
 
     // for when doing things, counts down, zero when inactive
     public int actionTimer;
+    public String state;
 
     // hitbox for collisions
     public Hitbox hitbox;
@@ -43,6 +44,7 @@ public class Construct implements Comparable {
         this.images = new ArrayList();
         this.imageIndex = 0;
         this.actionTimer = 0;
+        this.state = "IDLE";
         this.hitbox = new Hitbox(position, size);
         this.exists = true;
     }
@@ -84,7 +86,7 @@ public class Construct implements Comparable {
         return true;
     }
 
-    public int hurts() {
+    public double hurts(Construct c) {
         return 0;
     }
 

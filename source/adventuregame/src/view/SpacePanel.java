@@ -151,7 +151,7 @@ public class SpacePanel extends JPanel {
         g.setColor(Color.green);
         g.fillRect(x - barWidth / 2,
                    y - barHeight / 2 - barFloat,
-                   barWidth,
+                   (int)(barWidth * fraction),
                    barHeight);
     }
 

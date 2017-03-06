@@ -7,6 +7,7 @@ package game;
 
 import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
+import game.constructs.entity.character.NonPlayerCharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import main.Command;
@@ -36,6 +37,7 @@ public class Game {
             //Spatial size = new Spatial(100, 100, 10);
             this.space.addPlayerC(new PlayerCharacter(p, pos));
         }
+        this.setupLevel();
     }
 
     public void addPlayer(String name) {
@@ -46,6 +48,11 @@ public class Game {
 
     public void update() {
         this.space.update();
+    }
+    
+    public void setupLevel(){
+        NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
+        this.space.addConstruct(npc);
     }
 
     public boolean debug = false;

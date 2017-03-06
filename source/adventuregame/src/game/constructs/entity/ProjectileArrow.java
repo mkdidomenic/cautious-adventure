@@ -14,7 +14,7 @@ import utility.Spatial;
  */
 public class ProjectileArrow extends Projectile {
 
-    public int damage = 10;
+    public double damage = 10;
 
     public ProjectileArrow(Spatial position, Spatial size) {
         super(position, size);
@@ -23,21 +23,25 @@ public class ProjectileArrow extends Projectile {
     }
 
     @Override
-    public int hurts() {
-        return this.getDamage();
+    public double hurts(Construct c) {
+        if (c == this.parent){
+            return 0 ;
+        }
+        return this.damage;
     }
 
     @Override
     public void onCollision(Construct c) {
+        //System.out.println("arrow");
         this.remove();
     }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
+    public void setDamage(double damage) {
         this.damage = damage;
+    }
+   
+    @Override
+    public boolean tangible(){
+        return false;
     }
 
 }
