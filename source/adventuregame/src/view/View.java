@@ -28,7 +28,7 @@ public class View extends JFrame {
         // spacepanel subcomponent
         this.panel = new SpacePanel(game.space);
         this.add(this.panel);
-        this.panel.setSize(this.width, this.height);
+        this.panel.setSize((int) (this.width * .95), (int) (this.height * 0.9));
         this.panel.setScale();
     }
 

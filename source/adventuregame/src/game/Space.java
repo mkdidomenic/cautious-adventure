@@ -7,6 +7,7 @@ package game;
 
 import game.constructs.Construct;
 import game.constructs.PlayerCharacter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import utility.Spatial;
@@ -64,32 +65,47 @@ public class Space {
 
     public void update() {
         //debug();
+        ArrayList<Construct> removed = new ArrayList();
         for (Construct c : this.constructs) {
             c.update();
             enforceBounds(c);
+            if (!(c.exists)) {
+                removed.add(c);
+            }
+        }
+        for (Construct c : removed) {
+            this.constructs.remove(c);
         }
     }
 
     public void enforceBounds(Construct c) {
+        //boolean found_infraction = false;
         if (c.position.x > this.dimensions.x) {
             c.position.x = this.dimensions.x - c.size.x;
+            //found_infraction = true;
         }
         if (c.position.y > this.dimensions.y) {
             c.position.y = this.dimensions.y - c.size.y;
+            //found_infraction = true;
         }
         if (c.position.z > this.dimensions.z) {
             c.position.z = this.dimensions.z - c.size.z;
+            //found_infraction = true;
         }
         //
         if (c.position.x < 0) {
             c.position.x = 0 + c.size.x;
+            //found_infraction = true;
         }
         if (c.position.y < 0) {
             c.position.y = 0 + c.size.y;
+            //found_infraction = true;
         }
         if (c.position.z < 0) {
             c.position.z = 0 + c.size.z;
+            //found_infraction = true;
         }
+        //System.out.println(found_infraction);
 
     }
 

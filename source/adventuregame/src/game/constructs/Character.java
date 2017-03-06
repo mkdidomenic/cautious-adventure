@@ -14,11 +14,13 @@ import utility.Spatial;
  */
 public class Character extends Entity {
 
+    public static final Spatial default_size = new Spatial(7, 7, 12);
+
     public double move_speed = 1;
-    public double jump_velocity = 0.2;
+    public double jump_velocity = 2.5;
 
     public Character(Spatial position) {
-        super(position, new Spatial(5, 5, 10));
+        super(position, default_size.copy());
         // default size
     }
 
@@ -41,14 +43,24 @@ public class Character extends Entity {
                 this.move(move_speed, 0, 0);
                 break;
             case JUMP:
-                if (this.position.z == 0) {
-                    this.velocity.z = jump_velocity;
-                }
+                this.jump();
                 break;
+            case ACTION1:
+                this.action1();
             default:
                 //System.out.println("Player class: Not a command = " + c);
                 break;
         }
+    }
+
+    public void jump() {
+        if (this.position.z == 0) {
+            this.velocity.z = jump_velocity;
+        }
+    }
+
+    public void action1() {
+        this.remove();
     }
 
 }

@@ -103,6 +103,10 @@ public class KeyHandler implements KeyListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         char c = Character.forDigit(e.getButton(), 10);
+        //Point mp = MouseInfo.getPointerInfo().getLocation();
+        //this.mouseX = mp.x;
+        //this.mouseY = mp.y;
+        //System.out.println("Mouse: " + mp.x + " : " + mp.y);
         if (debug) {
             System.out.println(c + " mouse clicked");
         }

@@ -58,7 +58,7 @@ public class ImageHandler {
     }
 
     public static BufferedImage getCCFrogglet() {
-        return getImage("src/res/frogglet.jpg");
+        return getImage("src/res/frogglet.png");
     }
 
     public static BufferedImage getBlackSquare() {

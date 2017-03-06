@@ -16,7 +16,8 @@ public enum Command {
     MOVE_DOWN(2, true),
     MOVE_LEFT(3, true),
     MOVE_RIGHT(4, true),
-    JUMP(5, true);
+    JUMP(5, true),
+    ACTION1(6, true);
 
     public int num;
     public boolean isPlayerCommand;
@@ -38,6 +39,8 @@ public enum Command {
                 return MOVE_RIGHT;
             case ' ':
                 return JUMP;
+            case 'f':
+                return ACTION1;
             default:
                 return NULL;
         }

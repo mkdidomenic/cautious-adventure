@@ -38,16 +38,25 @@ public class Entity extends Construct {
         super.update();
         this.position.add(velocity);
         this.velocity.add(acceleration);
+        if (this.velocity.x > 0) {
+            this.setOrientation(1);
+        } else if (this.velocity.x < 0) {
+            this.setOrientation(-1);
+        }
         this.gravity();
-
     }
 
     public void move(Spatial s) {
-        this.position.add(s);
+        this.move(s.x, s.y, s.z);
     }
 
     public void move(double x, double y, double z) {
         this.position.add(x, y, z);
+        if (x > 0) {
+            this.setOrientation(1);
+        } else if (x < 0) {
+            this.setOrientation(-1);
+        }
     }
 
     public void gravity() {

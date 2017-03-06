@@ -19,13 +19,13 @@ public class PlayerCharacter extends Character {
     public PlayerCharacter(Player p, Spatial position) {
         super(position);
         this.player = p;
-        this.addImage("src/res/frogglet.jpg");
+        this.addImage("src/res/frogglet.png");
     }
 
     public PlayerCharacter(Player p, Spatial position, Spatial size) {
         super(position, size);
         this.player = p;
-        this.addImage("src/res/frogglet.jpg");
+        this.addImage("src/res/frogglet.png");
     }
 
     @Override
