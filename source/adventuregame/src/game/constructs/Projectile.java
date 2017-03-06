@@ -17,6 +17,14 @@ public class Projectile extends Entity {
         super(position, size);
     }
 
+    @Override
+    public void update() {
+        if (this.position.z <= 0) {
+            this.remove();
+        }
+    }
+
+    @Override
     public void onCollision(Construct c) {
         this.remove();
     }

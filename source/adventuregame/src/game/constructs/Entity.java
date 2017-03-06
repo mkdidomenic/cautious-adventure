@@ -15,6 +15,7 @@ public class Entity extends Construct {
 
     public Spatial velocity;
     public Spatial acceleration;
+    public double gravity = -0.2;
 
     public Entity(Spatial position, Spatial size) {
         super(position, size);
@@ -60,11 +61,9 @@ public class Entity extends Construct {
     }
 
     public void gravity() {
-        // for now
-        double gravity = -0.2;
         // if above ground
         if (this.position.z > 0) {
-            this.velocity.z += gravity;
+            this.velocity.z += this.gravity;
         }
         // if below or on ground
         if (this.position.z <= 0) {

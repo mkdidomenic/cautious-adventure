@@ -55,6 +55,10 @@ public class Construct {
         //System.out.println(this.hitbox.position);
     }
 
+    public void onCollision(Construct c) {
+
+    }
+
     public void setOrientation(int o) {
         this.x_orientation = o;
     }
