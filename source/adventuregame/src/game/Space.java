@@ -64,6 +64,10 @@ public class Space {
         this.constructs.sort(null);
     }
 
+    public LinkedList<PlayerCharacter> getPlayers() {
+        return (LinkedList) this.players.clone();
+    }
+
     public LinkedList<Construct> getConstructs() {
         return (LinkedList) this.constructs.clone();
     }

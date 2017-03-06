@@ -11,7 +11,7 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class NonPlayerCharacter extends Character {
+public class NonPlayerCharacter extends Gharacter {
     
     public NonPlayerCharacter(Spatial position) {
         super(position);

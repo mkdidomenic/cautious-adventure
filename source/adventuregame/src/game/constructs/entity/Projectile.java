@@ -16,14 +16,14 @@ public class Projectile extends Entity {
 
     public Projectile(Spatial position, Spatial size) {
         super(position, size);
-        this.addpng("arrow");
+        this.addpng("null");
     }
 
     @Override
     public void update() {
         super.update();
         //System.out.println(this.position);
-        if (this.position.z <= 0) {
+        if (this.position.z < 0) {
             this.remove();
         }
     }
@@ -36,6 +36,7 @@ public class Projectile extends Entity {
     @Override
     public void onCollision(Construct c) {
         super.onCollision(c);
-        this.remove();
+        //System.out.println("PROJECTILE COLLISION");
     }
+
 }

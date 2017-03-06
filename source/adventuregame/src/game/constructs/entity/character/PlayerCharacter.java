@@ -12,7 +12,7 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class PlayerCharacter extends Character {
+public class PlayerCharacter extends Gharacter {
 
     public Player player;
 

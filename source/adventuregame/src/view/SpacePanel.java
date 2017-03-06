@@ -9,7 +9,7 @@ import game.Space;
 import game.collision.Hitbox;
 import game.constructs.Construct;
 import game.constructs.entity.Entity;
-import game.constructs.entity.character.Character;
+import game.constructs.entity.character.Gharacter;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -89,8 +89,9 @@ public class SpacePanel extends JPanel {
 
             if ((c instanceof Entity)) {
                 Entity e = (Entity) c;
-                if (e instanceof Character) {
-                    drawHealthBar(c, 1);
+                if (e instanceof Gharacter) {
+                    Gharacter gh = (Gharacter) e;
+                    drawHealthBar(g, c, gh.health / gh.max_health);
                 }
             }
 
@@ -131,8 +132,27 @@ public class SpacePanel extends JPanel {
                             this), this);
     }
 
-    public void drawHealthBar(Construct c, double fraction) {
-        System.out.println("hb");
+    public void drawHealthBar(Graphics g, Construct c, double fraction) {
+        int barWidth = (int) (.6 * scaleX(c.size.x));
+        int barHeight = barWidth / 8;
+        int barBound = (int) (0.05 * barWidth);
+        int barFloat = barHeight;
+
+        Spatial p = c.position.copy();
+        p.z += c.size.z;
+        int x = mapX(p.x);
+        int y = mapV(p.y, p.z) - barFloat;
+        g.setColor(Color.black);
+        g.fillRect(x - barWidth / 2 - barBound,
+                   y - barHeight / 2 - barFloat - barBound,
+                   barWidth + barBound * 2,
+                   barHeight + barBound * 2);
+
+        g.setColor(Color.green);
+        g.fillRect(x - barWidth / 2,
+                   y - barHeight / 2 - barFloat,
+                   barWidth,
+                   barHeight);
     }
 
     public void drawHitboxF(Graphics g, Hitbox b) {

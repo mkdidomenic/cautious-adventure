@@ -5,6 +5,8 @@
  */
 package game;
 
+import game.constructs.Construct;
+import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import main.Command;
@@ -47,16 +49,39 @@ public class Game {
     }
 
     public boolean debug = false;
+
     public void handleCommand(int playerID, Command c) {
         if (c.isPlayerCommand) {
-            for (PlayerCharacter pc : this.space.players) {
+            for (PlayerCharacter pc : this.space.getPlayers()) {
                 if (playerID == pc.ID()) {
                     pc.handleCommand(c);
                 }
             }
         } else {
-            if (c == Command.DEBUG){
-                this.debug = !(this.debug);
+            if (c == Command.DEBUG) {
+                this.debugger();
+            }
+        }
+    }
+
+    public void debugger() {
+        this.debug = !(this.debug);
+        if (true) {
+            return;
+        }
+        if (this.debug) {
+            for (Construct c : this.space.getConstructs()) {
+                if (c instanceof Gharacter) {
+                    Gharacter ch = (Gharacter) c;
+                    ch.move_speed = 0;
+                }
+            }
+        } else {
+            for (Construct c : this.space.getConstructs()) {
+                if (c instanceof Gharacter) {
+                    Gharacter ch = (Gharacter) c;
+                    ch.move_speed = ch.normal_move_speed;
+                }
             }
         }
     }

@@ -75,10 +75,20 @@ public class Construct implements Comparable {
         //System.out.println(this);
     }
 
+    /// Collision stuff
     public void onCollision(Construct c) {
         //System.out.println("COLLISION");
     }
 
+    public boolean tangible() {
+        return true;
+    }
+
+    public int hurts() {
+        return 0;
+    }
+
+    // end collision stuff
     public void outOfBounds(String s) {
 
     }
@@ -93,10 +103,6 @@ public class Construct implements Comparable {
 
     public void remove() {
         this.exists = false;
-    }
-
-    public boolean tangible() {
-        return true;
     }
 
     @Override
