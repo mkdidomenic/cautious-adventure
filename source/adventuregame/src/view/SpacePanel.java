@@ -8,6 +8,8 @@ package view;
 import game.Space;
 import game.collision.Hitbox;
 import game.constructs.Construct;
+import game.constructs.entity.Entity;
+import game.constructs.entity.character.Character;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -40,7 +42,7 @@ public class SpacePanel extends JPanel {
     public SpacePanel(Space space) {
         super();
         this.space = space;
-        this.background = ImageHandler.getCCBackground();
+        this.background = ImageHandler.getBackground();
         this.scalechange = false;
     }
 
@@ -69,6 +71,11 @@ public class SpacePanel extends JPanel {
 
     }
 
+    /**
+     * PAINTS THE WINDOW ON EACH FRAME
+     *
+     * @param g
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,6 +86,13 @@ public class SpacePanel extends JPanel {
         // draw components
         for (Construct c : this.space.getConstructs()) {
             drawConstructF(g, c);
+
+            if ((c instanceof Entity)) {
+                Entity e = (Entity) c;
+                if (e instanceof Character) {
+                    drawHealthBar(c, 1);
+                }
+            }
 
             if (debug) {
                 drawHitboxF(g, c.hitbox);
@@ -115,6 +129,10 @@ public class SpacePanel extends JPanel {
         g.drawImage(im, x, v - sv, c.x_orientation * im.getWidth(this),
                     im.getHeight(
                             this), this);
+    }
+
+    public void drawHealthBar(Construct c, double fraction) {
+        System.out.println("hb");
     }
 
     public void drawHitboxF(Graphics g, Hitbox b) {

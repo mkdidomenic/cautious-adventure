@@ -95,6 +95,10 @@ public class Construct implements Comparable {
         this.exists = false;
     }
 
+    public boolean tangible() {
+        return true;
+    }
+
     @Override
     public int compareTo(Object o) {
         if (!(o instanceof Construct)) {

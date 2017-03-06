@@ -57,15 +57,15 @@ public class ImageHandler {
         return bimage;
     }
 
-    public static BufferedImage getCCFrogglet() {
-        return getImage("src/res/frogglet.png");
+    public static BufferedImage getKnight() {
+        return getImage("src/res/knight.png");
     }
 
     public static BufferedImage getBlackSquare() {
         return getImage("src/res/square.png");
     }
 
-    public static BufferedImage getCCBackground() {
+    public static BufferedImage getBackground() {
         return getImage("src/res/bg.jpg");
     }
 

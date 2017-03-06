@@ -29,7 +29,7 @@ public class PlayerCharacter extends Character {
     }
 
     private void addImages() {
-        this.addImage("src/res/frogglet.png");
+        this.addImage("src/res/knight.png");
     }
 
     @Override
