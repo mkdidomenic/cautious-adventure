@@ -18,8 +18,10 @@ public class Game {
 
     public ArrayList<Player> players;
     public Space space;
+    public static Game instance;
 
     public Game() {
+        Game.instance = this;
         this.players = new ArrayList();
     }
 

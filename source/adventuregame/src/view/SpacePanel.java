@@ -30,7 +30,7 @@ public class SpacePanel extends JPanel {
     private int height;
     private boolean scalechange;
 
-    public final double screenAngle = 30 * 2 * Math.PI / 360; // degrees to radians
+    public final double screenAngle = 35 * Math.PI / 180; // degrees to radians
 
     public double xm;
     public double ym;
@@ -51,7 +51,8 @@ public class SpacePanel extends JPanel {
             this.scalechange = true;
             xm = ((double) w) / this.space.dimensions.x;
             ym = ((double) h) / this.space.dimensions.y;
-            vm = ((double) h) / (this.space.dimensions.y + this.space.dimensions.z);
+            vm = ((double) h) / (this.space.dimensions.y * Math.sin(screenAngle) + this.space.dimensions.z) * Math.cos(
+                    screenAngle);
             this.setBackgroundImage(this.background);
         } else {
             this.scalechange = false;
@@ -76,10 +77,12 @@ public class SpacePanel extends JPanel {
             this.drawBackground(g);
         }
         // draw components
-        for (Construct c : this.space.constructs) {
+        for (Construct c : this.space.getConstructs()) {
             drawConstructF(g, c);
+
             if (debug) {
                 drawHitboxF(g, c.hitbox);
+                drawL(g, c.position.copy());
             }
         }
 
@@ -103,31 +106,30 @@ public class SpacePanel extends JPanel {
         int x = mapX(cpos.x);
         int sx = scaleX(c.size.x);
         // handle vertical stuff
-        cpos.y = cpos.y - (c.size.y / 2);
         // cpos.z = cpos.z
-        double v = cpos.y * Math.sin(screenAngle) + cpos.z * Math.cos(
-                screenAngle);
+        int v = mapV(cpos.y, cpos.z);
 
-        int y = mapY(v);
-
-        int sy = scaleY(c.size.z);
-        Image im = i.getScaledInstance(sx, sy, 0);
-        g.drawImage(im, x, y, c.x_orientation * im.getWidth(this), im.getHeight(
-                    this), this);
+        //int sv = scaleV(c.size.y, c.size.z);
+        int sv = scaleY(c.size.z);
+        Image im = i.getScaledInstance(sx, sv, 0);
+        g.drawImage(im, x, v - sv, c.x_orientation * im.getWidth(this),
+                    im.getHeight(
+                            this), this);
     }
 
-    public void drawHitboxF(Graphics g, Hitbox box) {
-        //g.drawRect(x, y, width, height);
+    public void drawHitboxF(Graphics g, Hitbox b) {
         g.setColor(Color.red);
-        double v1 = box.y1() * Math.sin(screenAngle) + box.z1() * Math.cos(
-                screenAngle);
-        double vs = box.size.y / 2 * Math.sin(screenAngle) + box.size.z * Math.cos(
-                screenAngle);
-        g.drawRect(mapX(box.x1()), mapY(v1), scaleX(box.size.x),
-                   scaleY(vs));
-        g.setColor(Color.orange);
-        g.drawRect(mapX(box.x1()), mapY(v1 + vs / 2), scaleX(box.size.x),
-                   scaleY(box.size.y * Math.cos(screenAngle)));
+        g.drawRect(mapX(b.x1()), mapV(b.y1(), b.z1()), scaleX(b.size.x), scaleV(
+                   b.size.y, b.size.z));
+
+        g.setColor(Color.yellow);
+        g.drawRect(mapX(b.x1()), mapV(b.y1(), b.z2()), scaleX(b.size.x), scaleV(
+                   b.size.y, b.size.z));
+    }
+
+    public void drawL(Graphics g, Spatial s) {
+        g.setColor(Color.MAGENTA);
+        g.drawLine(mapX(0), mapV(0, 0), mapX(s.x), mapV(s.y, s.z));
     }
 
     /**
@@ -161,6 +163,12 @@ public class SpacePanel extends JPanel {
         return (int) ((y) * ym);
     }
 
+    public int scaleV(double y, double z) {
+        double v = y * Math.sin(this.screenAngle) + z * Math.cos(
+                this.screenAngle);
+        return (int) ((v) * vm);
+    }
+
     public int mapX(double s) {
         int x;
         x = (int) ((s) * xm);
@@ -172,6 +180,15 @@ public class SpacePanel extends JPanel {
         int h = this.getHeight();
         y = h - ((int) ((s) * ym));
         return y;
+    }
+
+    public int mapV(double y, double z) {
+        int v;
+        int h = this.getHeight();
+        double s = y * Math.sin(this.screenAngle) + z * Math.cos(
+                this.screenAngle);
+        v = h - ((int) ((s) * vm));
+        return v;
     }
 
 }

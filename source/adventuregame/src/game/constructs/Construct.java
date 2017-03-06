@@ -15,7 +15,7 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class Construct {
+public class Construct implements Comparable {
 
     // space handling things
     public Spatial position;
@@ -30,8 +30,8 @@ public class Construct {
     // orientation (mostly for images)
     public int x_orientation; // 1 for forward, -1 for backward
 
-    // for when doing things
-    public int action_timer;
+    // for when doing things, counts down, zero when inactive
+    public int actionTimer;
 
     // hitbox for collisions
     public Hitbox hitbox;
@@ -42,7 +42,7 @@ public class Construct {
         this.x_orientation = 1;
         this.images = new ArrayList();
         this.imageIndex = 0;
-        this.action_timer = 0;
+        this.actionTimer = 0;
         this.hitbox = new Hitbox(position, size);
         this.exists = true;
     }
@@ -51,11 +51,35 @@ public class Construct {
         this.images.add(ImageHandler.getImage(filename));
     }
 
+    public void addpng(String filename) {
+        this.images.add(ImageHandler.getImage("src/res/" + filename + ".png"));
+    }
+
+    public void handleTimer() {
+        if (this.actionTimer > 0) {
+            this.actionTimer--;
+        }
+    }
+
+    public boolean setAction(int ticks) {
+        if (this.actionTimer == 0) {
+            this.actionTimer = ticks;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void update() {
-        //System.out.println(this.hitbox.position);
+        this.handleTimer();
+        //System.out.println(this);
     }
 
     public void onCollision(Construct c) {
+
+    }
+
+    public void outOfBounds(String s) {
 
     }
 
@@ -69,6 +93,29 @@ public class Construct {
 
     public void remove() {
         this.exists = false;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof Construct)) {
+            return 0;
+        } else {
+            Construct c = (Construct) o;
+            if (c.position.y > this.position.y) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        String s = "Construct\n";
+        s += "X: " + this.position.x + "\n";
+        s += "Y: " + this.position.y + "\n";
+        s += "Z: " + this.position.z + "\n\n";
+        return s;
     }
 
 }

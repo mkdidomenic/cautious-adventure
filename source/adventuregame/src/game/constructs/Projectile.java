@@ -15,13 +15,21 @@ public class Projectile extends Entity {
 
     public Projectile(Spatial position, Spatial size) {
         super(position, size);
+        this.addpng("arrow");
     }
 
     @Override
     public void update() {
+        super.update();
+        //System.out.println(this.position);
         if (this.position.z <= 0) {
             this.remove();
         }
+    }
+
+    @Override
+    public void outOfBounds(String s) {
+        this.remove();
     }
 
     @Override

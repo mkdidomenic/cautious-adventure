@@ -9,7 +9,6 @@ import game.constructs.Construct;
 import game.constructs.PlayerCharacter;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import utility.Spatial;
 
 /**
@@ -19,8 +18,8 @@ import utility.Spatial;
 public class Space {
 
     public Spatial dimensions;
-    public List<Construct> constructs;
-    public List<PlayerCharacter> players;
+    public LinkedList<Construct> constructs;
+    public LinkedList<PlayerCharacter> players;
 
     /**
      * takes a dimensions parameter MAIN CONSTRUCTOR TO EDIT, influences all
@@ -61,6 +60,11 @@ public class Space {
 
     public void addConstruct(Construct c) {
         this.constructs.add(c);
+        this.constructs.sort(null);
+    }
+
+    public LinkedList<Construct> getConstructs() {
+        return (LinkedList) this.constructs.clone();
     }
 
     public void update() {
@@ -79,33 +83,26 @@ public class Space {
     }
 
     public void enforceBounds(Construct c) {
-        //boolean found_infraction = false;
+        boolean found_infraction = false;
         if (c.position.x > this.dimensions.x) {
-            c.position.x = this.dimensions.x - c.size.x;
-            //found_infraction = true;
+            c.outOfBounds("x+");
         }
         if (c.position.y > this.dimensions.y) {
-            c.position.y = this.dimensions.y - c.size.y;
-            //found_infraction = true;
+            c.outOfBounds("y+");
         }
         if (c.position.z > this.dimensions.z) {
-            c.position.z = this.dimensions.z - c.size.z;
-            //found_infraction = true;
+            c.outOfBounds("z+");
         }
         //
         if (c.position.x < 0) {
-            c.position.x = 0 + c.size.x;
-            //found_infraction = true;
+            c.outOfBounds("x-");
         }
         if (c.position.y < 0) {
-            c.position.y = 0 + c.size.y;
-            //found_infraction = true;
+            c.outOfBounds("y-");
         }
         if (c.position.z < 0) {
-            c.position.z = 0 + c.size.z;
-            //found_infraction = true;
+            c.outOfBounds("z-");
         }
-        //System.out.println(found_infraction);
 
     }
 
