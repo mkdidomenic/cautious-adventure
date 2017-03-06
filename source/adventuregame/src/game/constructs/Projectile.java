@@ -34,7 +34,7 @@ public class Projectile extends Entity {
 
     @Override
     public void onCollision(Construct c) {
+        super.onCollision(c);
         this.remove();
     }
-
 }

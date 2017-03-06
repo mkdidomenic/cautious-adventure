@@ -15,7 +15,7 @@ import utility.Spatial;
  */
 public class Character extends Entity {
 
-    public static final Spatial default_size = new Spatial(7, 7, 12);
+    public static final Spatial default_size = new Spatial(7, 14, 12);
 
     public double move_speed = 1;
     public double jump_velocity = 2.5;
@@ -97,19 +97,19 @@ public class Character extends Entity {
         if (this.setAction(12)) {
             Projectile p = new Projectile(this.position.copy(),
                                           new Spatial(4, 2, 2));
-            //p.position.x += this.x_orientation * (this.size.x + 1);
-            p.velocity.x = this.x_orientation * 2;
+            p.position.x += this.x_orientation * (this.size.x / 2 + p.size.x / 2);
+            p.velocity.x = this.x_orientation * (2);
             p.position.z += this.size.z / 2;
             p.acceleration.z = 0.19;
             //System.out.println(p);
             Game.instance.space.addConstruct(p);
         }
     }
-    
-    public void action2(){
+
+    public void action2() {
         NonPlayerCharacter npc = new NonPlayerCharacter(this.position.copy());
         Game.instance.space.addConstruct(npc);
-            
-        }
+
+    }
 
 }

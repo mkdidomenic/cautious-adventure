@@ -76,7 +76,7 @@ public class Construct implements Comparable {
     }
 
     public void onCollision(Construct c) {
-
+        //System.out.println("COLLISION");
     }
 
     public void outOfBounds(String s) {
@@ -98,13 +98,16 @@ public class Construct implements Comparable {
     @Override
     public int compareTo(Object o) {
         if (!(o instanceof Construct)) {
+            System.out.println("unequal");
             return 0;
         } else {
             Construct c = (Construct) o;
             if (c.position.y > this.position.y) {
                 return 1;
-            } else {
+            } else if (c.position.y < this.position.y) {
                 return -1;
+            } else {
+                return 0;
             }
         }
     }

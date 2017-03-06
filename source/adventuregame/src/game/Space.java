@@ -9,6 +9,7 @@ import game.constructs.Construct;
 import game.constructs.PlayerCharacter;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import utility.CollisionHandler;
 import utility.Spatial;
 
 /**
@@ -69,10 +70,13 @@ public class Space {
 
     public void update() {
         //debug();
+        //System.out.println("SPACE: " + this.getConstructs());
+        this.constructs.sort(null);//sort for ordering
         ArrayList<Construct> removed = new ArrayList();
-        for (Construct c : this.constructs) {
+        for (Construct c : this.getConstructs()) {
             c.update();
             enforceBounds(c);
+            collisionCheck(c);
             if (!(c.exists)) {
                 removed.add(c);
             }
@@ -82,8 +86,16 @@ public class Space {
         }
     }
 
+    public void collisionCheck(Construct c) {
+        for (Construct a : this.getConstructs()) {
+            if (CollisionHandler.checkCollision(c.hitbox, a.hitbox)) {
+                c.onCollision(c);
+            }
+        }
+    }
+
     public void enforceBounds(Construct c) {
-        boolean found_infraction = false;
+        //boolean found_infraction = false;
         if (c.position.x > this.dimensions.x) {
             c.outOfBounds("x+");
         }

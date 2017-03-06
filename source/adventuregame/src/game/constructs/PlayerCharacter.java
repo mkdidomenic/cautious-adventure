@@ -27,8 +27,8 @@ public class PlayerCharacter extends Character {
         this.player = p;
         this.addImages();
     }
-    
-    private void addImages(){
+
+    private void addImages() {
         this.addImage("src/res/frogglet.png");
     }
 
