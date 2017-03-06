@@ -11,19 +11,19 @@ package main;
  */
 public enum Command {
 
-    NULL(0, false),
-    MOVE_UP(1, true),
-    MOVE_DOWN(2, true),
-    MOVE_LEFT(3, true),
-    MOVE_RIGHT(4, true),
-    JUMP(5, true),
-    ACTION1(6, true);
+    NULL(false),
+    MOVE_UP(true),
+    MOVE_DOWN(true),
+    MOVE_LEFT(true),
+    MOVE_RIGHT(true),
+    JUMP(true),
+    ACTION1(true),
+    ACTION2(true),
+    DEBUG(false);
 
-    public int num;
     public boolean isPlayerCommand;
 
-    Command(int num, boolean playercommand) {
-        this.num = num;
+    Command(boolean playercommand) {
         this.isPlayerCommand = playercommand;
     }
 
@@ -39,8 +39,12 @@ public enum Command {
                 return MOVE_RIGHT;
             case ' ':
                 return JUMP;
-            case 'f':
+            case '1':
                 return ACTION1;
+            case '2':
+                return ACTION2;
+            case '\\':
+                return DEBUG;
             default:
                 return NULL;
         }

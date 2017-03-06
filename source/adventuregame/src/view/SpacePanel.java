@@ -22,7 +22,7 @@ import utility.Spatial;
  */
 public class SpacePanel extends JPanel {
 
-    public final boolean debug = true;
+    public boolean debug = false;
 
     public Space space;
 
@@ -30,7 +30,7 @@ public class SpacePanel extends JPanel {
     private int height;
     private boolean scalechange;
 
-    public final double screenAngle = 35 * Math.PI / 180; // degrees to radians
+    public final double screenAngle = 30 * Math.PI / 180; // degrees to radians
 
     public double xm;
     public double ym;
@@ -51,8 +51,7 @@ public class SpacePanel extends JPanel {
             this.scalechange = true;
             xm = ((double) w) / this.space.dimensions.x;
             ym = ((double) h) / this.space.dimensions.y;
-            vm = ((double) h) / (this.space.dimensions.y * Math.sin(screenAngle) + this.space.dimensions.z) * Math.cos(
-                    screenAngle);
+            vm = ((double) h) / (this.space.dimensions.y * Math.sin(screenAngle) + this.space.dimensions.z);
             this.setBackgroundImage(this.background);
         } else {
             this.scalechange = false;
@@ -82,7 +81,7 @@ public class SpacePanel extends JPanel {
 
             if (debug) {
                 drawHitboxF(g, c.hitbox);
-                drawL(g, c.position.copy());
+                //drawL(g, c.position.copy());
             }
         }
 
@@ -110,7 +109,7 @@ public class SpacePanel extends JPanel {
         int v = mapV(cpos.y, cpos.z);
 
         //int sv = scaleV(c.size.y, c.size.z);
-        int sv = scaleY(c.size.z);
+        int sv = scaleZ(c.size.z);
         Image im = i.getScaledInstance(sx, sv, 0);
         g.drawImage(im, x, v - sv, c.x_orientation * im.getWidth(this),
                     im.getHeight(
@@ -118,13 +117,20 @@ public class SpacePanel extends JPanel {
     }
 
     public void drawHitboxF(Graphics g, Hitbox b) {
+        
+        int ys = (int) (b.size.y * Math.cos(screenAngle));
+        
+        
         g.setColor(Color.red);
-        g.drawRect(mapX(b.x1()), mapV(b.y1(), b.z1()), scaleX(b.size.x), scaleV(
-                   b.size.y, b.size.z));
+        g.drawRect(mapX(b.x1()), mapV(b.y1(), b.z1()), scaleX(b.size.x), ys);
+        
+        g.setColor(Color.orange);
+        g.drawLine(mapX(b.x1()), ys +mapV(b.y1(), b.z1()), mapX(b.x1()), mapV(b.y1(), b.z2())+ys);
+        g.drawLine(mapX(b.x2()), ys +mapV(b.y1(), b.z1()), mapX(b.x2()), mapV(b.y1(), b.z2())+ys);
 
         g.setColor(Color.yellow);
-        g.drawRect(mapX(b.x1()), mapV(b.y1(), b.z2()), scaleX(b.size.x), scaleV(
-                   b.size.y, b.size.z));
+        g.drawRect(mapX(b.x1()), mapV(b.y1(), b.z2()), scaleX(b.size.x), ys);
+        
     }
 
     public void drawL(Graphics g, Spatial s) {
@@ -161,6 +167,10 @@ public class SpacePanel extends JPanel {
 
     public int scaleY(double y) {
         return (int) ((y) * ym);
+    }
+    
+    public int scaleZ(double z) {
+        return (int) ((z) * vm);
     }
 
     public int scaleV(double y, double z) {

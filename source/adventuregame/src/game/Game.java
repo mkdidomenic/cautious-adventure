@@ -26,7 +26,7 @@ public class Game {
     }
 
     public void setupSpace() {
-        this.space = new Space(100, 100, 100);
+        this.space = new Space(100, 120, 100);
         for (Player p : this.players) {
             Spatial pos = new Spatial(this.space.dimensions.x / 2,
                                       this.space.dimensions.y / 2,
@@ -46,12 +46,17 @@ public class Game {
         this.space.update();
     }
 
+    public boolean debug = false;
     public void handleCommand(int playerID, Command c) {
         if (c.isPlayerCommand) {
             for (PlayerCharacter pc : this.space.players) {
                 if (playerID == pc.ID()) {
                     pc.handleCommand(c);
                 }
+            }
+        } else {
+            if (c == Command.DEBUG){
+                this.debug = !(this.debug);
             }
         }
     }

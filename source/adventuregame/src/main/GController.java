@@ -53,6 +53,9 @@ public class GController {
         this.handleCommand();
         this.game.update();
         this.view.update();
+        if(this.game.debug != this.view.panel.debug){
+            this.view.panel.debug = this.game.debug;
+        }
 
     }
 

@@ -61,10 +61,10 @@ public class Character extends Entity {
     public void handleCommand(Command c) {
         switch (c) {
             case MOVE_UP:
-                this.move(0, 2 * move_speed, 0);
+                this.move(0, move_speed, 0);
                 break;
             case MOVE_DOWN:
-                this.move(0, -2 * move_speed, 0);
+                this.move(0, -1 * move_speed, 0);
                 break;
             case MOVE_LEFT:
                 this.move(-1 * move_speed, 0, 0);
@@ -77,6 +77,10 @@ public class Character extends Entity {
                 break;
             case ACTION1:
                 this.action1();
+                break;
+            case ACTION2:
+                this.action2();
+                break;
             default:
                 //System.out.println("Player class: Not a command = " + c);
                 break;
@@ -92,14 +96,20 @@ public class Character extends Entity {
     public void action1() {
         if (this.setAction(12)) {
             Projectile p = new Projectile(this.position.copy(),
-                                          new Spatial(4, 4, 4));
+                                          new Spatial(4, 2, 2));
             //p.position.x += this.x_orientation * (this.size.x + 1);
             p.velocity.x = this.x_orientation * 2;
             p.position.z += this.size.z / 2;
-            p.acceleration.z = 0.195;
-            System.out.println(p);
+            p.acceleration.z = 0.19;
+            //System.out.println(p);
             Game.instance.space.addConstruct(p);
         }
     }
+    
+    public void action2(){
+        NonPlayerCharacter npc = new NonPlayerCharacter(this.position.copy());
+        Game.instance.space.addConstruct(npc);
+            
+        }
 
 }
