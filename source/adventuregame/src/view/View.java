@@ -6,8 +6,6 @@
 package view;
 
 import game.Game;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import javax.swing.JFrame;
 
 /**
@@ -30,14 +28,12 @@ public class View extends JFrame {
         this.setVisible(true);
 
         // subcomponents
-        LayoutManager lm = new GridLayout(2, 1);
-        this.setLayout(lm);
-
+        //LayoutManager lm = new GridLayout(2, 1);
+        //this.setLayout(lm);
         //HUD subcomponent
-        this.hud = new HUDPanel();
-        this.add(this.hud);
-        this.hud.setVisible(true);
-
+        //this.hud = new HUDPanel();
+        //this.add(this.hud);
+        //this.hud.setVisible(true);
         // spacepanel subcomponent
         this.panel = new SpacePanel(game.space);
         this.add(this.panel);
