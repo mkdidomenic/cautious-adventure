@@ -75,23 +75,33 @@ public class Space {
     public void update() {
         //debug();
         //System.out.println("SPACE: " + this.getConstructs());
-        this.constructs.sort(null);//sort for ordering
+        this.constructs.sort(null);//sort for view ordering
+
+        //setup update loop
         ArrayList<Construct> removed = new ArrayList();
-        for (Construct c : this.getConstructs()) {
-            c.update();
-            enforceBounds(c);
-            collisionCheck(c);
-            if (!(c.exists)) {
+        LinkedList<Construct> consts = this.getConstructs();
+        // update loop
+        for (Construct c : consts) {
+            c.update(); // update
+            enforceBounds(c); // make sure inside bounds
+            if (!(c.exists)) { // add to list to be removed
                 removed.add(c);
             }
         }
+        // remove everything that needs to be removed
         for (Construct c : removed) {
             this.constructs.remove(c);
         }
+        // handle collisions
+        consts = this.getConstructs();
+        LinkedList<Construct> constrs = this.getConstructs();
+        for (Construct c : consts) {
+            collisionCheck(c, constrs);
+        }
     }
 
-    public void collisionCheck(Construct c) {
-        for (Construct a : this.getConstructs()) {
+    public void collisionCheck(Construct c, LinkedList<Construct> consts) {
+        for (Construct a : consts) {
             if (CollisionHandler.checkCollision(c.hitbox, a.hitbox)) {
                 c.onCollision(a);
             }

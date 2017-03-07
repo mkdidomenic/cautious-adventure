@@ -24,23 +24,25 @@ public class ProjectileArrow extends Projectile {
 
     @Override
     public double hurts(Construct c) {
-        if (c == this.parent){
-            return 0 ;
+        if (c == this.parent) {
+            return 0;
         }
         return this.damage;
     }
 
     @Override
     public void onCollision(Construct c) {
+        //System.out.println(this.getClass());
         //System.out.println("arrow");
         this.remove();
     }
+
     public void setDamage(double damage) {
         this.damage = damage;
     }
-   
+
     @Override
-    public boolean tangible(){
+    public boolean tangible() {
         return false;
     }
 

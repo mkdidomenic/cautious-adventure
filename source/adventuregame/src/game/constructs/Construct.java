@@ -79,7 +79,7 @@ public class Construct implements Comparable {
 
     /// Collision stuff
     public void onCollision(Construct c) {
-        //System.out.println("COLLISION");
+        //System.out.println("COLLISION: " + this.getClass());
     }
 
     public boolean tangible() {

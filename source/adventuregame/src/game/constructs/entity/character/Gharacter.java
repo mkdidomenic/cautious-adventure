@@ -8,7 +8,6 @@ package game.constructs.entity.character;
 import game.Game;
 import game.constructs.Construct;
 import game.constructs.entity.Entity;
-import game.constructs.entity.Projectile;
 import game.constructs.entity.ProjectileArrow;
 import main.Command;
 import utility.Spatial;
@@ -74,8 +73,6 @@ public class Gharacter extends Entity {
     public void onCollision(Construct c) {
         super.onCollision(c);
         //System.out.println("Character");
-        System.out.println(this.getClass());
-        System.out.println(c.getClass());
         if (c.tangible()) {
             //back up
         }
@@ -92,7 +89,7 @@ public class Gharacter extends Entity {
         if (this.health <= 0) {
             this.die();
         }
-        if (this.health > this.max_health){
+        if (this.health > this.max_health) {
             this.health = this.max_health;
         }
     }
@@ -143,18 +140,17 @@ public class Gharacter extends Entity {
     public void heal(double health) {
         this.health += health;
     }
-    
-    
-     public void action1() {
-         System.out.println("HI-YA");
+
+    public void action1() {
+        System.out.println("HI-YA");
 
     }
 
     public void action2() {
         if (this.setAction(12)) {
             ProjectileArrow p = new ProjectileArrow(this.position.copy(),
-                                               new Spatial(4, 2, 2));
-            p.position.x += this.x_orientation * (this.size.x + p.size.x/2);
+                                                    new Spatial(4, 2, 2));
+            p.position.x += this.x_orientation * (this.size.x / 2 + p.size.x / 2 + 1);
             p.velocity.x = this.x_orientation * (2);
             p.position.z += this.size.z / 2;
             p.acceleration.z = 0.19;
@@ -163,7 +159,5 @@ public class Gharacter extends Entity {
             Game.instance.space.addConstruct(p);
         }
     }
-
-
 
 }

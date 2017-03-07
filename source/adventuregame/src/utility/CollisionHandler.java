@@ -12,9 +12,9 @@ import game.collision.Hitbox;
  * @author Mike
  */
 public class CollisionHandler {
-    
-    public static boolean checkCollision(Hitbox a, Hitbox b){
-        return checkCollisionA(a,b) || checkCollisionA(b,a);
+
+    public static boolean checkCollision(Hitbox a, Hitbox b) {
+        return (checkCollisionA(a, b) || checkCollisionA(b, a));
     }
 
     public static boolean checkCollisionA(Hitbox a, Hitbox b) {
@@ -22,13 +22,14 @@ public class CollisionHandler {
             return false;
         }
         Spatial s111 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s112 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s121 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s122 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s211 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s212 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s221 = new Spatial(a.x1(), a.y1(), a.z1());
-        Spatial s222 = new Spatial(a.x1(), a.y1(), a.z1());
+        Spatial s112 = new Spatial(a.x1(), a.y2(), a.z2());
+        Spatial s121 = new Spatial(a.x1(), a.y2(), a.z1());
+        Spatial s122 = new Spatial(a.x1(), a.y1(), a.z2());
+        Spatial s211 = new Spatial(a.x2(), a.y2(), a.z1());
+        Spatial s212 = new Spatial(a.x2(), a.y2(), a.z2());
+        Spatial s221 = new Spatial(a.x2(), a.y1(), a.z1());
+        Spatial s222 = new Spatial(a.x2(), a.y1(), a.z2());
+
         if (checkCollision(b, s111)) {
             return true;
         }
