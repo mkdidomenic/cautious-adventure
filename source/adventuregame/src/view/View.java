@@ -6,6 +6,8 @@
 package view;
 
 import game.Game;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import javax.swing.JFrame;
 
 /**
@@ -15,6 +17,8 @@ import javax.swing.JFrame;
 public class View extends JFrame {
 
     public SpacePanel panel;
+    public HUDPanel hud;
+
     public Game game;
     private int width;
     private int height;
@@ -25,11 +29,21 @@ public class View extends JFrame {
         this.setSize(this.width, this.height);
         this.setVisible(true);
 
+        // subcomponents
+        LayoutManager lm = new GridLayout(2, 1);
+        this.setLayout(lm);
+
+        //HUD subcomponent
+        this.hud = new HUDPanel();
+        this.add(this.hud);
+        this.hud.setVisible(true);
+
         // spacepanel subcomponent
         this.panel = new SpacePanel(game.space);
         this.add(this.panel);
         this.panel.setSize((int) (this.width * .95), (int) (this.height * 0.9));
         this.panel.setScale();
+        this.panel.setVisible(true);
     }
 
     public void update() {
