@@ -49,23 +49,23 @@ public class Gharacter extends Entity {
     public void outOfBounds(String s) {
         super.outOfBounds(s);
         if (s.equals("x+")) {
-            this.position.x -= this.size.x;
+            this.position.x = Game.instance.space.dimensions.x;
         }
         if (s.equals("y+")) {
-            this.position.y -= this.size.y;
+            this.position.y = Game.instance.space.dimensions.y;
         }
         if (s.equals("z+")) {
-            this.position.z -= this.size.z;
+            this.position.z = Game.instance.space.dimensions.z;
         }
         //
         if (s.equals("x-")) {
-            this.position.x += this.size.x;
+            this.position.x = 0;
         }
         if (s.equals("y-")) {
-            this.position.y += this.size.y;
+            this.position.y = 0;
         }
         if (s.equals("z-")) {
-            this.position.z += this.size.z;
+            this.position.z = 0;
         }
     }
 

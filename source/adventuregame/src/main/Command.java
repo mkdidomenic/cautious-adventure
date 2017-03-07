@@ -41,7 +41,7 @@ public enum Command {
                 return JUMP;
             case '1':
                 return ACTION1;
-            case 'f':
+            case '2':
                 return ACTION2;
             case '\\':
                 return DEBUG;
