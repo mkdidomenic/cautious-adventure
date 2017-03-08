@@ -18,6 +18,10 @@ import javax.imageio.ImageIO;
  */
 public class ImageHandler {
 
+    public static BufferedImage getPNG(String filename) {
+        return getImage("src/res/" + filename + ".png");
+    }
+
     public static BufferedImage getImage(String filename) {
         BufferedImage image;
         try {

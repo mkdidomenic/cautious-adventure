@@ -53,6 +53,10 @@ public class Construct implements Comparable {
         this.images.add(ImageHandler.getImage(filename));
     }
 
+    public void clearImages() {
+        this.images.clear();
+    }
+
     public void addpng(String filename) {
         this.images.add(ImageHandler.getImage("src/res/" + filename + ".png"));
     }

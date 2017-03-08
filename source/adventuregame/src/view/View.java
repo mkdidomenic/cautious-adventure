@@ -6,6 +6,7 @@
 package view;
 
 import game.Game;
+import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**
@@ -28,12 +29,17 @@ public class View extends JFrame {
         this.setVisible(true);
 
         // subcomponents
-        //LayoutManager lm = new GridLayout(2, 1);
-        //this.setLayout(lm);
         //HUD subcomponent
-        //this.hud = new HUDPanel();
-        //this.add(this.hud);
-        //this.hud.setVisible(true);
+        this.hud = new HUDPanel(this.game);
+        this.add(this.hud);
+        this.hud.setSize((int) (this.width * .95),
+                         (int) (this.height * 0.1));
+        this.hud.setPreferredSize(new Dimension((int) (this.width * .95),
+                                                (int) (this.height * 0.1)));
+        this.hud.setScale();
+        this.hud.update();
+        this.hud.setVisible(true);
+
         // spacepanel subcomponent
         this.panel = new SpacePanel(game.space);
         this.add(this.panel);
@@ -46,8 +52,12 @@ public class View extends JFrame {
         if ((this.width != this.getWidth()) && (this.height != this.getHeight())) {
             this.width = this.getWidth();
             this.height = this.getHeight();
+            this.hud.setSize((int) (this.width * .95),
+                             (int) (this.height * 0.1));
+            this.hud.setScale();
             this.panel.setScale();
         }
+        this.hud.update();
     }
 
 }
