@@ -85,20 +85,22 @@ public class SpacePanel extends JPanel {
         }
 
         // draw components
-        for (Construct c : this.space.getConstructs()) {
-            drawConstructF(g, c);
+        if (this.space != null && this.space.getConstructs() != null) {
+            for (Construct c : this.space.getConstructs()) {
+                drawConstructF(g, c);
 
-            if ((c instanceof Entity)) {
-                Entity e = (Entity) c;
-                if (e instanceof Gharacter) {
-                    Gharacter gh = (Gharacter) e;
-                    drawHealthBar(g, c, gh.health / gh.max_health);
+                if ((c instanceof Entity)) {
+                    Entity e = (Entity) c;
+                    if (e instanceof Gharacter) {
+                        Gharacter gh = (Gharacter) e;
+                        drawHealthBar(g, c, gh.health / gh.max_health);
+                    }
                 }
-            }
 
-            if (debug) {
-                drawHitboxF(g, c.hitbox);
-                drawL(g, c.position.copy());
+                if (debug) {
+                    drawHitboxF(g, c.hitbox);
+                    drawL(g, c.position.copy());
+                }
             }
         }
 

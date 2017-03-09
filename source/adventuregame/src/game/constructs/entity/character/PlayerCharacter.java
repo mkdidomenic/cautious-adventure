@@ -42,6 +42,7 @@ public class PlayerCharacter extends Gharacter {
     @Override
     public void update() {
         super.update();
+        //System.out.println(this.getFramesSinceLastMovement());
 
     }
 

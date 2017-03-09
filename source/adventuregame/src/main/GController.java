@@ -20,17 +20,22 @@ public class GController {
     public View view;
     public KeyHandler keyHandler;
 
-    public final int FPS = 30; // frames per second
-    public final double SPF = 1 / ((double) FPS); // seconds per frame
+    public final static int FPS = 30; // frames per second
+    public final static double SPF = 1 / ((double) FPS); // seconds per frame
+    public static GController instance;
+    private long currentFrame;
 
     public GController() {
+        GController.instance = this;
         this.game = new Game();
+        this.currentFrame = 0;
 
-        this.game.addPlayer("Mike");
         this.game.setupSpace();
 
         this.view = new View(game);
         this.keyHandler = new KeyHandler(this.view);
+
+        this.game.addPlayer("Mike");
 
     }
 
@@ -44,6 +49,7 @@ public class GController {
             do {
                 endtime = (double) System.currentTimeMillis() / 1000.0;
             } while ((endtime - starttime) < SPF);
+            this.currentFrame++;
         }
 
     }
@@ -53,10 +59,14 @@ public class GController {
         this.handleCommand();
         this.game.update();
         this.view.update();
-        if(this.game.debug != this.view.panel.debug){
+        if (this.game.debug != this.view.panel.debug) {
             this.view.panel.debug = this.game.debug;
         }
 
+    }
+
+    public long getCurrentFrame() {
+        return this.currentFrame;
     }
 
     public void handleKeys() {

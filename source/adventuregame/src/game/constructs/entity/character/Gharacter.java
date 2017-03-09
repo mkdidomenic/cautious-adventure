@@ -10,6 +10,7 @@ import game.constructs.Construct;
 import game.constructs.entity.Entity;
 import game.constructs.entity.ProjectileArrow;
 import main.Command;
+import main.GController;
 import utility.Spatial;
 
 /**
@@ -25,7 +26,7 @@ public class Gharacter extends Entity {
     public double normal_move_speed = 1;
     public double move_speed = normal_move_speed;
     public double jump_velocity = 2.5;
-    public int moveTime;
+    public long lastMove;
 
     // state
     public double health;
@@ -34,7 +35,7 @@ public class Gharacter extends Entity {
         super(position, default_size.copy());
         // default size
         this.setupAttr();
-        this.moveTime = (int) System.currentTimeMillis();
+        this.lastMove = GController.instance.getCurrentFrame();
     }
 
     public Gharacter(Spatial position, Spatial size) {
@@ -55,11 +56,7 @@ public class Gharacter extends Entity {
     @Override
     public void move(double x, double y, double z) {
         super.move(x, y, z);
-        this.setMoveTime();
-    }
-
-    public void setMoveTime() {
-        this.moveTime = (int) System.currentTimeMillis();
+        this.lastMove = GController.instance.getCurrentFrame();
     }
 
     @Override
@@ -97,15 +94,24 @@ public class Gharacter extends Entity {
         this.damage(c.hurts(this));
     }
 
+    public double getFramesSinceLastMovement() {
+        return (System.currentTimeMillis() - this.lastMove) / 1000.0D * GController.FPS;
+    }
+
     private void collideWith(Construct c) {
         double distance;
         double sizes;
         double direction;
+
+        if (c instanceof Gharacter) {
+            if ((GController.instance.getCurrentFrame() - this.lastMove) > 9) {
+                return;
+            }
+        }
         // x
         if (((this.position.angleXY(c.position) < 45) || ((this.position.angleXY(
                 c.position) > 315))) || ((this.position.angleXY(c.position) > 135) && ((this.position.angleXY(
                         c.position) < 270)))) {
-            System.out.println(this.getClass() + ": X!");
             distance = Math.abs(this.position.x - c.position.x);
             sizes = this.size.x / 2 + c.size.x / 2;
             if (this.position.x >= c.position.x) {
@@ -119,7 +125,6 @@ public class Gharacter extends Entity {
         if (((this.position.angleXY(c.position) > 45) && ((this.position.angleXY(
                 c.position) < 135))) || ((this.position.angleXY(c.position) > 270) && ((this.position.angleXY(
                         c.position) < 315)))) {
-            System.out.println(this.getClass() + ": Y!");
             distance = Math.abs(this.position.y - c.position.y);
             sizes = this.size.y / 2 + c.size.y / 2;
             if (this.position.y >= c.position.y) {

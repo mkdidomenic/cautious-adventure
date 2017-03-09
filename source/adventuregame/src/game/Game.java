@@ -43,6 +43,13 @@ public class Game {
     public void addPlayer(String name) {
         Player p = new Player(name);
         this.players.add(p);
+        if (this.space != null) {
+            Spatial pos = new Spatial(this.space.dimensions.x / 2,
+                                      this.space.dimensions.y / 2,
+                                      0);
+            //Spatial size = new Spatial(100, 100, 10);
+            this.space.addPlayerC(new PlayerCharacter(p, pos));
+        }
 
     }
 
