@@ -83,6 +83,7 @@ public class SpacePanel extends JPanel {
         if (this.scalechange) {
             this.drawBackground(g);
         }
+
         // draw components
         for (Construct c : this.space.getConstructs()) {
             drawConstructF(g, c);
@@ -151,7 +152,7 @@ public class SpacePanel extends JPanel {
         g.setColor(Color.green);
         g.fillRect(x - barWidth / 2,
                    y - barHeight / 2 - barFloat,
-                   (int)(barWidth * fraction),
+                   (int) (barWidth * fraction),
                    barHeight);
     }
 

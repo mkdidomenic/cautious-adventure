@@ -86,4 +86,21 @@ public class Spatial {
         this.y *= y;
         this.z *= z;
     }
+
+    // Utility Methods
+    /**
+     * angle from this spatial to another in the xy plane
+     *
+     * @param b
+     * @return
+     */
+    public double angleXY(Spatial b) {
+        double x0 = b.x - this.x;
+        double y0 = b.y - this.y;
+        double a = Math.toDegrees(Math.atan2(y0, x0));
+        if (a < 0) {
+            a += 360;
+        }
+        return a;
+    }
 }
