@@ -7,7 +7,9 @@ package view;
 
 import game.Game;
 import java.awt.Dimension;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
  */
 public class View extends JFrame {
 
+    public JPanel content;
     public SpacePanel panel;
     public HUDPanel hud;
 
@@ -28,10 +31,16 @@ public class View extends JFrame {
         this.setSize(this.width, this.height);
         this.setVisible(true);
 
+        this.content = new JPanel();
+        this.content.setVisible(true);
+        this.content.setSize(this.width, this.height);
+        this.add(this.content);
+
+        this.content.setLayout(new BoxLayout(this.content, BoxLayout.Y_AXIS));
         // subcomponents
         //HUD subcomponent
-        this.hud = new HUDPanel(this.game);
-        this.add(this.hud);
+        this.hud = new HUDPanel();
+        this.content.add(this.hud);
         this.hud.setSize((int) (this.width * .95),
                          (int) (this.height * 0.1));
         this.hud.setPreferredSize(new Dimension((int) (this.width * .95),
@@ -42,8 +51,11 @@ public class View extends JFrame {
 
         // spacepanel subcomponent
         this.panel = new SpacePanel(game.space);
-        this.add(this.panel);
-        this.panel.setSize((int) (this.width * .95), (int) (this.height * 0.9));
+        this.content.add(this.panel);
+        this.panel.setSize((int) (this.width * .95),
+                           (int) (this.height * 0.9));
+        this.panel.setPreferredSize(new Dimension((int) (this.getWidth() * .95),
+                                                  (int) (this.getHeight() * 0.9)));
         this.panel.setScale();
         this.panel.setVisible(true);
     }
@@ -52,10 +64,14 @@ public class View extends JFrame {
         if ((this.width != this.getWidth()) && (this.height != this.getHeight())) {
             this.width = this.getWidth();
             this.height = this.getHeight();
-            this.hud.setSize((int) (this.width * .95),
-                             (int) (this.height * 0.1));
+//            this.content.setSize(this.width, this.height);
+            this.hud.setPreferredSize(new Dimension((int) (this.width * .95),
+                                                    (int) (this.height * 0.1)));
+            this.panel.setPreferredSize(new Dimension((int) (this.width * 0.95),
+                                                      (int) (this.height * 0.9)));
             this.hud.setScale();
             this.panel.setScale();
+            //this.panel.setLocation(0, (int) (this.height * 0.1));
         }
         this.hud.update();
     }

@@ -49,8 +49,8 @@ public class Game {
     public void update() {
         this.space.update();
     }
-    
-    public void setupLevel(){
+
+    public void setupLevel() {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
         this.space.addConstruct(npc);
     }
