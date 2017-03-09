@@ -75,8 +75,39 @@ public class Gharacter extends Entity {
         //System.out.println("Character");
         if (c.tangible()) {
             //back up
+            this.collideWith(c);
         }
         this.damage(c.hurts(this));
+    }
+
+    private void collideWith(Construct c) {
+        double distance;
+        double sizes;
+        double direction;
+        // x
+        if (Math.abs(this.position.x - c.position.x) < (this.size.x / 2 + c.size.x / 2)) {
+            distance = Math.abs(this.position.x - c.position.x);
+            sizes = this.size.x / 2 + c.size.x / 2;
+            if (this.position.x >= c.position.x) {
+                direction = 1;
+            } else {
+                direction = -1;
+            }
+            this.move((direction) * (sizes - distance), 0, 0);
+        }
+
+        // y
+        if (Math.abs(this.position.y - c.position.y) < (this.size.y / 2 + c.size.y / 2)) {
+            distance = Math.abs(this.position.y - c.position.y);
+            sizes = this.size.y / 2 + c.size.y / 2;
+            if (this.position.y >= c.position.y) {
+                direction = 1;
+            } else {
+                direction = -1;
+            }
+            this.move((direction) * (sizes - distance), 0, 0);
+        }
+
     }
 
     @Override
