@@ -21,6 +21,8 @@ public class CollisionHandler {
         if (a == b) {
             return false;
         }
+        Spatial s000 = new Spatial(a.position.x, a.position.y, a.position.z);
+        
         Spatial s111 = new Spatial(a.x1(), a.y1(), a.z1());
         Spatial s112 = new Spatial(a.x1(), a.y2(), a.z2());
         Spatial s121 = new Spatial(a.x1(), a.y2(), a.z1());
@@ -30,6 +32,10 @@ public class CollisionHandler {
         Spatial s221 = new Spatial(a.x2(), a.y1(), a.z1());
         Spatial s222 = new Spatial(a.x2(), a.y1(), a.z2());
 
+        if (checkCollision(b, s000)){
+            return true;
+        }
+        
         if (checkCollision(b, s111)) {
             return true;
         }

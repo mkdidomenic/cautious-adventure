@@ -86,7 +86,6 @@ public class Gharacter extends Entity {
     @Override
     public void onCollision(Construct c) {
         super.onCollision(c);
-        //System.out.println("Character");
         if (c.tangible()) {
             //back up
             this.collideWith(c);
@@ -114,7 +113,7 @@ public class Gharacter extends Entity {
         // x
         if ((( this.position.angleXY(c.position) < 45) || ((this.position.angleXY(
                 c.position) > 315) )) || ((this.position.angleXY(c.position) > 135) && ((this.position.angleXY(
-                        c.position) < 270)))) {
+                        c.position) < 225)))) {
             distance = Math.abs(this.position.x - c.position.x);
             sizes = this.size.x / 2 + c.size.x / 2;
             if (this.position.x >= c.position.x) {
@@ -126,7 +125,7 @@ public class Gharacter extends Entity {
         }
         // y
         if (((this.position.angleXY(c.position) > 45) && ((this.position.angleXY(
-                c.position) < 135))) || ((this.position.angleXY(c.position) > 270) && ((this.position.angleXY(
+                c.position) < 135))) || ((this.position.angleXY(c.position) > 225) && ((this.position.angleXY(
                         c.position) < 315)))) {
             distance = Math.abs(this.position.y - c.position.y);
             sizes = this.size.y / 2 + c.size.y / 2;
