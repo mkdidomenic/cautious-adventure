@@ -7,7 +7,7 @@ package main;
 
 import game.Game;
 import utility.KeyHandler;
-import view.View;
+import view.GameView;
 
 /**
  *
@@ -17,7 +17,7 @@ public class GController {
 
     private boolean running;
     public Game game;
-    public View view;
+    public GameView view;
     public KeyHandler keyHandler;
 
     public final static int FPS = 30; // frames per second
@@ -32,7 +32,7 @@ public class GController {
 
         this.game.setupSpace();
 
-        this.view = new View(game);
+        this.view = new GameView(game);
         this.keyHandler = new KeyHandler(this.view);
 
         this.game.addPlayer("Mike");

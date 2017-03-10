@@ -103,14 +103,17 @@ public class Gharacter extends Entity {
         double sizes;
         double direction;
 
+        // for now at least, no collision with other characters
         if (c instanceof Gharacter) {
+            if (true){return;}
+            // dont move if you shouldnt be moving
             if ((GController.instance.getCurrentFrame() - this.lastMove) > 9) {
                 return;
             }
         }
         // x
-        if (((this.position.angleXY(c.position) < 45) || ((this.position.angleXY(
-                c.position) > 315))) || ((this.position.angleXY(c.position) > 135) && ((this.position.angleXY(
+        if ((( this.position.angleXY(c.position) < 45) || ((this.position.angleXY(
+                c.position) > 315) )) || ((this.position.angleXY(c.position) > 135) && ((this.position.angleXY(
                         c.position) < 270)))) {
             distance = Math.abs(this.position.x - c.position.x);
             sizes = this.size.x / 2 + c.size.x / 2;

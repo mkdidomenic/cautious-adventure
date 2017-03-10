@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  *
  * @author Mike
  */
-public class View extends JFrame {
+public class GameView extends JFrame {
 
     public JPanel content;
     public SpacePanel panel;
@@ -25,7 +25,7 @@ public class View extends JFrame {
     private int width;
     private int height;
 
-    public View(Game game) {
+    public GameView(Game game) {
         this.width = 600;
         this.height = 600;
         this.setSize(this.width, this.height);

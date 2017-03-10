@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import view.View;
+import view.GameView;
 
 /**
  *
@@ -27,7 +27,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     public int mouseX;
     public int mouseY;
 
-    public KeyHandler(View view) {
+    public KeyHandler(GameView view) {
         view.addKeyListener(this);
         view.addMouseListener(this);
         this.currentkeys = new ArrayList();

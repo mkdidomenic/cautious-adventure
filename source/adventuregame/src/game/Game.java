@@ -59,6 +59,9 @@ public class Game {
 
     public void setupLevel() {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
+        Construct con = new Construct(new Spatial(10,10,0), new Spatial(10,10,10));
+        con.addpng("square");
+        this.space.addConstruct(con);
         this.space.addConstruct(npc);
     }
 
