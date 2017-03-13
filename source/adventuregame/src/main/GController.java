@@ -32,7 +32,7 @@ public class GController {
 
         this.game.setupSpace();
 
-        this.view = new GameView(game);
+        this.view = new GameView(this.game);
         this.keyHandler = new KeyHandler(this.view);
 
         this.game.addPlayer("Mike");

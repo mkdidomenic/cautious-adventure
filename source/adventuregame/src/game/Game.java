@@ -20,6 +20,7 @@ import utility.Spatial;
 public class Game {
 
     public ArrayList<Player> players;
+    public Player player;
     public Space space;
     public static Game instance;
 
@@ -42,6 +43,9 @@ public class Game {
 
     public void addPlayer(String name) {
         Player p = new Player(name);
+        if (this.players.isEmpty()) {
+            this.player = p;
+        }
         this.players.add(p);
         if (this.space != null) {
             Spatial pos = new Spatial(this.space.dimensions.x / 2,
@@ -59,7 +63,8 @@ public class Game {
 
     public void setupLevel() {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
-        Construct con = new Construct(new Spatial(10,10,0), new Spatial(10,10,10));
+        Construct con = new Construct(new Spatial(10, 10, 0),
+                                      new Spatial(10, 10, 10));
         con.addpng("square");
         this.space.addConstruct(con);
         this.space.addConstruct(npc);

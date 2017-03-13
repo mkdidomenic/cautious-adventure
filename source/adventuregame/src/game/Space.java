@@ -72,6 +72,15 @@ public class Space {
         return (LinkedList) this.constructs.clone();
     }
 
+    public PlayerCharacter getPlayerCharacter(Player player) {
+        for (PlayerCharacter p : this.getPlayers()) {
+            if (p.player == player) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public void update() {
         //debug();
         //System.out.println("SPACE: " + this.getConstructs());
