@@ -69,7 +69,7 @@ public class GameView extends JFrame {
         this.viewport.setVisible(true);
         this.viewport.setOpaque(true);
         this.viewport.setScrollMode(
-                JViewport.BACKINGSTORE_SCROLL_MODE);
+                JViewport.SIMPLE_SCROLL_MODE);
         this.contentPanel.add(this.viewport);
 
         // spacepanel subcomponent
@@ -85,7 +85,7 @@ public class GameView extends JFrame {
         this.viewport.setView(this.spacePanel);
     }
 
-    public void update() {
+    public synchronized void update() {
         if ((this.width != this.getWidth()) && (this.height != this.getHeight())) {
             this.width = this.getWidth();
             this.height = this.getHeight();
@@ -108,13 +108,15 @@ public class GameView extends JFrame {
         this.repaint();
     }
 
-    public void updateViewport() {
+    public synchronized void updateViewport() {
+        int scrollAmount = 1;
         int x0;
         int y0;
         if (this.game == null) {
             return;
         }
         y0 = (this.spacePanel.getHeight() - this.viewport.getHeight()) / 2;
+
         if (this.game.player == null) {
             x0 = (this.spacePanel.getWidth() - this.viewport.getWidth()) / 2;
 
@@ -123,14 +125,20 @@ public class GameView extends JFrame {
                     this.game.player);
             x0 = this.spacePanel.mapX(pc.position.x);
             x0 = x0 - this.viewport.getWidth() / 2;
+            if (x0 > this.viewport.getViewPosition().x) {
+                x0 = this.viewport.getViewPosition().x + scrollAmount;
+            } else if (x0 < this.viewport.getViewPosition().x) {
+                x0 = this.viewport.getViewPosition().x - scrollAmount;
+            } else {
+                x0 = this.viewport.getViewPosition().x;
+            }
         }
         if (x0 < 0) {
             x0 = 0;
         }
-        if (x0 > (this.spacePanel.getWidth() / 2)) {
-            x0 = (this.spacePanel.getWidth() / 2);
+        if ((x0 + this.viewport.getWidth()) > (this.spacePanel.getWidth())) {
+            x0 = (this.spacePanel.getWidth() - this.viewport.getWidth());
         }
-
         this.viewport.setViewPosition(new Point(x0, y0));
 
     }
