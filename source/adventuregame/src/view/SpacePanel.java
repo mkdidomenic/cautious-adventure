@@ -38,11 +38,13 @@ public class SpacePanel extends JPanel {
     public double ym;
     public double vm; // vertical multiplier
     public BufferedImage background;
+    public BufferedImage defaultShadow;
 
     public SpacePanel(Space space) {
         super();
         this.space = space;
         this.background = ImageHandler.getBackground();
+        this.defaultShadow = ImageHandler.getPNG("shadow");
         this.scalechange = false;
     }
 
@@ -87,15 +89,15 @@ public class SpacePanel extends JPanel {
         // draw components
         if (this.space != null && this.space.getConstructs() != null) {
             for (Construct c : this.space.getConstructs()) {
-                drawConstructF(g, c);
-
                 if ((c instanceof Entity)) {
                     Entity e = (Entity) c;
                     if (e instanceof Gharacter) {
                         Gharacter gh = (Gharacter) e;
                         drawHealthBar(g, c, gh.health / gh.max_health);
+                        drawConstructShadow(g, c);
                     }
                 }
+                drawConstructF(g, c);
 
                 if (debug) {
                     drawHitboxF(g, c.hitbox);
@@ -156,6 +158,19 @@ public class SpacePanel extends JPanel {
                    y - barHeight / 2 - barFloat,
                    (int) (barWidth * fraction),
                    barHeight);
+    }
+
+    public void drawConstructShadow(Graphics g, Construct c) {
+        Spatial p = c.position.copy();
+        Spatial s = c.size.copy();
+        p.x = p.x - s.x / 2;
+        p.y = p.y + s.y / 2;
+        int x0 = mapX(p.x);
+        int y0 = mapV(p.y, 0);
+        Image i = this.defaultShadow.getScaledInstance(scaleX(c.size.x), scaleV(
+                                                       c.size.y, 0), 0);
+        g.drawImage(i, x0, y0, this);
+
     }
 
     public void drawHitboxF(Graphics g, Hitbox b) {
