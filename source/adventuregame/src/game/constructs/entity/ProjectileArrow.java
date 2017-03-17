@@ -14,12 +14,13 @@ import utility.Spatial;
  */
 public class ProjectileArrow extends Projectile {
 
-    public double damage = 10;
+    public final double default_damage = 10;
 
     public ProjectileArrow(Spatial position, Spatial size) {
         super(position, size);
         this.images.remove(0);
         this.addpng("arrow");
+        this.damage = default_damage;
     }
 
     @Override

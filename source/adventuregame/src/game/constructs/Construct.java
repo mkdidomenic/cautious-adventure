@@ -34,8 +34,15 @@ public class Construct implements Comparable {
     // for when doing things, counts down, zero when inactive
     public int actionTimer;
 
+    // tick this was created at
+    public long starttick;
+
     // hitbox for collisions
     public Hitbox hitbox;
+    // tangibility for collisions
+    public boolean tangibility;
+    // damage given on collision
+    public double damage;
 
     public Construct(Spatial position, Spatial size) {
         this.position = position;
@@ -46,6 +53,9 @@ public class Construct implements Comparable {
         this.actionTimer = 0;
         this.hitbox = new Hitbox(position, size);
         this.exists = true;
+        this.starttick = GController.instance.getCurrentFrame();
+        this.tangibility = true;
+        this.damage = 0;
     }
 
     public void addImage(String filename) {
@@ -58,6 +68,10 @@ public class Construct implements Comparable {
 
     public void addpng(String filename) {
         this.images.add(ImageHandler.getImage("src/res/" + filename + ".png"));
+    }
+
+    public long ticksExisted() {
+        return (GController.instance.getCurrentFrame() - this.starttick);
     }
 
     public void handleTimers() {
@@ -109,11 +123,11 @@ public class Construct implements Comparable {
     }
 
     public boolean tangible() {
-        return true;
+        return this.tangibility;
     }
 
     public double hurts(Construct c) {
-        return 0;
+        return this.damage;
     }
 
     // end collision stuff

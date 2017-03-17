@@ -13,7 +13,7 @@ import utility.Spatial;
  * @author Mike
  */
 public class Projectile extends Entity {
-    
+
     protected Construct parent;
 
     public Projectile(Spatial position, Spatial size) {
@@ -26,13 +26,11 @@ public class Projectile extends Entity {
         this.parent = parent;
     }
 
-    
-    
     @Override
     public void update() {
         super.update();
         //System.out.println(this.position);
-        if (this.position.z < 0) {
+        if (this.position.z <= 0) {
             this.remove();
         }
     }

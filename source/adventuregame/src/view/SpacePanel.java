@@ -120,6 +120,9 @@ public class SpacePanel extends JPanel {
      */
     public void drawConstructF(Graphics g, Construct c) {
         BufferedImage i = c.getImage();
+        if (i == null) {
+            return;
+        }
         Spatial cpos = c.position.copy();
         // handle x stuff
         cpos.x = cpos.x - (c.size.x / 2 * c.x_orientation);

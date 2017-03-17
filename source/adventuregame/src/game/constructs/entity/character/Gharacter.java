@@ -53,7 +53,9 @@ public class Gharacter extends Entity {
     }
 
     private void setupAttr() {
+        // default classtype
         this.classtype = new ClasstypeAssassin(this);
+        //setup attributes
         this.health = this.max_health;
         this.move_speed = this.normal_move_speed;
     }

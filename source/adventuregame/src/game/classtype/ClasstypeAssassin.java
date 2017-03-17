@@ -6,6 +6,7 @@
 package game.classtype;
 
 import game.Game;
+import game.constructs.DamageBox;
 import game.constructs.entity.ProjectileArrow;
 import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
@@ -41,6 +42,12 @@ public class ClasstypeAssassin extends Classtype {
 
     private void ability1() {
         if (this.gharacter.setActionTimer(10)) {
+            DamageBox db = new DamageBox(
+                    this.gharacter.position.copy(),
+                    new Spatial(4, 2, 10));
+            db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
+            //System.out.println(db);
+            Game.instance.space.addConstruct(db);
             this.gharacter.state = Gharacter.State.ABILITY1;
         }
     }
