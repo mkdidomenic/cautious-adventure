@@ -6,9 +6,11 @@
 package game.constructs.entity.character;
 
 import game.Game;
+import game.classtype.Classtype;
+import game.classtype.ClasstypeAssassin;
 import game.constructs.Construct;
 import game.constructs.entity.Entity;
-import game.constructs.entity.ProjectileArrow;
+import java.awt.image.BufferedImage;
 import main.Command;
 import main.GController;
 import utility.Spatial;
@@ -26,6 +28,9 @@ public class Gharacter extends Entity {
     public double normal_move_speed = 1;
     public double move_speed = normal_move_speed;
     public double jump_velocity = 4;
+
+    // class type
+    public Classtype classtype;
 
     // frame number that we last moved at
     public long lastMove;
@@ -48,8 +53,18 @@ public class Gharacter extends Entity {
     }
 
     private void setupAttr() {
+        this.classtype = new ClasstypeAssassin(this);
         this.health = this.max_health;
         this.move_speed = this.normal_move_speed;
+    }
+
+    public void setClasstype(Classtype ct) {
+        this.classtype = ct;
+    }
+
+    @Override
+    public BufferedImage getImage() {
+        return this.classtype.getImage();
     }
 
     @Override
@@ -216,10 +231,10 @@ public class Gharacter extends Entity {
                 this.jump();
                 break;
             case ACTION1:
-                this.ability1();
+                this.ability(1);
                 break;
             case ACTION2:
-                this.ability2();
+                this.ability(2);
                 break;
             default:
                 //System.out.println("Player class: Not a command = " + c);
@@ -254,26 +269,8 @@ public class Gharacter extends Entity {
         this.health += health;
     }
 
-    public void ability1() {
-        if (this.setActionTimer(10)) {
-            this.state = State.ABILITY1;
-        }
-
-    }
-
-    public void ability2() {
-        if (this.setActionTimer(12)) {
-            ProjectileArrow p = new ProjectileArrow(this.position.copy(),
-                                                    new Spatial(4, 2, 2));
-            p.position.x += this.x_orientation * (this.size.x / 2 + p.size.x / 2 + 1);
-            p.velocity.x = this.x_orientation * (2);
-            p.position.z += this.size.z / 2;
-            p.acceleration.z = 0.19;
-            p.setParent(this);
-            //System.out.println(p);
-            Game.instance.space.addConstruct(p);
-            this.state = State.ABILITY2;
-        }
+    public void ability(int i) {
+        this.classtype.ability(i);
     }
 
     public enum State {
