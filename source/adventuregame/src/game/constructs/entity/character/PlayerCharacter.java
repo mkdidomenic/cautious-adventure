@@ -42,12 +42,20 @@ public class PlayerCharacter extends Gharacter {
     @Override
     public void update() {
         super.update();
-        //System.out.println(this.getFramesSinceLastMovement());
+
+        if (true) {
+            debugM();
+        }
 
     }
 
     public int ID() {
         return this.player.ID;
+    }
+
+    public void debugM() {
+        //System.out.println(this.getFramesSinceLastMovement());
+        //System.out.println(this.state.toString());
     }
 
 }

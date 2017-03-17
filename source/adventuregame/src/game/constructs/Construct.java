@@ -8,6 +8,7 @@ package game.constructs;
 import game.collision.Hitbox;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
 
@@ -32,7 +33,6 @@ public class Construct implements Comparable {
 
     // for when doing things, counts down, zero when inactive
     public int actionTimer;
-    public String state;
 
     // hitbox for collisions
     public Hitbox hitbox;
@@ -44,7 +44,6 @@ public class Construct implements Comparable {
         this.images = new ArrayList();
         this.imageIndex = 0;
         this.actionTimer = 0;
-        this.state = "IDLE";
         this.hitbox = new Hitbox(position, size);
         this.exists = true;
     }
@@ -61,13 +60,20 @@ public class Construct implements Comparable {
         this.images.add(ImageHandler.getImage("src/res/" + filename + ".png"));
     }
 
-    public void handleTimer() {
+    public void handleTimers() {
         if (this.actionTimer > 0) {
             this.actionTimer--;
         }
     }
 
-    public boolean setAction(int ticks) {
+    /**
+     * sets the actions timer to a number of ticks if no other action is
+     * occurring
+     *
+     * @param ticks
+     * @return true if action timer is successfully set, false otherwise.
+     */
+    public boolean setActionTimer(int ticks) {
         if (this.actionTimer == 0) {
             this.actionTimer = ticks;
             return true;
@@ -76,8 +82,24 @@ public class Construct implements Comparable {
         }
     }
 
+    /**
+     * sets the actions timer to a number of seconds if no other action is
+     * occurring
+     *
+     * @param seconds
+     * @return true if action timer is successfully set, false otherwise.
+     */
+    public boolean setActionTimerS(int seconds) {
+        int ticks = seconds * GController.FPS;
+        return this.setActionTimer(ticks);
+    }
+
+    public boolean canAct() {
+        return (this.actionTimer == 0);
+    }
+
     public void update() {
-        this.handleTimer();
+        this.handleTimers();
         //System.out.println(this);
     }
 

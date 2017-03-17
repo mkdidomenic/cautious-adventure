@@ -16,7 +16,7 @@ public class Entity extends Construct {
 
     public Spatial velocity;
     public Spatial acceleration;
-    public double gravity = -0.2;
+    public double gravity = -0.4;
 
     public Entity(Spatial position, Spatial size) {
         super(position, size);
@@ -45,7 +45,7 @@ public class Entity extends Construct {
         } else if (this.velocity.x < 0) {
             this.setOrientation(-1);
         }
-        this.gravity();
+        this.handleVerticalMotion();
     }
 
     public void move(Spatial s) {
@@ -61,9 +61,13 @@ public class Entity extends Construct {
         }
     }
 
-    public void gravity() {
+    public boolean isGrounded() {
+        return (!(this.position.z > 0));
+    }
+
+    public void handleVerticalMotion() {
         // if above ground
-        if (this.position.z > 0) {
+        if (!(this.isGrounded())) {
             this.velocity.z += this.gravity;
         }
         // if below or on ground

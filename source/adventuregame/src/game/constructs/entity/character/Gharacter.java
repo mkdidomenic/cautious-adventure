@@ -25,8 +25,12 @@ public class Gharacter extends Entity {
     public double max_health = 100;
     public double normal_move_speed = 1;
     public double move_speed = normal_move_speed;
-    public double jump_velocity = 2.5;
+    public double jump_velocity = 4;
+
+    // frame number that we last moved at
     public long lastMove;
+
+    public State state = State.IDLE;
 
     // state
     public double health;
@@ -55,8 +59,27 @@ public class Gharacter extends Entity {
 
     @Override
     public void move(double x, double y, double z) {
-        super.move(x, y, z);
-        this.lastMove = GController.instance.getCurrentFrame();
+        if (this.state == State.IDLE) {
+            super.move(x, y, z);
+            this.lastMove = GController.instance.getCurrentFrame();
+            this.state = State.MOVING;
+        }
+        if (this.state == State.MOVING) {
+            super.move(x, y, z);
+            this.lastMove = GController.instance.getCurrentFrame();
+        }
+
+        // should not be able to move in the air while doing other things
+        if ((this.state == State.JUMPING) && false) {
+            super.move(x, y, z);
+            this.lastMove = GController.instance.getCurrentFrame();
+        }
+
+        // should be able to move in the air while doing other things?
+        if ((!this.isGrounded()) && true) {
+            super.move(x, y, z);
+            this.lastMove = GController.instance.getCurrentFrame();
+        }
     }
 
     @Override
@@ -94,7 +117,7 @@ public class Gharacter extends Entity {
     }
 
     public double getFramesSinceLastMovement() {
-        return (System.currentTimeMillis() - this.lastMove) / 1000.0D * GController.FPS;
+        return GController.instance.getCurrentFrame() - this.lastMove;
     }
 
     private void collideWith(Construct c) {
@@ -104,15 +127,17 @@ public class Gharacter extends Entity {
 
         // for now at least, no collision with other characters
         if (c instanceof Gharacter) {
-            if (true){return;}
+            if (true) {
+                return;
+            }
             // dont move if you shouldnt be moving
             if ((GController.instance.getCurrentFrame() - this.lastMove) > 9) {
                 return;
             }
         }
         // x
-        if ((( this.position.angleXY(c.position) < 45) || ((this.position.angleXY(
-                c.position) > 315) )) || ((this.position.angleXY(c.position) > 135) && ((this.position.angleXY(
+        if (((this.position.angleXY(c.position) < 45) || ((this.position.angleXY(
+                c.position) > 315))) || ((this.position.angleXY(c.position) > 135) && ((this.position.angleXY(
                         c.position) < 225)))) {
             distance = Math.abs(this.position.x - c.position.x);
             sizes = this.size.x / 2 + c.size.x / 2;
@@ -121,7 +146,8 @@ public class Gharacter extends Entity {
             } else {
                 direction = -1;
             }
-            this.move((direction) * (sizes - distance), 0, 0);
+            this.position.add(
+                    new Spatial((direction) * (sizes - distance), 0, 0));
         }
         // y
         if (((this.position.angleXY(c.position) > 45) && ((this.position.angleXY(
@@ -134,7 +160,8 @@ public class Gharacter extends Entity {
             } else {
                 direction = -1;
             }
-            this.move(0, (direction) * (sizes - distance), 0);
+            this.position.add(
+                    new Spatial(0, (direction) * (sizes - distance), 0));
         }
 
     }
@@ -142,15 +169,32 @@ public class Gharacter extends Entity {
     @Override
     public void update() {
         super.update();
-        checkHealth();
+        handleState();
+        handleHealth();
     }
 
-    private void checkHealth() {
+    private void handleHealth() {
         if (this.health <= 0) {
             this.die();
         }
         if (this.health > this.max_health) {
             this.health = this.max_health;
+        }
+    }
+
+    private void handleState() {
+        int idleFramesAfterMoving = 2;
+        if (this.actionTimer == 0) {
+            if (!(this.isGrounded())) {
+                this.setState(State.JUMPING);
+            } else {
+                if ((this.getFramesSinceLastMovement() > idleFramesAfterMoving)) {
+                    this.setState(State.IDLE);
+                } else {
+                    this.setState(State.MOVING);
+                }
+
+            }
         }
     }
 
@@ -172,10 +216,10 @@ public class Gharacter extends Entity {
                 this.jump();
                 break;
             case ACTION1:
-                this.action1();
+                this.ability1();
                 break;
             case ACTION2:
-                this.action2();
+                this.ability2();
                 break;
             default:
                 //System.out.println("Player class: Not a command = " + c);
@@ -184,9 +228,18 @@ public class Gharacter extends Entity {
     }
 
     public void jump() {
-        if (this.position.z == 0) {
+        if (this.isGrounded() && this.canAct()) {
             this.velocity.z = jump_velocity;
+            this.state = State.JUMPING;
         }
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getState(State state) {
+        return this.state;
     }
 
     public void die() {
@@ -201,13 +254,15 @@ public class Gharacter extends Entity {
         this.health += health;
     }
 
-    public void action1() {
-        System.out.println("HI-YA");
+    public void ability1() {
+        if (this.setActionTimer(10)) {
+            this.state = State.ABILITY1;
+        }
 
     }
 
-    public void action2() {
-        if (this.setAction(12)) {
+    public void ability2() {
+        if (this.setActionTimer(12)) {
             ProjectileArrow p = new ProjectileArrow(this.position.copy(),
                                                     new Spatial(4, 2, 2));
             p.position.x += this.x_orientation * (this.size.x / 2 + p.size.x / 2 + 1);
@@ -217,7 +272,19 @@ public class Gharacter extends Entity {
             p.setParent(this);
             //System.out.println(p);
             Game.instance.space.addConstruct(p);
+            this.state = State.ABILITY2;
         }
+    }
+
+    public enum State {
+        IDLE,
+        MOVING,
+        JUMPING,
+        STUNNED,
+        ABILITY1,
+        ABILITY2,
+        ABILITY3,
+        ABILITY4;
     }
 
 }

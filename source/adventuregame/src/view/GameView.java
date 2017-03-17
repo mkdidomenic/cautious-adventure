@@ -109,7 +109,7 @@ public class GameView extends JFrame {
     }
 
     public synchronized void updateViewport() {
-        int scrollAmount = 1;
+        int scrollAmount = 4;
         int x0;
         int y0;
         if (this.game == null) {
@@ -125,7 +125,9 @@ public class GameView extends JFrame {
                     this.game.player);
             x0 = this.spacePanel.mapX(pc.position.x);
             x0 = x0 - this.viewport.getWidth() / 2;
-            if (x0 > this.viewport.getViewPosition().x) {
+            if (Math.abs(x0 - this.viewport.getViewPosition().x) <= scrollAmount) {
+                x0 = this.viewport.getViewPosition().x;
+            } else if (x0 > this.viewport.getViewPosition().x) {
                 x0 = this.viewport.getViewPosition().x + scrollAmount;
             } else if (x0 < this.viewport.getViewPosition().x) {
                 x0 = this.viewport.getViewPosition().x - scrollAmount;
