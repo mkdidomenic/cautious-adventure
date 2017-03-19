@@ -19,6 +19,8 @@ public enum Command {
     JUMP(true),
     ACTION1(true),
     ACTION2(true),
+    ACTION3(true),
+    ACTION4(true),
     DEBUG(false);
 
     public boolean isPlayerCommand;
@@ -39,10 +41,14 @@ public enum Command {
                 return MOVE_RIGHT;
             case ' ':
                 return JUMP;
-            case '1':
+            case 'k':
                 return ACTION1;
-            case '2':
+            case 'l':
                 return ACTION2;
+            case ';':
+                return ACTION3;
+            case '\'':
+                return ACTION4;
             case '\\':
                 return DEBUG;
             default:

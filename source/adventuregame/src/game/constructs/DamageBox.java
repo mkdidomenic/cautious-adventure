@@ -14,7 +14,7 @@ import utility.Spatial;
  */
 public class DamageBox extends Construct {
 
-    public double default_damage = 10;
+    public double default_damage = 1;
     public Construct parent;
 
     public DamageBox(Spatial position, Spatial size) {

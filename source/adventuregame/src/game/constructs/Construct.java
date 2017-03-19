@@ -112,6 +112,10 @@ public class Construct implements Comparable {
         return (this.actionTimer == 0);
     }
 
+    public void interruptActionTimer() {
+        this.actionTimer = 0;
+    }
+
     public void update() {
         this.handleTimers();
         //System.out.println(this);
@@ -128,6 +132,10 @@ public class Construct implements Comparable {
 
     public double hurts(Construct c) {
         return this.damage;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 
     // end collision stuff

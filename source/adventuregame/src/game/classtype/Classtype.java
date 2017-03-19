@@ -34,4 +34,7 @@ public abstract class Classtype {
      */
     public abstract BufferedImage getImage();
 
+    public void update() {
+    }
+
 }

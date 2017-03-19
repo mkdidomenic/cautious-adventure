@@ -25,6 +25,8 @@ public class Gharacter extends Entity {
 
     // attributes
     public double max_health = 100;
+    public double max_energy = 100;
+    public double energyGenerationPerFrame = 0.4;
     public double normal_move_speed = 1;
     public double move_speed = normal_move_speed;
     public double jump_velocity = 4;
@@ -35,10 +37,10 @@ public class Gharacter extends Entity {
     // frame number that we last moved at
     public long lastMove;
 
+    // state information
     public State state = State.IDLE;
-
-    // state
     public double health;
+    public double energy;
 
     public Gharacter(Spatial position) {
         super(position, default_size.copy());
@@ -57,6 +59,7 @@ public class Gharacter extends Entity {
         this.classtype = new ClasstypeAssassin(this);
         //setup attributes
         this.health = this.max_health;
+        this.energy = this.max_energy;
         this.move_speed = this.normal_move_speed;
     }
 
@@ -186,8 +189,14 @@ public class Gharacter extends Entity {
     @Override
     public void update() {
         super.update();
+
         handleState();
+
+        this.classtype.update();
+
         handleHealth();
+        handleEnergy();
+
     }
 
     private void handleHealth() {
@@ -196,6 +205,16 @@ public class Gharacter extends Entity {
         }
         if (this.health > this.max_health) {
             this.health = this.max_health;
+        }
+    }
+
+    private void handleEnergy() {
+        this.energy = this.energy + this.energyGenerationPerFrame;
+        if (this.energy < 0) {
+            this.energy = 0;
+        }
+        if (this.energy > this.max_energy) {
+            this.energy = this.max_energy;
         }
     }
 

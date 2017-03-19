@@ -29,6 +29,11 @@ public class ClasstypeAssassin extends Classtype {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void ability(int i) {
         switch (i) {
             case 1:
@@ -41,10 +46,13 @@ public class ClasstypeAssassin extends Classtype {
     }
 
     private void ability1() {
-        if (this.gharacter.setActionTimer(10)) {
+        int cooldown = 5;
+        if (this.gharacter.setActionTimer(cooldown)) {
             DamageBox db = new DamageBox(
                     this.gharacter.position.copy(),
                     new Spatial(4, 2, 10));
+            db.setParent(this.gharacter);
+            db.setDamage(5);
             db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
             //System.out.println(db);
             Game.instance.space.addConstruct(db);
@@ -53,7 +61,8 @@ public class ClasstypeAssassin extends Classtype {
     }
 
     private void ability2() {
-        if (this.gharacter.setActionTimer(12)) {
+        int cooldown = 12;
+        if (this.gharacter.setActionTimer(cooldown)) {
             ProjectileArrow p = new ProjectileArrow(
                     this.gharacter.position.copy(),
                     new Spatial(4, 2, 2));
