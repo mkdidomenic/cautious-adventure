@@ -79,27 +79,34 @@ public class Gharacter extends Entity {
 
     @Override
     public void move(double x, double y, double z) {
-        if (this.state == State.IDLE) {
-            super.move(x, y, z);
-            this.lastMove = GController.instance.getCurrentFrame();
-            this.state = State.MOVING;
-        }
-        if (this.state == State.MOVING) {
-            super.move(x, y, z);
-            this.lastMove = GController.instance.getCurrentFrame();
+        if (this.canMove()) {
+            if (this.state == State.IDLE) {
+                super.move(x, y, z);
+                this.lastMove = GController.instance.getCurrentFrame();
+                this.state = State.MOVING;
+            }
+            if (this.state == State.MOVING) {
+                super.move(x, y, z);
+                this.lastMove = GController.instance.getCurrentFrame();
+            }
+
+            // should not be able to move in the air while doing other things
+            if ((this.state == State.JUMPING) && false) {
+                super.move(x, y, z);
+                this.lastMove = GController.instance.getCurrentFrame();
+            }
+
+            // should be able to move in the air while doing other things?
+            if ((!this.isGrounded()) && true) {
+                super.move(x, y, z);
+                this.lastMove = GController.instance.getCurrentFrame();
+            }
         }
 
-        // should not be able to move in the air while doing other things
-        if ((this.state == State.JUMPING) && false) {
-            super.move(x, y, z);
-            this.lastMove = GController.instance.getCurrentFrame();
-        }
+    }
 
-        // should be able to move in the air while doing other things?
-        if ((!this.isGrounded()) && true) {
-            super.move(x, y, z);
-            this.lastMove = GController.instance.getCurrentFrame();
-        }
+    public boolean canMove() {
+        return this.state != State.STUNNED;
     }
 
     @Override
@@ -288,6 +295,15 @@ public class Gharacter extends Entity {
 
     public void heal(double health) {
         this.health += health;
+    }
+
+    public boolean useEnergy(double cost) {
+        if (this.energy >= cost) {
+            this.energy -= cost;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void ability(int i) {

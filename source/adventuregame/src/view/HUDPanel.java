@@ -72,14 +72,23 @@ public class HUDPanel extends JPanel {
                 PlayerCharacter p = pc.get(i);
                 String name = p.player.name;
                 //g.drawRect(start, bordery + 5, divw, h);
+                int offset = 0;
                 // name
                 g.setFont(new Font("Chalkboard", Font.PLAIN, fsize));
-                g.drawString(name, start, bordery + fsize / 2);
+                g.drawString(name, start, bordery + fsize / 2 + fsize * offset);
+                offset++;
                 // health
                 g.drawString(
                         "Health: " + Integer.toString((int) p.health) + "/" + Integer.toString(
                                 (int) p.max_health), start,
-                        bordery + (int) (fsize * 1.5));
+                        bordery + (int) (fsize * .5 + fsize * offset));
+                offset++;
+                // energy
+                g.drawString(
+                        "Energy: " + Integer.toString((int) p.energy) + "/" + Integer.toString(
+                                (int) p.max_energy), start,
+                        bordery + (int) (fsize * .5 + fsize * offset));
+                offset++;
                 start = start + divw;
             }
         }

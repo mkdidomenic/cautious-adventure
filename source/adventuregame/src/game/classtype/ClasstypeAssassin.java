@@ -30,6 +30,8 @@ public class ClasstypeAssassin extends Classtype {
 
     @Override
     public void update() {
+        super.update();
+        handleAbilities();
 
     }
 
@@ -45,9 +47,25 @@ public class ClasstypeAssassin extends Classtype {
         }
     }
 
+    private boolean startAbility(int cooldown, double cost) {
+        return (this.gharacter.setActionTimer(cooldown) && this.gharacter.useEnergy(
+                cost));
+    }
+
+    private void handleAbilities() {
+        switch (gharacter.state) {
+            case ABILITY1:
+                break;
+            case ABILITY2:
+                break;
+        }
+
+    }
+
     private void ability1() {
         int cooldown = 5;
-        if (this.gharacter.setActionTimer(cooldown)) {
+        double cost = 0;
+        if (this.startAbility(cooldown, cost)) {
             DamageBox db = new DamageBox(
                     this.gharacter.position.copy(),
                     new Spatial(4, 2, 10));
@@ -62,7 +80,8 @@ public class ClasstypeAssassin extends Classtype {
 
     private void ability2() {
         int cooldown = 12;
-        if (this.gharacter.setActionTimer(cooldown)) {
+        double cost = 20;
+        if (this.startAbility(cooldown, cost)) {
             ProjectileArrow p = new ProjectileArrow(
                     this.gharacter.position.copy(),
                     new Spatial(4, 2, 2));
