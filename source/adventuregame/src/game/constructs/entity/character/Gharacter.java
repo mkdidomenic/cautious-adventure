@@ -30,6 +30,7 @@ public class Gharacter extends Entity {
     public double normal_move_speed = 1;
     public double move_speed = normal_move_speed;
     public double jump_velocity = 4;
+    public int hitstunFrames = 2;
 
     // class type
     public Classtype classtype;
@@ -57,6 +58,7 @@ public class Gharacter extends Entity {
     private void setupAttr() {
         // default classtype
         this.classtype = new ClasstypeAssassin(this);
+        this.classtype.setupAttributes();
         //setup attributes
         this.health = this.max_health;
         this.energy = this.max_energy;
@@ -112,7 +114,7 @@ public class Gharacter extends Entity {
 
     @Override
     public boolean canAct() {
-        return super.canAct() && (this.state != State.STUNNED);
+        return (super.canAct()) && (this.state != State.STUNNED);
     }
 
     @Override
@@ -270,6 +272,12 @@ public class Gharacter extends Entity {
             case ACTION2:
                 this.ability(2);
                 break;
+            case ACTION3:
+                this.ability(3);
+                break;
+            case ACTION4:
+                this.ability(4);
+                break;
             default:
                 //System.out.println("Player class: Not a command = " + c);
                 break;
@@ -297,10 +305,25 @@ public class Gharacter extends Entity {
 
     public void damage(double damage) {
         this.health -= damage;
+        if ((damage > 2) && (this.state != State.STUNNED) && (this.state != State.ROOTED)) {
+            this.hitstun();
+        }
     }
 
     public void heal(double health) {
         this.health += health;
+    }
+
+    public void stun(int frames) {
+        this.interruptActionTimer();
+        this.setActionTimer(frames);
+        this.state = State.STUNNED;
+    }
+
+    public void hitstun() {
+        this.interruptActionTimer();
+        this.setActionTimer(this.hitstunFrames);
+        this.state = State.HITSTUNNED;
     }
 
     public boolean useEnergy(double cost) {
@@ -321,6 +344,7 @@ public class Gharacter extends Entity {
         MOVING,
         JUMPING,
         STUNNED,
+        HITSTUNNED,
         ROOTED,
         ABILITY1,
         ABILITY2,

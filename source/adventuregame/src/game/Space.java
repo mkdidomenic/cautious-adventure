@@ -6,6 +6,7 @@
 package game;
 
 import game.constructs.Construct;
+import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -141,15 +142,64 @@ public class Space {
 
     }
 
+    public boolean outsideBounds(Spatial pos) {
+        boolean found_infraction = false;
+        if (pos.x > this.dimensions.x) {
+            found_infraction = true;
+        }
+        if (pos.y > this.dimensions.y) {
+            found_infraction = true;
+        }
+        if (pos.z > this.dimensions.z) {
+            found_infraction = true;
+        }
+        //
+        if (pos.x < 0) {
+            found_infraction = true;
+        }
+        if (pos.y < 0) {
+            found_infraction = true;
+        }
+        if (pos.z < 0) {
+            found_infraction = true;
+        }
+        return found_infraction;
+    }
+
+    /**
+     *
+     * Finds the character g is looking at.
+     *
+     * @param g character to check from
+     * @param precision precision to check with
+     * @return character g is looking at
+     */
+    public Gharacter trace(Gharacter g, double precision) {
+        Spatial pos = g.position.copy();
+        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        while (!(outsideBounds(pos))) {
+            for (Construct c : this.getConstructs()) {
+                if (c instanceof Gharacter) {
+                    Gharacter b = (Gharacter) c;
+                    if (CollisionHandler.checkCollision(b.hitbox, pos)) {
+                        return b;
+                    }
+                }
+            }
+            pos.x = pos.x + (g.x_orientation * precision);
+        }
+        return null;
+    }
+
+    public Spatial dims() {
+        return this.dimensions;
+    }
+
     public void debug() {
         //System.out.println(this.constructs);
         for (Construct c : this.constructs) {
             System.out.println(c.toString());
         }
-    }
-
-    public Spatial dims() {
-        return this.dimensions;
     }
 
 }

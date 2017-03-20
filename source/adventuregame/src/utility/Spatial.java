@@ -42,6 +42,12 @@ public class Spatial {
         return new Spatial(this.x, this.y, this.z);
     }
 
+    public void set(Spatial s) {
+        this.x = s.x;
+        this.y = s.y;
+        this.z = s.z;
+    }
+
     @Override
     public String toString() {
         String s = "";
