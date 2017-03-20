@@ -22,6 +22,10 @@ public class ImageHandler {
         return getImage("src/res/" + filename + ".png");
     }
 
+    public static BufferedImage getPNG(String folder, String filename) {
+        return getImage("src/res/" + folder + "/" + filename + ".png");
+    }
+
     public static BufferedImage getImage(String filename) {
         BufferedImage image;
         try {

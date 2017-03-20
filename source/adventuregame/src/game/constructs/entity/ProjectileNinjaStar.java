@@ -6,21 +6,27 @@
 package game.constructs.entity;
 
 import game.constructs.Construct;
+import java.awt.image.BufferedImage;
+import utility.ImageHandler;
 import utility.Spatial;
 
 /**
  *
  * @author Mike
  */
-public class ProjectileArrow extends Projectile {
+public class ProjectileNinjaStar extends Projectile {
 
     public final double default_damage = 10;
 
-    public ProjectileArrow(Spatial position, Spatial size) {
-        super(position, size);
+    public ProjectileNinjaStar(Spatial position) {
+        super(position, new Spatial(2, 1, 2));
         this.images.remove(0);
-        this.addpng("arrow");
         this.damage = default_damage;
+    }
+
+    @Override
+    public BufferedImage getImage() {
+        return ImageHandler.getPNG("projectileNinjaStar", "1");//Long.toString(GController.instance.getCurrentFrame() % 1));
     }
 
     @Override

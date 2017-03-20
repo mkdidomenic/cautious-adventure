@@ -65,6 +65,7 @@ public class Gharacter extends Entity {
 
     public void setClasstype(Classtype ct) {
         this.classtype = ct;
+        this.classtype.setupAttributes();
     }
 
     @Override
@@ -106,7 +107,12 @@ public class Gharacter extends Entity {
     }
 
     public boolean canMove() {
-        return this.state != State.STUNNED;
+        return (this.state != State.STUNNED) && (this.state != State.ROOTED);
+    }
+
+    @Override
+    public boolean canAct() {
+        return super.canAct() && (this.state != State.STUNNED);
     }
 
     @Override
@@ -315,6 +321,7 @@ public class Gharacter extends Entity {
         MOVING,
         JUMPING,
         STUNNED,
+        ROOTED,
         ABILITY1,
         ABILITY2,
         ABILITY3,

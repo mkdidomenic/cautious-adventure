@@ -21,6 +21,11 @@ public abstract class Classtype {
     }
 
     /**
+     * setup the attributes for each specific class
+     */
+    public abstract void setupAttributes();
+
+    /**
      * calls the appropriate ability function within the classtype
      *
      * @param i

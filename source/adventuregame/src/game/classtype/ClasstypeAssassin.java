@@ -9,7 +9,9 @@ import game.Game;
 import game.constructs.DamageBox;
 import game.constructs.entity.ProjectileArrow;
 import game.constructs.entity.character.Gharacter;
+import game.constructs.entity.character.Gharacter.State;
 import java.awt.image.BufferedImage;
+import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
 
@@ -24,8 +26,45 @@ public class ClasstypeAssassin extends Classtype {
     }
 
     @Override
+    public void setupAttributes() {
+        this.gharacter.normal_move_speed = 1.2;
+        this.gharacter.max_health = 90;
+    }
+
+    @Override
     public BufferedImage getImage() {
-        return ImageHandler.getPNG("knight");
+        // IDLE
+        String filename = State.IDLE.name();
+
+        // JUMPING
+        if (this.gharacter.state == State.JUMPING) {
+            filename = State.JUMPING.name();
+        }
+
+        // MOVING
+        if (this.gharacter.state == State.MOVING) {
+            // mod number of moving images
+            filename = State.MOVING.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+        }
+
+        // ABILITY1
+        if (this.gharacter.state == State.ABILITY1) {
+            int f = this.gharacter.actionTimer;
+            if (f > 8) {
+                f = 0;
+            } else if (f > 4) {
+                f = 1;
+            } else {
+                f = 2;
+            }
+            filename = State.ABILITY1.name() + "-" + (f);
+        }
+
+        try {
+            return ImageHandler.getPNG("assassin", filename);
+        } catch (Exception e) {
+            return ImageHandler.getPNG("assassin", State.IDLE.name());
+        }
     }
 
     @Override
@@ -37,13 +76,15 @@ public class ClasstypeAssassin extends Classtype {
 
     @Override
     public void ability(int i) {
-        switch (i) {
-            case 1:
-                this.ability1();
-                break;
-            case 2:
-                this.ability2();
-                break;
+        if (this.gharacter.canAct()) {
+            switch (i) {
+                case 1:
+                    this.initAbility1();
+                    break;
+                case 2:
+                    this.initAbility2();
+                    break;
+            }
         }
     }
 
@@ -62,10 +103,11 @@ public class ClasstypeAssassin extends Classtype {
 
     }
 
-    private void ability1() {
-        int cooldown = 5;
-        double cost = 0;
-        if (this.startAbility(cooldown, cost)) {
+    public int ability1CD = 5;
+    public double ability1Cost = 0;
+
+    private void initAbility1() {
+        if (this.startAbility(this.ability1CD, this.ability1Cost)) {
             DamageBox db = new DamageBox(
                     this.gharacter.position.copy(),
                     new Spatial(4, 2, 10));
@@ -78,10 +120,11 @@ public class ClasstypeAssassin extends Classtype {
         }
     }
 
-    private void ability2() {
-        int cooldown = 12;
-        double cost = 20;
-        if (this.startAbility(cooldown, cost)) {
+    public int ability2CD = 12;
+    public double ability2Cost = 20;
+
+    private void initAbility2() {
+        if (this.startAbility(this.ability2CD, this.ability2Cost)) {
             ProjectileArrow p = new ProjectileArrow(
                     this.gharacter.position.copy(),
                     new Spatial(4, 2, 2));
@@ -94,6 +137,14 @@ public class ClasstypeAssassin extends Classtype {
             Game.instance.space.addConstruct(p);
             this.gharacter.state = Gharacter.State.ABILITY2;
         }
+    }
+
+    private void initAbility3() {
+
+    }
+
+    private void initAbility4() {
+
     }
 
 }
