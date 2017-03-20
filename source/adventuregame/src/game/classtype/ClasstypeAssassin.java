@@ -149,7 +149,7 @@ public class ClasstypeAssassin extends Classtype {
     private void execAbility1() {
         DamageBox db = new DamageBox(
                 this.gharacter.position.copy(),
-                new Spatial(2, 2, 10));
+                new Spatial(1, 1, 10));
         db.setParent(this.gharacter);
         db.setDamage(5);
         db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
@@ -220,9 +220,9 @@ public class ClasstypeAssassin extends Classtype {
     /**
      * Ability 3
      */
-    public int ability3CD = 30;
+    public int ability3CD = 20;
     public double ability3Cost = 40;
-    public int ability3ExecFrame = 1;
+    public int ability3ExecFrame = 2;
 
     private void initAbility3() {
         if (this.startAbility(this.ability3CD, this.ability3Cost)) {
@@ -231,7 +231,7 @@ public class ClasstypeAssassin extends Classtype {
     }
 
     private void execAbility3() {
-        Gharacter target = Game.instance.space.trace(this.gharacter, .1);
+        Gharacter target = Game.instance.space.trace(this.gharacter, Gharacter.DEFAULT_SIZE.x / 2);
         if (target != null) {
             this.gharacter.position.set(target.position);
             this.gharacter.position.x += target.x_orientation * -1 * (this.gharacter.size.x / 2 + target.size.x / 2);
@@ -244,9 +244,9 @@ public class ClasstypeAssassin extends Classtype {
         // ABILITY3
         if (this.gharacter.state == State.ABILITY3) {
             int f = this.gharacter.actionTimer;
-            if (f > 20) {
+            if (f > 15) {
                 f = 0;
-            } else if (f > 10) {
+            } else if (f > 9) {
                 f = 1;
             } else if (f > 5) {
                 f = 2;

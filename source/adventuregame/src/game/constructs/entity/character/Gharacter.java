@@ -21,7 +21,7 @@ import utility.Spatial;
  */
 public class Gharacter extends Entity {
 
-    public static final Spatial default_size = new Spatial(7, 14, 12);
+    public static final Spatial DEFAULT_SIZE = new Spatial(7, 14, 12);
 
     // attributes
     public double max_health = 100;
@@ -44,7 +44,7 @@ public class Gharacter extends Entity {
     public double energy;
 
     public Gharacter(Spatial position) {
-        super(position, default_size.copy());
+        super(position, DEFAULT_SIZE.copy());
         // default size
         this.setupAttr();
         this.lastMove = GController.instance.getCurrentFrame();
