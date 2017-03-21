@@ -18,7 +18,7 @@ public class Intangible extends Construct {
     }
 
     @Override
-    public boolean tangible() {
+    public boolean isTangible() {
         return false;
     }
 

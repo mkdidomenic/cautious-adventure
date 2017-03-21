@@ -6,6 +6,7 @@
 package game.constructs;
 
 import game.collision.Hitbox;
+import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.GController;
@@ -126,12 +127,17 @@ public class Construct implements Comparable {
         //System.out.println("COLLISION: " + this.getClass());
     }
 
-    public boolean tangible() {
+    public boolean isTangible() {
         return this.tangibility;
     }
 
-    public double hurts(Construct c) {
-        return this.damage;
+    /**
+     * What to do on collision with a gharacter
+     *
+     * @param g - the gharacter collided with
+     */
+    public void gharacteract(Gharacter g) {
+
     }
 
     public void setDamage(double damage) {
@@ -153,6 +159,10 @@ public class Construct implements Comparable {
 
     public void remove() {
         this.exists = false;
+    }
+
+    public boolean isExistant() {
+        return this.exists;
     }
 
     @Override

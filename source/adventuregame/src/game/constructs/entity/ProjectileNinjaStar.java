@@ -25,20 +25,13 @@ public class ProjectileNinjaStar extends Projectile {
         super(position, new Spatial(2, 2, 2));
         this.images.remove(0);
         this.damage = default_damage;
+        this.tangibility = false;
     }
 
     @Override
     public BufferedImage getImage() {
         return ImageHandler.getPNG("projectileNinjaStar", Long.toString(
                                    GController.instance.getCurrentFrame() % 3));
-    }
-
-    @Override
-    public double hurts(Construct c) {
-        if (c == this.parent) {
-            return 0;
-        }
-        return this.damage;
     }
 
     @Override
@@ -51,11 +44,6 @@ public class ProjectileNinjaStar extends Projectile {
     @Override
     public void setDamage(double damage) {
         this.damage = damage;
-    }
-
-    @Override
-    public boolean tangible() {
-        return false;
     }
 
 }

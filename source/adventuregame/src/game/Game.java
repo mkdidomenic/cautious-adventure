@@ -5,6 +5,7 @@
  */
 package game;
 
+import game.classtype.ClasstypeAssassin;
 import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.NonPlayerCharacter;
@@ -52,7 +53,9 @@ public class Game {
                                       this.space.dimensions.y / 2,
                                       0);
             //Spatial size = new Spatial(100, 100, 10);
-            this.space.addPlayerC(new PlayerCharacter(p, pos));
+            PlayerCharacter pc = new PlayerCharacter(p, pos);
+            pc.setClasstype(new ClasstypeAssassin(pc));
+            this.space.addPlayerC(pc);
         }
 
     }

@@ -21,14 +21,7 @@ public class ProjectileArrow extends Projectile {
         this.images.remove(0);
         this.addpng("arrow");
         this.damage = default_damage;
-    }
-
-    @Override
-    public double hurts(Construct c) {
-        if (c == this.parent) {
-            return 0;
-        }
-        return this.damage;
+        this.tangibility = false;
     }
 
     @Override
@@ -41,11 +34,6 @@ public class ProjectileArrow extends Projectile {
     @Override
     public void setDamage(double damage) {
         this.damage = damage;
-    }
-
-    @Override
-    public boolean tangible() {
-        return false;
     }
 
 }

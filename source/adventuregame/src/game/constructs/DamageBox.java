@@ -5,6 +5,7 @@
  */
 package game.constructs;
 
+import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
 import utility.Spatial;
 
@@ -16,11 +17,13 @@ public class DamageBox extends Construct {
 
     public double default_damage = 1;
     public Construct parent;
+    public boolean knockdown;
 
     public DamageBox(Spatial position, Spatial size) {
         super(position, size);
         this.tangibility = false;
         this.damage = default_damage;
+        this.knockdown = false;
     }
 
     public void setParent(Construct parent) {
@@ -28,11 +31,15 @@ public class DamageBox extends Construct {
     }
 
     @Override
-    public double hurts(Construct c) {
-        if (c == this.parent) {
-            return 0;
+    public void gharacteract(Gharacter g) {
+        if ((g != this.parent) && (g.vulnerable(this))) {
+            g.damage(this.damage);
+            if (this.knockdown) {
+                g.interruptActionTimer();
+                g.setActionTimer(30);
+                g.setState(Gharacter.State.FALLEN);
+            }
         }
-        return this.damage;
     }
 
     @Override

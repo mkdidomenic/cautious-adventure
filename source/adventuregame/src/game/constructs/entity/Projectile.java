@@ -6,6 +6,7 @@
 package game.constructs.entity;
 
 import game.constructs.Construct;
+import game.constructs.entity.character.Gharacter;
 import utility.Spatial;
 
 /**
@@ -32,6 +33,13 @@ public class Projectile extends Entity {
         //System.out.println(this.position);
         if (this.position.z <= 0) {
             this.remove();
+        }
+    }
+
+    @Override
+    public void gharacteract(Gharacter g) {
+        if ((g != this.parent) && g.vulnerable(this)) {
+            g.damage(this.damage);
         }
     }
 

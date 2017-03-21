@@ -11,6 +11,7 @@ import game.classtype.ClasstypeAssassin;
 import game.constructs.Construct;
 import game.constructs.entity.Entity;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import main.Command;
 import main.GController;
 import utility.Spatial;
@@ -34,12 +35,15 @@ public class Gharacter extends Entity {
 
     // class type
     public Classtype classtype;
+    public ArrayList<State> mobileStates;
 
     // frame number that we last moved at
     public long lastMove;
 
     // state information
-    public State state = State.IDLE;
+    public State state;
+    public boolean sheilded;
+    public boolean immune;
     public double health;
     public double energy;
 
@@ -47,7 +51,7 @@ public class Gharacter extends Entity {
         super(position, DEFAULT_SIZE.copy());
         // default size
         this.setupAttr();
-        this.lastMove = GController.instance.getCurrentFrame();
+
     }
 
     public Gharacter(Spatial position, Spatial size) {
@@ -57,12 +61,20 @@ public class Gharacter extends Entity {
 
     private void setupAttr() {
         // default classtype
-        this.classtype = new ClasstypeAssassin(this);
-        this.classtype.setupAttributes();
         //setup attributes
         this.health = this.max_health;
         this.energy = this.max_energy;
         this.move_speed = this.normal_move_speed;
+        // state
+        this.mobileStates = new ArrayList();
+        this.state = State.IDLE;
+        this.sheilded = false;
+        this.immune = false;
+        // movement
+        this.lastMove = GController.instance.getCurrentFrame();
+        // classtype
+        this.classtype = new ClasstypeAssassin(this);
+        this.classtype.setupAttributes();
     }
 
     public void setClasstype(Classtype ct) {
@@ -87,20 +99,18 @@ public class Gharacter extends Entity {
                 super.move(x, y, z);
                 this.lastMove = GController.instance.getCurrentFrame();
                 this.state = State.MOVING;
-            }
-            if (this.state == State.MOVING) {
+            } else if (this.state == State.MOVING) {
                 super.move(x, y, z);
                 this.lastMove = GController.instance.getCurrentFrame();
-            }
-
-            // should not be able to move in the air while doing other things
-            if ((this.state == State.JUMPING) && false) {
+            } // should not be able to move in the air while doing other things
+            else if ((this.state == State.JUMPING) && false) {
                 super.move(x, y, z);
                 this.lastMove = GController.instance.getCurrentFrame();
-            }
-
-            // should be able to move in the air while doing other things?
-            if ((!this.isGrounded()) && true) {
+            } // should be able to move in the air while doing other things?
+            else if ((!this.isGrounded()) && true) {
+                super.move(x, y, z);
+                this.lastMove = GController.instance.getCurrentFrame();
+            } else if ((this.mobileStates.contains(this.state)) && true) {
                 super.move(x, y, z);
                 this.lastMove = GController.instance.getCurrentFrame();
             }
@@ -109,7 +119,7 @@ public class Gharacter extends Entity {
     }
 
     public boolean canMove() {
-        return (this.state != State.STUNNED) && (this.state != State.ROOTED);
+        return (this.state != State.STUNNED) && (this.state != State.FALLEN);
     }
 
     @Override
@@ -144,11 +154,11 @@ public class Gharacter extends Entity {
     @Override
     public void onCollision(Construct c) {
         super.onCollision(c);
-        if (c.tangible()) {
+        if (c.isTangible()) {
             //back up
             this.collideWith(c);
         }
-        this.damage(c.hurts(this));
+        c.gharacteract(this);
     }
 
     public double getFramesSinceLastMovement() {
@@ -303,9 +313,19 @@ public class Gharacter extends Entity {
         this.remove();
     }
 
+    public boolean vulnerable(Construct c) {
+        if (this.immune) {
+            return false;
+        } else if (this.sheilded && (Math.signum(c.position.x - this.position.x) == this.x_orientation)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void damage(double damage) {
         this.health -= damage;
-        if ((damage > 2) && (this.state != State.STUNNED) && (this.state != State.ROOTED)) {
+        if ((damage > 2) && (this.state != State.STUNNED) && (this.state != State.FALLEN)) {
             this.hitstun();
         }
     }
@@ -345,7 +365,7 @@ public class Gharacter extends Entity {
         JUMPING,
         STUNNED,
         HITSTUNNED,
-        ROOTED,
+        FALLEN,
         ABILITY1,
         ABILITY2,
         ABILITY3,

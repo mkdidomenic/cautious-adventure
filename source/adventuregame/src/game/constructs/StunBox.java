@@ -27,12 +27,10 @@ public class StunBox extends DamageBox {
     }
 
     @Override
-    public double hurts(Construct c) {
-        if (c instanceof Gharacter) {
-            Gharacter g = (Gharacter) c;
+    public void gharacteract(Gharacter g) {
+        if ((g != this.parent) && true) {
             g.stun(this.stunframes);
         }
-        return super.hurts(c);
     }
 
 }

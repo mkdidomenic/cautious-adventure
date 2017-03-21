@@ -7,7 +7,6 @@ package game.classtype;
 
 import game.Game;
 import game.constructs.DamageBox;
-import game.constructs.ImageBox;
 import game.constructs.StunBox;
 import game.constructs.entity.ProjectileNinjaStar;
 import game.constructs.entity.character.Gharacter;
@@ -21,9 +20,9 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class ClasstypeAssassin extends Classtype {
+public class ClasstypeViking extends Classtype {
 
-    public ClasstypeAssassin(Gharacter g) {
+    public ClasstypeViking(Gharacter g) {
         super(g);
     }
 
@@ -77,9 +76,9 @@ public class ClasstypeAssassin extends Classtype {
         }
 
         try {
-            return ImageHandler.getPNG("assassin", filename);
+            return ImageHandler.getPNG("viking", filename);
         } catch (Exception e) {
-            return ImageHandler.getPNG("assassin", State.IDLE.name());
+            return ImageHandler.getPNG("viking", State.IDLE.name());
         }
     }
 
@@ -183,10 +182,7 @@ public class ClasstypeAssassin extends Classtype {
         db.setDamage(5);
         db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
         //System.out.println(sb);
-        ImageBox ib = new ImageBox(db, 4);
-        ib.setImage("assassin", "SWIPE");
         Game.instance.space.addConstruct(db);
-        Game.instance.space.addConstruct(ib);
     }
 
     private String ability1Image(String filename) {

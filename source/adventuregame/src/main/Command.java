@@ -41,13 +41,13 @@ public enum Command {
                 return MOVE_RIGHT;
             case ' ':
                 return JUMP;
-            case 'k':
+            case 'j':
                 return ACTION1;
-            case 'l':
+            case 'k':
                 return ACTION2;
-            case ';':
+            case 'l':
                 return ACTION3;
-            case '\'':
+            case ';':
                 return ACTION4;
             case '\\':
                 return DEBUG;
