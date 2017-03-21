@@ -31,6 +31,7 @@ public class Construct implements Comparable {
 
     // orientation (mostly for images)
     public int x_orientation; // 1 for forward, -1 for backward
+    public boolean orientationCanChange = true;
 
     // for when doing things, counts down, zero when inactive
     public int actionTimer;
@@ -150,7 +151,9 @@ public class Construct implements Comparable {
     }
 
     public void setOrientation(int o) {
-        this.x_orientation = o;
+        if (orientationCanChange) {
+            this.x_orientation = o;
+        }
     }
 
     public BufferedImage getImage() {

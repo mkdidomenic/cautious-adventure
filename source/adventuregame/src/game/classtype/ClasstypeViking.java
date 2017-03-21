@@ -7,8 +7,8 @@ package game.classtype;
 
 import game.Game;
 import game.constructs.DamageBox;
+import game.constructs.ImageBox;
 import game.constructs.StunBox;
-import game.constructs.entity.ProjectileNinjaStar;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import java.awt.image.BufferedImage;
@@ -28,8 +28,10 @@ public class ClasstypeViking extends Classtype {
 
     @Override
     public void setupAttributes() {
-        this.gharacter.normal_move_speed = 1.2;
-        this.gharacter.max_health = 90;
+        this.gharacter.normal_move_speed = .75;
+        this.gharacter.max_health = 125;
+        this.gharacter.mobileStates.add(State.ABILITY2);
+        this.gharacter.setAttr();
 
         //this.gharacter.mobileStates.add(State.ABILITY2);
     }
@@ -107,12 +109,25 @@ public class ClasstypeViking extends Classtype {
                     this.initAbility4();
                     break;
             }
+        } else if (i == 2) {
+            this.initAbility2();
         }
     }
 
-    private boolean startAbility(int cooldown, double cost) {
-        return (this.gharacter.setActionTimer(cooldown) && this.gharacter.useEnergy(
+    private boolean startAbility(int frames, double cost) {
+        return (this.gharacter.setActionTimer(frames) && this.gharacter.useEnergy(
                 cost));
+    }
+
+    private boolean continueAbility(State ability, int frames, double cost) {
+        if (this.gharacter.state == ability) {
+            this.gharacter.interruptActionTimer();
+            this.gharacter.setActionTimer(frames);
+            return this.gharacter.useEnergy(cost);
+        } else {
+            return false;
+        }
+
     }
 
     private void handleAbilityTimers() {
@@ -131,6 +146,8 @@ public class ClasstypeViking extends Classtype {
     }
 
     private void handleAbilities() {
+        this.resetAbilityEffects();
+        //System.out.println(this.gharacter.actionTimer);
         switch (gharacter.state) {
             case ABILITY1:
                 if (this.gharacter.actionTimer == this.ability1ExecFrame) {
@@ -138,9 +155,7 @@ public class ClasstypeViking extends Classtype {
                 }
                 break;
             case ABILITY2:
-                if (this.gharacter.actionTimer == this.ability2ExecFrame) {
-                    this.execAbility2();
-                }
+                this.execAbility2();
                 break;
             case ABILITY3:
                 if (this.gharacter.actionTimer == this.ability3ExecFrame) {
@@ -156,13 +171,18 @@ public class ClasstypeViking extends Classtype {
 
     }
 
+    private void resetAbilityEffects() {
+        // ability 2
+        this.resetAbility2Effects();
+    }
+
     /**
      * Ability 1
      */
-    public int ability1AT = 6;
+    public int ability1AT = 15;
     public double ability1Cost = 0;
-    public int ability1ExecFrame = 4;
-    public int ability1CD = 2 + ability1AT;
+    public int ability1ExecFrame = 9;
+    public int ability1CD = 4 + ability1AT;
     public int ability1CDTimer = 0;
 
     private void initAbility1() {
@@ -177,21 +197,24 @@ public class ClasstypeViking extends Classtype {
     private void execAbility1() {
         DamageBox db = new DamageBox(
                 this.gharacter.position.copy(),
-                new Spatial(1, 1, 10));
+                new Spatial(2, 1, 10));
         db.setParent(this.gharacter);
-        db.setDamage(5);
+        db.setDamage(10);
         db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
-        //System.out.println(sb);
+        ImageBox ib = new ImageBox(db.position, db.size, 4,
+                                   this.gharacter.x_orientation);
+        ib.setImage("viking", "PUNCH");
         Game.instance.space.addConstruct(db);
+        Game.instance.space.addConstruct(ib);
     }
 
     private String ability1Image(String filename) {
         // ABILITY1
         if (this.gharacter.state == State.ABILITY1) {
             int f = this.gharacter.actionTimer;
-            if (f > 4) {
+            if (f > 12) {
                 f = 0;
-            } else if (f > 2) {
+            } else if (f > 8) {
                 f = 1;
             } else {
                 f = 2;
@@ -204,10 +227,10 @@ public class ClasstypeViking extends Classtype {
     /**
      * Ability 2
      */
-    public int ability2AT = 12;
-    public double ability2Cost = 20;
-    public int ability2ExecFrame = 6;
-    public int ability2CD = 2 + ability2AT;
+    public int ability2AT = 2;
+    public double ability2Cost = 0;
+    public int ability2ExecFrame = 2;
+    public int ability2CD = 0;
     public int ability2CDTimer = 0;
 
     private void initAbility2() {
@@ -215,39 +238,39 @@ public class ClasstypeViking extends Classtype {
             if (this.startAbility(this.ability2AT, this.ability2Cost)) {
                 this.gharacter.state = Gharacter.State.ABILITY2;
                 this.ability2CDTimer = this.ability2CD;
+            } else if (this.continueAbility(State.ABILITY2,
+                                            this.ability2AT,
+                                            this.ability2Cost)) {
+
+                //this.ability2CDTimer = this.ability2CD;
             }
         }
     }
 
     private void execAbility2() {
-        ProjectileNinjaStar p = new ProjectileNinjaStar(
-                this.gharacter.position.copy());
-        p.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + p.size.x / 2 + 1);
-        p.velocity.x = this.gharacter.x_orientation * (p.moveSpeed);
-        p.position.z += this.gharacter.size.z / 2;
-        p.acceleration.z = -1 * p.gravity * (0.95);
-        p.setParent(this.gharacter);
-        p.setDamage(10);
-        //System.out.println(p);
-        Game.instance.space.addConstruct(p);
+        this.gharacter.sheilded = true;
+        this.gharacter.orientationCanChange = false;
+        this.gharacter.move_speed *= 0.25;
     }
 
     private String ability2Image(String filename) {
         // ABILITY2
         if (this.gharacter.state == State.ABILITY2) {
-            int f = this.gharacter.actionTimer;
-            if (f > 9) {
+            int f = 0;
+            if (this.gharacter.getFramesSinceLastMovement() > 2) {
                 f = 0;
-            } else if (f > 6) {
-                f = 1;
-            } else if (f > 3) {
-                f = 2;
-            } else {
-                f = 3;
+            } else if (this.gharacter.isGrounded()) {
+                f = (int) this.gharacter.ticksExisted() % 3;
             }
             filename = State.ABILITY2.name() + "-" + (f);
         }
         return filename;
+    }
+
+    private void resetAbility2Effects() {
+        this.gharacter.sheilded = false;
+        this.gharacter.orientationCanChange = true;
+        this.gharacter.move_speed = this.gharacter.normal_move_speed;
     }
 
     /**

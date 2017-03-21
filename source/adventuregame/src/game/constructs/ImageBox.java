@@ -17,35 +17,6 @@ public class ImageBox extends Construct {
 
     public BufferedImage image;
     public int lifespan;
-    public Construct parent;
-
-    /**
-     * specify the parent to hold
-     *
-     * @param parent
-     */
-    public ImageBox(Construct parent) {
-        super(parent.position, parent.size);
-        this.parent = parent;
-        this.lifespan = 0;
-        this.tangibility = false;
-        image = null;
-    }
-
-    /**
-     * for convenience, same as constructor with position and size, but dont
-     * have to specify
-     *
-     * @param parent
-     * @param lifespan
-     */
-    public ImageBox(Construct parent, int lifespan) {
-        super(parent.position, parent.size);
-        this.parent = null;
-        this.lifespan = lifespan;
-        this.tangibility = false;
-        image = null;
-    }
 
     /**
      * specify the position, size, and lifespan
@@ -53,12 +24,14 @@ public class ImageBox extends Construct {
      * @param position
      * @param size
      * @param lifespan
+     * @param orientation
      */
-    public ImageBox(Spatial position, Spatial size, int lifespan) {
+    public ImageBox(Spatial position, Spatial size, int lifespan,
+                    int orientation) {
         super(position, size);
         this.lifespan = lifespan;
-        this.parent = null;
         this.tangibility = false;
+        this.x_orientation = orientation;
         image = null;
     }
 
@@ -77,13 +50,8 @@ public class ImageBox extends Construct {
     @Override
     public void update() {
         super.update();
-        if ((this.ticksExisted() > lifespan) && (this.parent == null)) {
+        if ((this.ticksExisted() > lifespan)) {
             this.remove();
-        }
-        if ((this.ticksExisted() > lifespan) && (this.parent != null)) {
-            if (!(this.parent.isExistant())) {
-                this.remove();
-            }
         }
     }
 

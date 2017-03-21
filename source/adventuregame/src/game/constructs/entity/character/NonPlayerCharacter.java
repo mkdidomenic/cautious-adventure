@@ -5,6 +5,7 @@
  */
 package game.constructs.entity.character;
 
+import game.constructs.entity.character.ai.AI;
 import utility.Spatial;
 
 /**
@@ -12,23 +13,32 @@ import utility.Spatial;
  * @author Mike
  */
 public class NonPlayerCharacter extends Gharacter {
-    
+
+    public AI ai;
+
     public NonPlayerCharacter(Spatial position) {
         super(position);
-        this.addImages();
+        this.ai = null;
     }
 
     public NonPlayerCharacter(Spatial position, Spatial size) {
         super(position, size);
-        this.addImages();
+        this.ai = null;
     }
-    
-    private void addImages(){
-        this.addImage("src/res/barbarian.png");
+
+    public void setAI(AI ai) {
+        this.ai = ai;
+        if (ai != null) {
+            ai.init();
+        }
     }
+
     @Override
     public void update() {
         super.update();
+        if (ai != null) {
+            ai.update();
+        }
 
     }
 

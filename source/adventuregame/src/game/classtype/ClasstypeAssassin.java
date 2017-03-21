@@ -31,6 +31,7 @@ public class ClasstypeAssassin extends Classtype {
     public void setupAttributes() {
         this.gharacter.normal_move_speed = 1.2;
         this.gharacter.max_health = 90;
+        this.gharacter.setAttr();
 
         //this.gharacter.mobileStates.add(State.ABILITY2);
     }
@@ -183,7 +184,8 @@ public class ClasstypeAssassin extends Classtype {
         db.setDamage(5);
         db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
         //System.out.println(sb);
-        ImageBox ib = new ImageBox(db, 4);
+        ImageBox ib = new ImageBox(db.position, db.size, 4,
+                                   this.gharacter.x_orientation);
         ib.setImage("assassin", "SWIPE");
         Game.instance.space.addConstruct(db);
         Game.instance.space.addConstruct(ib);

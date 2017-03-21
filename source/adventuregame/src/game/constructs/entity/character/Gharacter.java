@@ -50,21 +50,18 @@ public class Gharacter extends Entity {
     public Gharacter(Spatial position) {
         super(position, DEFAULT_SIZE.copy());
         // default size
-        this.setupAttr();
+        this.setupGharacter();
 
     }
 
     public Gharacter(Spatial position, Spatial size) {
         super(position, size);
-        this.setupAttr();
+        this.setupGharacter();
     }
 
-    private void setupAttr() {
+    private void setupGharacter() {
         // default classtype
-        //setup attributes
-        this.health = this.max_health;
-        this.energy = this.max_energy;
-        this.move_speed = this.normal_move_speed;
+        this.setAttr();
         // state
         this.mobileStates = new ArrayList();
         this.state = State.IDLE;
@@ -75,6 +72,13 @@ public class Gharacter extends Entity {
         // classtype
         this.classtype = new ClasstypeAssassin(this);
         this.classtype.setupAttributes();
+    }
+
+    public void setAttr() {
+        //setup attributes
+        this.health = this.max_health;
+        this.energy = this.max_energy;
+        this.move_speed = this.normal_move_speed;
     }
 
     public void setClasstype(Classtype ct) {
@@ -161,7 +165,7 @@ public class Gharacter extends Entity {
         c.gharacteract(this);
     }
 
-    public double getFramesSinceLastMovement() {
+    public long getFramesSinceLastMovement() {
         return GController.instance.getCurrentFrame() - this.lastMove;
     }
 
