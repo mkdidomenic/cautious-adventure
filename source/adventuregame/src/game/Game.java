@@ -56,7 +56,7 @@ public class Game {
                                       0);
             //Spatial size = new Spatial(100, 100, 10);
             PlayerCharacter pc = new PlayerCharacter(p, pos);
-            pc.setClasstype(new ClasstypeViking(pc));
+            pc.setClasstype(new ClasstypeAssassin(pc));
             this.space.addPlayerC(pc);
         }
 
@@ -68,7 +68,7 @@ public class Game {
 
     public void setupLevel() {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
-        npc.setClasstype(new ClasstypeAssassin(npc));
+        npc.setClasstype(new ClasstypeViking(npc));
         npc.setAI(new AISimple(npc));
         Construct con = new Construct(new Spatial(10, 10, 0),
                                       new Spatial(10, 10, 10));

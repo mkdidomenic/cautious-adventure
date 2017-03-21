@@ -7,6 +7,7 @@ package game.constructs;
 
 import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
+import utility.ImageHandler;
 import utility.Spatial;
 
 /**
@@ -18,12 +19,15 @@ public class DamageBox extends Construct {
     public double default_damage = 1;
     public Construct parent;
     public boolean knockdown;
+    
+    public BufferedImage image = null;
 
     public DamageBox(Spatial position, Spatial size) {
         super(position, size);
         this.tangibility = false;
         this.damage = default_damage;
         this.knockdown = false;
+        this.image = null;
     }
 
     public void setParent(Construct parent) {
@@ -49,10 +53,15 @@ public class DamageBox extends Construct {
             this.remove();
         }
     }
+    
+    public void setImage(String folder, String filename){
+        this.image = ImageHandler.getPNG(folder, filename);
+    }
+    
 
     @Override
     public BufferedImage getImage() {
-        return null;
+        return this.image;
     }
 
 }
