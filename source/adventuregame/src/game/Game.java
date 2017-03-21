@@ -12,6 +12,7 @@ import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.NonPlayerCharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import game.constructs.entity.character.ai.AISimple;
+import game.constructs.entity.character.ai.AITargeting;
 import java.util.ArrayList;
 import main.Command;
 import utility.Spatial;
@@ -69,7 +70,7 @@ public class Game {
     public void setupLevel() {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
         npc.setClasstype(new ClasstypeViking(npc));
-        npc.setAI(new AISimple(npc));
+        npc.setAI(new AITargeting(npc));
         Construct con = new Construct(new Spatial(10, 10, 0),
                                       new Spatial(10, 10, 10));
         con.addpng("square");
