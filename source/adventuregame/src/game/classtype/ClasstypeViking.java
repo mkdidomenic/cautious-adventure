@@ -328,8 +328,8 @@ public class ClasstypeViking extends Classtype {
     /**
      * Ability 4
      */
-    public int ability4AT = 80;
-    public double ability4Cost = 80;
+    public int ability4AT = 60;
+    public double ability4Cost = 100;
     public int ability4ExecFrame = 5;
     public int ability4CD = 180 + ability4AT;
     public int ability4CDTimer = 0;
