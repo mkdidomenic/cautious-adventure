@@ -25,7 +25,7 @@ public class AISimple extends AI {
 
     @Override
     public void update() {
-        this.gharacter.handleCommand(Command.ACTION4);
+        this.gharacter.handleCommand(Command.ACTION2);
     }
 
 }

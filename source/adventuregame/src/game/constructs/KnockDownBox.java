@@ -30,6 +30,7 @@ public class KnockDownBox extends DamageBox {
     public void gharacteract(Gharacter g) {
         if ((g != this.parent) && true) {
             g.knockDown(this.stunframes);
+            g.damage(this.damage);
         }
     }
 

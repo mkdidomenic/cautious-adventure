@@ -13,6 +13,7 @@ import game.constructs.entity.character.NonPlayerCharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import game.constructs.entity.character.ai.AISimple;
 import java.util.ArrayList;
+import java.util.Random;
 import main.Command;
 import utility.Spatial;
 
@@ -26,10 +27,13 @@ public class Game {
     public Player player;
     public Space space;
     public static Game instance;
+    
+    public Random random;
 
     public Game() {
         Game.instance = this;
         this.players = new ArrayList();
+        this.random = new Random();
     }
 
     public void setupSpace() {
