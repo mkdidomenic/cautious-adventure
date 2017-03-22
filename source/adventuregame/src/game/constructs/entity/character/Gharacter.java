@@ -344,6 +344,12 @@ public class Gharacter extends Entity {
         this.state = State.STUNNED;
     }
 
+    public void knockDown(int frames) {
+        this.interruptActionTimer();
+        this.setActionTimer(frames);
+        this.state = State.FALLEN;
+    }
+
     public void hitstun() {
         this.interruptActionTimer();
         this.setActionTimer(this.hitstunFrames);

@@ -158,9 +158,7 @@ public class ClasstypeViking extends Classtype {
                 this.execAbility2();
                 break;
             case ABILITY3:
-                if (this.gharacter.actionTimer == this.ability3ExecFrame) {
-                    this.execAbility3();
-                }
+                this.execAbility3();
                 break;
             case ABILITY4:
                 if (this.gharacter.actionTimer == this.ability4ExecFrame) {
@@ -276,10 +274,10 @@ public class ClasstypeViking extends Classtype {
     /**
      * Ability 3
      */
-    public int ability3AT = 20;
+    public int ability3AT = 2;
     public double ability3Cost = 40;
-    public int ability3ExecFrame = 2;
-    public int ability3CD = 30 + ability3AT;
+    public int ability3ExecFrame = 0;
+    public int ability3CD = 60 + ability3AT;
     public int ability3CDTimer = 0;
 
     private void initAbility3() {
@@ -287,35 +285,42 @@ public class ClasstypeViking extends Classtype {
             if (this.startAbility(this.ability3AT, this.ability3Cost)) {
                 this.gharacter.state = Gharacter.State.ABILITY3;
                 this.ability3CDTimer = this.ability3CD;
+                if (this.gharacter.isGrounded()) {
+                    this.gharacter.velocity.z = this.gharacter.jump_velocity * 1.2;
+                    this.gharacter.position.z += (this.gharacter.size.z * 0.01);
+                }
             }
         }
     }
 
     private void execAbility3() {
-        Gharacter target = Game.instance.space.trace(this.gharacter,
-                                                     Gharacter.DEFAULT_SIZE.x / 2);
-        if (target != null) {
-            this.gharacter.position.set(target.position);
-            this.gharacter.position.x += target.x_orientation * -1 * (this.gharacter.size.x / 2 + target.size.x / 2);
-            this.gharacter.x_orientation = target.x_orientation;
-            this.execAbility1();
+        if (this.gharacter.isGrounded()) {
+            Spatial sbsize = new Spatial(this.gharacter.size.x * 1.25,
+                                         this.gharacter.size.y * 1.25,
+                                         this.gharacter.size.z * 0.25);
+            StunBox sb = new StunBox(this.gharacter.position.copy(),
+                                     sbsize);
+            sb.position.y = sb.position.y - (sb.size.y / 4);
+            sb.setParent(this.gharacter);
+            sb.setDamage(10);
+            sb.setStun(40);
+            ImageBox ib = new ImageBox(sb.position, sb.size, 60,
+                                       this.gharacter.x_orientation);
+            ib.setImage("viking", "GROUNDSLAM");
+            Game.instance.space.addConstruct(sb);
+            Game.instance.space.addConstruct(ib);
+
+        } else {
+            this.continueAbility(State.ABILITY3, ability3AT, 0);
         }
+
     }
 
     private String ability3Image(String filename) {
         // ABILITY3
         if (this.gharacter.state == State.ABILITY3) {
-            int f = this.gharacter.actionTimer;
-            if (f > 15) {
-                f = 0;
-            } else if (f > 9) {
-                f = 1;
-            } else if (f > 5) {
-                f = 2;
-            } else {
-                f = 3;
-            }
-            filename = State.ABILITY3.name() + "-" + (f);
+            int f = 0;
+            filename = State.JUMPING.name();
         }
         return filename;
     }

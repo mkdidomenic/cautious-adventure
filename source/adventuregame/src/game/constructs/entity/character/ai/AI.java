@@ -15,6 +15,7 @@ import game.constructs.entity.character.Gharacter;
 public abstract class AI {
 
     public int timer;
+    public int sleepTimer;
     public Gharacter gharacter;
 
     public AI(Gharacter gharacter) {
@@ -26,7 +27,9 @@ public abstract class AI {
 
     }
 
-    public abstract void update();
+    public void update() {
+
+    }
 
     public void closestTargetPC() {
         Game.instance.space.getPlayers();

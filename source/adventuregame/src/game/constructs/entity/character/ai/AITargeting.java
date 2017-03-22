@@ -10,7 +10,6 @@ import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import game.constructs.entity.character.PlayerCharacter;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 import main.Command;
 
@@ -19,7 +18,7 @@ import main.Command;
  * @author Mike
  */
 public class AITargeting extends AI {
-    
+
     public State melee;
     public State ranged;
     public Gharacter target;
@@ -28,8 +27,8 @@ public class AITargeting extends AI {
         super(gharacter);
         this.target = null;
     }
-    
-    public boolean hasTarget(){
+
+    public boolean hasTarget() {
         return (this.target != null) && (this.target.exists);
     }
 
@@ -41,7 +40,7 @@ public class AITargeting extends AI {
 
     private void aquireTarget() {
         LinkedList<PlayerCharacter> players = Game.instance.space.getPlayers();
-        if (players.size() > 0){
+        if (players.size() > 0) {
             Random rand = new Random();
             int index = (int) Math.floor(players.size() * rand.nextDouble());
             this.target = players.get(index);
@@ -50,30 +49,64 @@ public class AITargeting extends AI {
 
     @Override
     public void update() {
-        if (!(this.hasTarget())){
+        if (!(this.hasTarget())) {
             this.aquireTarget();
         }
-        lineUp();
-        
+        faceTarget();
+        lineUpToTarget();
+        approachTarget();
+        attackTargetIfInRange();
+
     }
-    
-    public void lineUp(){
-        if (this.hasTarget()){
+
+    public double yPrecision = 2;
+
+    public void lineUpToTarget() {
+        if (this.hasTarget()) {
             double ydistance = this.gharacter.position.y - this.target.position.y;
-            if (Math.abs(ydistance) > 10){
-                if (this.gharacter.position.y < this.target.position.y){
+            if (Math.abs(ydistance) > this.yPrecision) {
+                if (this.gharacter.position.y < this.target.position.y) {
                     this.gharacter.handleCommand(Command.MOVE_UP);
                 } else {
                     this.gharacter.handleCommand(Command.MOVE_DOWN);
                 }
-            } else {
-                this.gharacter.handleCommand(Command.ACTION2);
             }
         }
     }
-    
-    public void approach(){
-        
+
+    public double xPrecision = 8;
+
+    public void approachTarget() {
+        if (this.hasTarget()) {
+            double xdistance = this.gharacter.position.x - this.target.position.x;
+            if (Math.abs(xdistance) > this.xPrecision) {
+                if (this.gharacter.position.x < this.target.position.x) {
+                    this.gharacter.handleCommand(Command.MOVE_RIGHT);
+                } else {
+                    this.gharacter.handleCommand(Command.MOVE_LEFT);
+                }
+            }
+        }
+    }
+
+    public void faceTarget() {
+        if (this.hasTarget()) {
+            if (this.gharacter.position.x < this.target.position.x) {
+                this.gharacter.x_orientation = 1;
+            } else {
+                this.gharacter.x_orientation = -1;;
+            }
+        }
+    }
+
+    public void attackTargetIfInRange() {
+        if (this.hasTarget()) {
+            double ydistance = this.gharacter.position.y - this.target.position.y;
+            double xdistance = this.gharacter.position.x - this.target.position.x;
+            if ((Math.abs(xdistance) <= this.xPrecision) && (Math.abs(ydistance) <= this.yPrecision)) {
+                this.gharacter.handleCommand(Command.ACTION1);
+            }
+        }
     }
 
 }
