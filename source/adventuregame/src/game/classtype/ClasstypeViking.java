@@ -161,9 +161,7 @@ public class ClasstypeViking extends Classtype {
                 this.execAbility3();
                 break;
             case ABILITY4:
-                if (this.gharacter.actionTimer == this.ability4ExecFrame) {
-                    this.execAbility4();
-                }
+                this.execAbility4();
                 break;
         }
 
@@ -328,11 +326,13 @@ public class ClasstypeViking extends Classtype {
     /**
      * Ability 4
      */
-    public int ability4AT = 8;
-    public double ability4Cost = 40;
-    public int ability4ExecFrame = 6;
-    public int ability4CD = 60 + ability4AT;
+    public int ability4AT = 80;
+    public double ability4Cost = 80;
+    public int ability4ExecFrame = 5;
+    public int ability4CD = 180 + ability4AT;
     public int ability4CDTimer = 0;
+
+    public double default_distance = 40;
 
     private void initAbility4() {
         if (this.ability4CDTimer == 0) {
@@ -344,27 +344,39 @@ public class ClasstypeViking extends Classtype {
     }
 
     private void execAbility4() {
-        StunBox sb = new StunBox(
-                this.gharacter.position.copy(),
-                new Spatial(4, 2, 10));
-        sb.setParent(this.gharacter);
-        sb.setStun(30);
-        sb.setDamage(2);
-        sb.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + sb.size.x / 2 + 0.01);
-        //System.out.println(sb);
-        Game.instance.space.addConstruct(sb);
+        int f = this.gharacter.actionTimer;
+        if (f == (ability4AT * 11 / 12)) {
+            System.out.println("1");
+        } else if ((f <= (ability4AT * 9 / 12)) && (f >= (ability4AT * 1 / 12))) {
+            Spatial skypos = this.gharacter.position.copy();
+            Spatial cloudsize = new Spatial(20, 1, 20);
+            skypos.z = skypos.z + 60;
+            ImageBox ib = new ImageBox(skypos, cloudsize, 1,
+                                       this.gharacter.x_orientation);
+            Game.instance.space.addConstruct(ib);
+            ib.setImage("viking",
+                        "THUNDER-" + GController.instance.getCurrentFrame() % 3);
+        } else if (f == (ability4AT * 1 / 12)) {
+            System.out.println("4");
+        } else if (f == 1) {
+            System.out.println("BAM");
+        }
     }
 
     private String ability4Image(String filename) {
         // ABILITY4
         if (this.gharacter.state == State.ABILITY4) {
             int f = this.gharacter.actionTimer;
-            if (f > 6) {
+            if (f > (ability4AT * 11 / 12)) {
                 f = 0;
-            } else if (f > 4) {
+            } else if (f > (ability4AT * 10 / 12)) {
                 f = 1;
-            } else {
+            } else if (f > (ability4AT * 9 / 12)) {
                 f = 2;
+            } else if (f > (ability4AT * 1 / 12)) {
+                f = 3;
+            } else {
+                f = 4;
             }
             filename = State.ABILITY4.name() + "-" + (f);
         }
