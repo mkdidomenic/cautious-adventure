@@ -17,13 +17,13 @@ import main.Command;
  *
  * @author Mike
  */
-public class AITargeting extends AI {
+public class AISmack extends AI {
 
     public State melee;
     public State ranged;
     public Gharacter target;
 
-    public AITargeting(Gharacter gharacter) {
+    public AISmack(Gharacter gharacter) {
         super(gharacter);
         this.target = null;
     }
@@ -53,18 +53,22 @@ public class AITargeting extends AI {
             this.aquireTarget();
         }
         faceTarget();
-        lineUpToTarget();
-        approachTarget();
+        approachTargetY();
+        approachTargetX();
         attackTargetIfInRange();
 
     }
 
     public double yPrecision = 2;
 
-    public void lineUpToTarget() {
+    public boolean inLineY() {
+        double ydistance = this.gharacter.position.y - this.target.position.y;
+        return Math.abs(ydistance) <= this.yPrecision;
+    }
+
+    public void approachTargetY() {
         if (this.hasTarget()) {
-            double ydistance = this.gharacter.position.y - this.target.position.y;
-            if (Math.abs(ydistance) > this.yPrecision) {
+            if (!this.inLineY()) {
                 if (this.gharacter.position.y < this.target.position.y) {
                     this.gharacter.handleCommand(Command.MOVE_UP);
                 } else {
@@ -76,10 +80,15 @@ public class AITargeting extends AI {
 
     public double xPrecision = 8;
 
-    public void approachTarget() {
+    public boolean inLineX() {
+        double xdistance = this.gharacter.position.x - this.target.position.x;
+        return Math.abs(xdistance) <= this.xPrecision;
+    }
+
+    public void approachTargetX() {
         if (this.hasTarget()) {
-            double xdistance = this.gharacter.position.x - this.target.position.x;
-            if (Math.abs(xdistance) > this.xPrecision) {
+
+            if (!inLineX()) {
                 if (this.gharacter.position.x < this.target.position.x) {
                     this.gharacter.handleCommand(Command.MOVE_RIGHT);
                 } else {
@@ -101,9 +110,7 @@ public class AITargeting extends AI {
 
     public void attackTargetIfInRange() {
         if (this.hasTarget()) {
-            double ydistance = this.gharacter.position.y - this.target.position.y;
-            double xdistance = this.gharacter.position.x - this.target.position.x;
-            if ((Math.abs(xdistance) <= this.xPrecision) && (Math.abs(ydistance) <= this.yPrecision)) {
+            if ((inLineX()) && (inLineY())) {
                 this.gharacter.handleCommand(Command.ACTION1);
             }
         }

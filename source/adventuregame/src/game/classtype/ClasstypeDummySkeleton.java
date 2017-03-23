@@ -28,7 +28,7 @@ public class ClasstypeDummySkeleton extends Classtype {
     @Override
     public void setupAttributes() {
         this.gharacter.normal_move_speed = 1.0;
-        this.gharacter.max_health = 80;
+        this.gharacter.max_health = 90;
         this.gharacter.hitstunFrames = 2;
         this.gharacter.setAttr();
 

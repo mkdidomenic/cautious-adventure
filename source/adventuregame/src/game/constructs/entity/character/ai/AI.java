@@ -7,6 +7,8 @@ package game.constructs.entity.character.ai;
 
 import game.Game;
 import game.constructs.entity.character.Gharacter;
+import java.util.Random;
+import main.GController;
 
 /**
  *
@@ -15,12 +17,16 @@ import game.constructs.entity.character.Gharacter;
 public abstract class AI {
 
     public int timer;
+    public int timerMax;
     public int sleepTimer;
+    public Random random;
     public Gharacter gharacter;
 
     public AI(Gharacter gharacter) {
         this.gharacter = gharacter;
-        timer = 0;
+        this.random = new Random();
+        this.timer = 0;
+        this.timerMax = GController.FPS * 4;// default 3 second clock period
     }
 
     public void init() {
@@ -28,7 +34,20 @@ public abstract class AI {
     }
 
     public void update() {
+        handleTimer();
 
+    }
+
+    private void handleTimer() {
+        if (this.timer > 0) {
+            this.timer--;
+        } else {
+            this.timer = this.timerMax;
+        }
+    }
+
+    public boolean percentChance(double percent) {
+        return (this.random.nextDouble() <= (percent / 100));
     }
 
     public void closestTargetPC() {

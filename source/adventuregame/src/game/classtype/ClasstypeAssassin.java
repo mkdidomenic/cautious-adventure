@@ -30,7 +30,7 @@ public class ClasstypeAssassin extends Classtype {
     @Override
     public void setupAttributes() {
         this.gharacter.normal_move_speed = 1.2;
-        this.gharacter.max_health = 90;
+        this.gharacter.max_health = 75;
         this.gharacter.setAttr();
 
         //this.gharacter.mobileStates.add(State.ABILITY2);
@@ -167,7 +167,7 @@ public class ClasstypeAssassin extends Classtype {
     public int ability1CD = 2 + ability1AT;
     public int ability1CDTimer = 0;
 
-    public double ability1Damage = 5;
+    public double ability1Damage = 3;
 
     private void initAbility1() {
         if (this.ability1CDTimer == 0) {
@@ -267,7 +267,7 @@ public class ClasstypeAssassin extends Classtype {
     public int ability3CD = 30 + ability3AT;
     public int ability3CDTimer = 0;
 
-    public double ability3Damage = 20;
+    public double ability3Damage = 15;
 
     private void initAbility3() {
         if (this.ability3CDTimer == 0) {

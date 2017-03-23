@@ -109,4 +109,22 @@ public class Spatial {
         }
         return a;
     }
+
+    /**
+     * gets the distance between two spatials
+     *
+     * @param other - the other one
+     * @return a double, the distance
+     */
+    public double getDistance(Spatial other) {
+        if (other == null) {
+            return 0;
+        } else {
+            return Math.sqrt(
+                    Math.pow((this.x - other.x), 2) + Math.pow(
+                            (this.y - other.y), 2) + Math.pow(
+                            (this.z - other.z), 2));
+        }
+
+    }
 }

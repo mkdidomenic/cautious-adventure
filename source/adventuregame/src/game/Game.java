@@ -6,12 +6,13 @@
 package game;
 
 import game.classtype.ClasstypeAssassin;
-import game.classtype.ClasstypeViking;
+import game.classtype.ClasstypeDummySkeleton;
 import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.NonPlayerCharacter;
 import game.constructs.entity.character.PlayerCharacter;
-import game.constructs.entity.character.ai.AISimple;
+import game.constructs.entity.character.ai.AI;
+import game.constructs.entity.character.ai.AIDummySkeleton;
 import java.util.ArrayList;
 import java.util.Random;
 import main.Command;
@@ -63,7 +64,7 @@ public class Game {
                                       0);
             //Spatial size = new Spatial(100, 100, 10);
             PlayerCharacter pc = new PlayerCharacter(p, pos);
-            pc.setClasstype(new ClasstypeViking(pc));
+            pc.setClasstype(new ClasstypeAssassin(pc));
             //pc.setClasstype(new ClasstypeViking(pc));
             //pc.setClasstype(new ClasstypeDummySkeleton(pc));
             this.space.addPlayerC(pc);
@@ -78,10 +79,13 @@ public class Game {
     public void setupLevel() {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
         //npc.setClasstype(new ClasstypeViking(npc));
-        npc.setClasstype(new ClasstypeAssassin(npc));
-        AISimple ai = new AISimple(npc);
-        ai.action = Command.ACTION2;
-        npc.setAI(ai);
+        //npc.setClasstype(new ClasstypeAssassin(npc));
+        npc.setClasstype(new ClasstypeDummySkeleton(npc));
+        //AISimple ai = new AISimple(npc);
+        //AISmack ai = new AISmack(npc);
+        AIDummySkeleton ai = new AIDummySkeleton(npc);
+        AI gai = (AI) ai;
+        npc.setAI(gai);
         Construct con = new Construct(new Spatial(10, 10, 0),
                                       new Spatial(10, 10, 10));
         con.addpng("square");
