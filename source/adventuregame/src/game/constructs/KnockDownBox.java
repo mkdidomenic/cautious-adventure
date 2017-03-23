@@ -28,7 +28,7 @@ public class KnockDownBox extends DamageBox {
 
     @Override
     public void gharacteract(Gharacter g) {
-        if ((g != this.parent) && true) {
+        if ((this.shouldDamage(g)) && true) {
             g.knockDown(this.stunframes);
             g.damage(this.damage);
         }

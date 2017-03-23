@@ -27,13 +27,16 @@ public class Game {
     public Player player;
     public Space space;
     public static Game instance;
-    
+
+    public boolean friendlyFire;
+
     public Random random;
 
     public Game() {
         Game.instance = this;
         this.players = new ArrayList();
         this.random = new Random();
+        this.friendlyFire = false;
     }
 
     public void setupSpace() {
@@ -81,6 +84,12 @@ public class Game {
         con.addpng("square");
         this.space.addConstruct(con);
         this.space.addConstruct(npc);
+
+        NonPlayerCharacter npc2 = new NonPlayerCharacter(new Spatial(75, 90, 20));
+        //npc.setClasstype(new ClasstypeViking(npc));
+        npc2.setClasstype(new ClasstypeAssassin(npc2));
+        npc2.setAI(new AISimple(npc2));
+        this.space.addConstruct(npc2);
     }
 
     public boolean debug = false;

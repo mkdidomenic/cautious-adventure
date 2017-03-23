@@ -13,7 +13,6 @@ import game.constructs.StunBox;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
@@ -334,8 +333,8 @@ public class ClasstypeViking extends Classtype {
     public int ability4CD = 180 + ability4AT;
     public int ability4CDTimer = 0;
 
-    public double ability4defaultdistance = 20;
-    public Spatial ability4defaultsize = new Spatial(20,4,20);
+    public double ability4defaultdistance = 10;
+    public Spatial ability4defaultsize = new Spatial(20, 20, 30);
     public double ability4cloudheight = 60;
     public int ability4strikeframes = 10;
 
@@ -360,37 +359,44 @@ public class ClasstypeViking extends Classtype {
                                        this.gharacter.x_orientation);
             ib.setImage("viking",
                         "THUNDER-" + GController.instance.getCurrentFrame() % 3);
-            
+
             Spatial skypos2 = skypos.copy();
             skypos2.x += ability4defaultdistance * this.gharacter.x_orientation;
-            ImageBox ib2 = new ImageBox(skypos2, ability4defaultsize.copy(), 2, Game.instance.random.nextInt() % 2);
-            ib2.setImage("viking", "THUNDER-" + Integer.toString( ((int)Math.abs((f/12) - 4)) / 2) );
+            ImageBox ib2 = new ImageBox(skypos2, ability4defaultsize.copy(), 2,
+                                        Game.instance.random.nextInt() % 2);
+            ib2.setImage("viking", "THUNDER-" + Integer.toString(
+                         ((int) Math.abs((f / 12) - 4)) / 2));
             Game.instance.space.addConstruct(ib);
             Game.instance.space.addConstruct(ib2);
-            
+
         } else if (f == (ability4AT * 1 / 12)) {
             Spatial skypos = this.gharacter.position.copy();
             skypos.z = skypos.z + ability4cloudheight;
             skypos.x += ability4defaultdistance * this.gharacter.x_orientation;
-            ImageBox ib = new ImageBox(skypos, ability4defaultsize.copy(), ability4strikeframes, this.gharacter.x_orientation);
-            ib.setImage("viking", "THUNDER-2" );
-            
+            ImageBox ib = new ImageBox(skypos, ability4defaultsize.copy(),
+                                       ability4strikeframes,
+                                       this.gharacter.x_orientation);
+            ib.setImage("viking", "THUNDER-2");
+
             Spatial boltpos = skypos.copy();
             Spatial boltsize = ability4defaultsize.copy();
             boltsize.z = skypos.copy().z;
-            boltpos.z = 0;     
-            ImageBox boltIb = new ImageBox(boltpos, boltsize, ability4strikeframes, this.gharacter.x_orientation);
+            boltpos.z = 0;
+            ImageBox boltIb = new ImageBox(boltpos, boltsize,
+                                           ability4strikeframes,
+                                           this.gharacter.x_orientation);
             boltIb.setImage("viking", "LIGHTNING");
             boltsize = boltsize.copy();
             boltsize.y *= 2;
             KnockDownBox db = new KnockDownBox(boltpos, boltsize);
+            db.setParent(this.gharacter);
             db.setDamage(50);
             db.setKnockDown(15);
-            
+
             Game.instance.space.addConstruct(ib);
             Game.instance.space.addConstruct(boltIb);
             Game.instance.space.addConstruct(db);
-            
+
         } else if (f == 1) {
             System.out.println("BAM");
         }

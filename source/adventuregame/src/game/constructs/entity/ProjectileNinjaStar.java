@@ -5,7 +5,6 @@
  */
 package game.constructs.entity;
 
-import game.constructs.Construct;
 import java.awt.image.BufferedImage;
 import main.GController;
 import utility.ImageHandler;
@@ -32,13 +31,6 @@ public class ProjectileNinjaStar extends Projectile {
     public BufferedImage getImage() {
         return ImageHandler.getPNG("projectileNinjaStar", Long.toString(
                                    GController.instance.getCurrentFrame() % 3));
-    }
-
-    @Override
-    public void onCollision(Construct c) {
-        //System.out.println(this.getClass());
-        //System.out.println("arrow");
-        this.remove();
     }
 
     @Override

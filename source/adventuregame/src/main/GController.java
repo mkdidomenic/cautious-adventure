@@ -48,6 +48,7 @@ public class GController {
             this.update();
             do {
                 endtime = (double) System.currentTimeMillis() / 1000.0;
+                //System.out.println(this.currentFrame);
             } while ((endtime - starttime) < SPF);
             this.currentFrame++;
         }

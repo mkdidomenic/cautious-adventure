@@ -18,12 +18,21 @@ public class NonPlayerCharacter extends Gharacter {
 
     public NonPlayerCharacter(Spatial position) {
         super(position);
-        this.ai = null;
+        setupNPC();
     }
 
     public NonPlayerCharacter(Spatial position, Spatial size) {
         super(position, size);
+        setupNPC();
+    }
+
+    private void setupNPC() {
         this.ai = null;
+        this.ally = false;
+    }
+
+    public void setAlly(boolean ally) {
+        this.ally = ally;
     }
 
     public void setAI(AI ai) {

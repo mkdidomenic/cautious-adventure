@@ -5,6 +5,7 @@
  */
 package game.constructs;
 
+import game.Game;
 import game.collision.Hitbox;
 import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
@@ -46,6 +47,10 @@ public class Construct implements Comparable {
     // damage given on collision
     public double damage;
 
+    public Construct parent;
+
+    public boolean ally;
+
     public Construct(Spatial position, Spatial size) {
         this.position = position;
         this.size = size;
@@ -58,6 +63,8 @@ public class Construct implements Comparable {
         this.starttick = GController.instance.getCurrentFrame();
         this.tangibility = true;
         this.damage = 0;
+        this.parent = null;
+        this.ally = false;
     }
 
     public void addImage(String filename) {
@@ -130,6 +137,37 @@ public class Construct implements Comparable {
 
     public boolean isTangible() {
         return this.tangibility;
+    }
+
+    public void setParent(Construct parent) {
+        this.parent = parent;
+    }
+
+    public boolean shouldDamage(Construct g) {
+        if (!(g instanceof Gharacter)) {
+            return false;
+        }
+        if (g == this.parent) {
+            return false;
+        } else if ((this.isAlly() == g.isAlly()) && (!(Game.instance.friendlyFire))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isAlly() {
+        if (this.ally) {
+            return true;
+        } else if (this.parent != null) {
+            if (this.parent.isAlly()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**

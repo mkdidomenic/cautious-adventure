@@ -17,9 +17,8 @@ import utility.Spatial;
 public class DamageBox extends Construct {
 
     public double default_damage = 1;
-    public Construct parent;
     public boolean knockdown;
-    
+
     public BufferedImage image = null;
 
     public DamageBox(Spatial position, Spatial size) {
@@ -30,13 +29,9 @@ public class DamageBox extends Construct {
         this.image = null;
     }
 
-    public void setParent(Construct parent) {
-        this.parent = parent;
-    }
-
     @Override
     public void gharacteract(Gharacter g) {
-        if ((g != this.parent) && (g.vulnerable(this))) {
+        if ((this.shouldDamage(g)) && (g.vulnerable(this))) {
             g.damage(this.damage);
             if (this.knockdown) {
                 g.interruptActionTimer();
@@ -53,11 +48,10 @@ public class DamageBox extends Construct {
             this.remove();
         }
     }
-    
-    public void setImage(String folder, String filename){
+
+    public void setImage(String folder, String filename) {
         this.image = ImageHandler.getPNG(folder, filename);
     }
-    
 
     @Override
     public BufferedImage getImage() {

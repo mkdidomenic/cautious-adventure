@@ -5,7 +5,6 @@
  */
 package game.constructs.entity;
 
-import game.constructs.Construct;
 import utility.Spatial;
 
 /**
@@ -22,13 +21,6 @@ public class ProjectileArrow extends Projectile {
         this.addpng("arrow");
         this.damage = default_damage;
         this.tangibility = false;
-    }
-
-    @Override
-    public void onCollision(Construct c) {
-        //System.out.println(this.getClass());
-        //System.out.println("arrow");
-        this.remove();
     }
 
     @Override

@@ -15,16 +15,10 @@ import utility.Spatial;
  */
 public class Projectile extends Entity {
 
-    protected Construct parent;
-
     public Projectile(Spatial position, Spatial size) {
         super(position, size);
         parent = null;
         this.addpng("null");
-    }
-
-    public void setParent(Construct parent) {
-        this.parent = parent;
     }
 
     @Override
@@ -38,7 +32,7 @@ public class Projectile extends Entity {
 
     @Override
     public void gharacteract(Gharacter g) {
-        if ((g != this.parent) && g.vulnerable(this)) {
+        if ((this.shouldDamage(g)) && g.vulnerable(this)) {
             g.damage(this.damage);
         }
     }
@@ -51,7 +45,9 @@ public class Projectile extends Entity {
     @Override
     public void onCollision(Construct c) {
         super.onCollision(c);
-        //System.out.println("PROJECTILE COLLISION");
+        if (this.shouldDamage(c) || c.isTangible()) {
+            this.remove();
+        }
     }
 
 }

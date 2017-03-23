@@ -19,12 +19,14 @@ public class PlayerCharacter extends Gharacter {
     public PlayerCharacter(Player p, Spatial position) {
         super(position);
         this.player = p;
+        this.ally = true;
         this.addImages();
     }
 
     public PlayerCharacter(Player p, Spatial position, Spatial size) {
         super(position, size);
         this.player = p;
+        this.ally = true;
         this.addImages();
     }
 
