@@ -109,7 +109,6 @@ public class AIDummySkeleton extends AI {
             } else {
                 this.task = aitask.WAIT;
             }
-            System.out.println(this.task);
         }
     }
 
