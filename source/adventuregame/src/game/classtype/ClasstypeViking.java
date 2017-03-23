@@ -390,16 +390,16 @@ public class ClasstypeViking extends Classtype {
             boltsize.y *= 2;
             KnockDownBox db = new KnockDownBox(boltpos, boltsize);
             db.setParent(this.gharacter);
-            db.setDamage(50);
+            db.setDamage(60);
             db.setKnockDown(15);
 
             Game.instance.space.addConstruct(ib);
             Game.instance.space.addConstruct(boltIb);
             Game.instance.space.addConstruct(db);
 
-        } else if (f == 1) {
-            System.out.println("BAM");
-        }
+        } //else if (f == 1) {
+        //System.out.println("BAM");
+        //}
     }
 
     private String ability4Image(String filename) {

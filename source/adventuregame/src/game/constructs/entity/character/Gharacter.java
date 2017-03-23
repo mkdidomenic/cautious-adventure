@@ -27,11 +27,12 @@ public class Gharacter extends Entity {
     // attributes
     public double max_health = 100;
     public double max_energy = 100;
+    public int default_hitstun_frames = 2;
     public double energyGenerationPerFrame = 0.4;
     public double normal_move_speed = 1;
     public double move_speed = normal_move_speed;
     public double jump_velocity = 4;
-    public int hitstunFrames = 2;
+    public int hitstunFrames = default_hitstun_frames;
 
     // class type
     public Classtype classtype;
@@ -79,6 +80,7 @@ public class Gharacter extends Entity {
         this.health = this.max_health;
         this.energy = this.max_energy;
         this.move_speed = this.normal_move_speed;
+        this.hitstunFrames = this.default_hitstun_frames;
     }
 
     public void setClasstype(Classtype ct) {
@@ -351,9 +353,11 @@ public class Gharacter extends Entity {
     }
 
     public void hitstun() {
-        this.interruptActionTimer();
-        this.setActionTimer(this.hitstunFrames);
-        this.state = State.HITSTUNNED;
+        if (this.hitstunFrames > 0) {
+            this.interruptActionTimer();
+            this.setActionTimer(this.hitstunFrames);
+            this.state = State.HITSTUNNED;
+        }
     }
 
     public boolean useEnergy(double cost) {

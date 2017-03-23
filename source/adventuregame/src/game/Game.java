@@ -6,7 +6,7 @@
 package game;
 
 import game.classtype.ClasstypeAssassin;
-import game.classtype.ClasstypeSkeleton;
+import game.classtype.ClasstypeViking;
 import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.NonPlayerCharacter;
@@ -63,8 +63,9 @@ public class Game {
                                       0);
             //Spatial size = new Spatial(100, 100, 10);
             PlayerCharacter pc = new PlayerCharacter(p, pos);
-            //pc.setClasstype(new ClasstypeAssassin(pc));
-            pc.setClasstype(new ClasstypeSkeleton(pc));
+            pc.setClasstype(new ClasstypeViking(pc));
+            //pc.setClasstype(new ClasstypeViking(pc));
+            //pc.setClasstype(new ClasstypeDummySkeleton(pc));
             this.space.addPlayerC(pc);
         }
 
@@ -78,7 +79,9 @@ public class Game {
         NonPlayerCharacter npc = new NonPlayerCharacter(new Spatial(75, 50, 20));
         //npc.setClasstype(new ClasstypeViking(npc));
         npc.setClasstype(new ClasstypeAssassin(npc));
-        npc.setAI(new AISimple(npc));
+        AISimple ai = new AISimple(npc);
+        ai.action = Command.ACTION2;
+        npc.setAI(ai);
         Construct con = new Construct(new Spatial(10, 10, 0),
                                       new Spatial(10, 10, 10));
         con.addpng("square");

@@ -17,6 +17,7 @@ public class ImageBox extends Construct {
 
     public BufferedImage image;
     public int lifespan;
+    public boolean hasParent;
 
     /**
      * specify the position, size, and lifespan
@@ -32,7 +33,14 @@ public class ImageBox extends Construct {
         this.lifespan = lifespan;
         this.tangibility = false;
         this.x_orientation = orientation;
-        image = null;
+        this.image = null;
+        this.hasParent = false;
+    }
+
+    @Override
+    public void setParent(Construct c) {
+        super.setParent(c);
+        this.hasParent = true;
     }
 
     public void setImage(BufferedImage image) {
@@ -51,6 +59,9 @@ public class ImageBox extends Construct {
     public void update() {
         super.update();
         if ((this.ticksExisted() > lifespan)) {
+            this.remove();
+        }
+        if (this.hasParent && ((this.parent == null) || !(this.parent.exists))) {
             this.remove();
         }
     }

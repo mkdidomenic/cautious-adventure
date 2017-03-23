@@ -14,8 +14,11 @@ import main.Command;
  */
 public class AISimple extends AI {
 
+    public Command action;
+
     public AISimple(Gharacter gharacter) {
         super(gharacter);
+        this.action = Command.ACTION1;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class AISimple extends AI {
 
     @Override
     public void update() {
-        this.gharacter.handleCommand(Command.ACTION2);
+        this.gharacter.handleCommand(this.action);
     }
 
 }

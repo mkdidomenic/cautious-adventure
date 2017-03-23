@@ -167,6 +167,8 @@ public class ClasstypeAssassin extends Classtype {
     public int ability1CD = 2 + ability1AT;
     public int ability1CDTimer = 0;
 
+    public double ability1Damage = 5;
+
     private void initAbility1() {
         if (this.ability1CDTimer == 0) {
             if (this.startAbility(this.ability1AT, this.ability1Cost)) {
@@ -181,7 +183,7 @@ public class ClasstypeAssassin extends Classtype {
                 this.gharacter.position.copy(),
                 new Spatial(1, 1, 10));
         db.setParent(this.gharacter);
-        db.setDamage(5);
+        db.setDamage(this.ability1Damage);
         db.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + db.size.x / 2 + 0.01);
         //System.out.println(sb);
         ImageBox ib = new ImageBox(db.position, db.size, 4,
@@ -265,6 +267,8 @@ public class ClasstypeAssassin extends Classtype {
     public int ability3CD = 30 + ability3AT;
     public int ability3CDTimer = 0;
 
+    public double ability3Damage = 20;
+
     private void initAbility3() {
         if (this.ability3CDTimer == 0) {
             if (this.startAbility(this.ability3AT, this.ability3Cost)) {
@@ -281,7 +285,10 @@ public class ClasstypeAssassin extends Classtype {
             this.gharacter.position.set(target.position);
             this.gharacter.position.x += target.x_orientation * -1 * (this.gharacter.size.x / 2 + target.size.x / 2);
             this.gharacter.x_orientation = target.x_orientation;
+            double original = this.ability1Damage;
+            this.ability1Damage = this.ability3Damage;
             this.execAbility1();
+            this.ability1Damage = original;
         }
     }
 
