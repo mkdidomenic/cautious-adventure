@@ -36,7 +36,7 @@ public class ClasstypeNecromancer extends Classtype {
         this.gharacter.max_health = 75;
         this.gharacter.setAttr();
 
-        //this.gharacter.mobileStates.add(State.ABILITY2);
+        this.gharacter.mobileStates.add(State.ABILITY1);
     }
 
     @Override
@@ -136,6 +136,8 @@ public class ClasstypeNecromancer extends Classtype {
                     this.initAbility4();
                     break;
             }
+        } else if ((i == 1)){
+            this.ability1Update();
         }
     }
 
@@ -145,9 +147,6 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void handleAbilityTimers() {
-        if (this.ability1CDTimer > 0) {
-            this.ability1CDTimer--;
-        }
         if (this.ability2CDTimer > 0) {
             this.ability2CDTimer--;
         }
@@ -162,7 +161,7 @@ public class ClasstypeNecromancer extends Classtype {
     private void handleAbilities() {
         switch (gharacter.state) {
             case ABILITY1:
-                if (this.gharacter.actionTimer == this.ability1ExecFrame) {
+                if (this.ability1ATimer == this.ability1ExecFrame) {
                     this.execAbility1();
                 }
                 break;
@@ -188,29 +187,39 @@ public class ClasstypeNecromancer extends Classtype {
     /**
      * Ability 1
      */
-    public int ability1AT = 18;
-    public double ability1Cost = 0;
-    public int ability1ExecFrame = 2;
-    public int ability1CD = 10 + ability1AT;
-    public int ability1CDTimer = 0;
+    public int ability1AT = 2;
+    public int ability1ExecFrame = 0;
+    public int ability1ATime = 18;
+    public int ability1ATimer = 0;
+    
+    private void ability1Update(){
+        if (this.ability1ATimer > 0){
+            this.ability1ATimer--;
+        } 
+        this.gharacter.interruptActionTimer();
+        this.gharacter.setActionTimer(this.ability1AT);
+        this.gharacter.state = Gharacter.State.ABILITY1;
+        
+    }
 
     private void initAbility1() {
-        if (this.ability1CDTimer == 0) {
-            if (this.startAbility(this.ability1AT, this.ability1Cost)) {
+        if (this.gharacter.state != Gharacter.State.ABILITY1){
+            if (this.gharacter.setActionTimer(ability1AT) && (this.ability1ATimer == 0)) {
                 this.gharacter.state = Gharacter.State.ABILITY1;
-                this.ability1CDTimer = this.ability1CD;
+                this.ability1ATimer = this.ability1ATime;
+
             }
         }
     }
 
     private void execAbility1() {
-
+        System.out.println("go");
     }
 
     private String ability1Image(String filename) {
         // ABILITY1
         if (this.gharacter.state == State.ABILITY1) {
-            int f = this.gharacter.actionTimer;
+            int f = this.ability1ATimer;
             if (f > 12) {
                 f = 0;
             } else if (f > 6) {
