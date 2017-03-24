@@ -9,6 +9,7 @@ import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import utility.CollisionHandler;
 import utility.Spatial;
@@ -85,8 +86,11 @@ public class Space {
     public void update() {
         //debug();
         //System.out.println("SPACE: " + this.getConstructs());
-        this.constructs.sort(null);//sort for view ordering
-
+        try {
+            this.constructs.sort(null);//sort for view ordering
+        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException e) {
+            System.out.println("ERROR SORTING LIST - NONESSENTIAL");
+        }
         //setup update loop
         ArrayList<Construct> removed = new ArrayList();
         LinkedList<Construct> consts = this.getConstructs();

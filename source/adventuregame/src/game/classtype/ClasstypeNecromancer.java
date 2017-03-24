@@ -12,6 +12,7 @@ import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import game.constructs.entity.character.NonPlayerCharacter;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
@@ -22,8 +23,11 @@ import utility.Spatial;
  */
 public class ClasstypeNecromancer extends Classtype {
 
+    ArrayList<Gharacter> minions;
+
     public ClasstypeNecromancer(Gharacter g) {
         super(g);
+        this.minions = new ArrayList();
     }
 
     @Override
@@ -83,12 +87,36 @@ public class ClasstypeNecromancer extends Classtype {
         }
     }
 
+    public boolean hasMaxMinions() {
+        int maxMinions = 3;
+        return this.minions.size() == maxMinions;
+    }
+
     @Override
     public void update() {
         super.update();
         handleAbilities();
         handleAbilityTimers();
+        handleMinions();
 
+    }
+
+    private void handleMinions() {
+        removeDeadMinions();
+    }
+
+    private void removeDeadMinions() {
+        ArrayList<Gharacter> toRemove = new ArrayList();
+        for (Gharacter g : ((ArrayList<Gharacter>) this.minions.clone())) {
+            if (!(g.isExistant())) {
+                toRemove.add(g);
+            }
+        }
+        for (Gharacter g : toRemove) {
+            if (!(g.isExistant())) {
+                this.minions.remove(g);
+            }
+        }
     }
 
     @Override
@@ -161,7 +189,7 @@ public class ClasstypeNecromancer extends Classtype {
      * Ability 1
      */
     public int ability1AT = 18;
-    public double ability1Cost = 10;
+    public double ability1Cost = 0;
     public int ability1ExecFrame = 2;
     public int ability1CD = 10 + ability1AT;
     public int ability1CDTimer = 0;
@@ -185,12 +213,10 @@ public class ClasstypeNecromancer extends Classtype {
             int f = this.gharacter.actionTimer;
             if (f > 12) {
                 f = 0;
-            } else if (f > 8) {
+            } else if (f > 6) {
                 f = 1;
-            } else if (f > 2) {
-                f = 2;
             } else {
-                f = 3;
+                f = 2;
             }
             filename = State.ABILITY1.name() + "-" + (f);
         }
@@ -209,7 +235,7 @@ public class ClasstypeNecromancer extends Classtype {
     public int ability2SpawnDistance = 10;
 
     private void initAbility2() {
-        if (this.ability2CDTimer == 0) {
+        if ((this.ability2CDTimer == 0) && this.gharacter.isGrounded() && !(this.hasMaxMinions())) {
             if (this.startAbility(this.ability2AT, this.ability2Cost)) {
                 this.gharacter.state = Gharacter.State.ABILITY2;
                 this.ability2CDTimer = this.ability2CD;
@@ -222,10 +248,12 @@ public class ClasstypeNecromancer extends Classtype {
                 this.gharacter.position.copy());
         g.position.x += this.gharacter.x_orientation * ability2SpawnDistance;
         g.setParent(this.gharacter);
+        //g.ally = true;
         g.setClasstype(new ClasstypeDummySkeleton(g));
         //g.setAI(new AISimple(g));
 
         Game.instance.space.addConstruct(g);
+        this.minions.add(g);
     }
 
     private String ability2Image(String filename) {
