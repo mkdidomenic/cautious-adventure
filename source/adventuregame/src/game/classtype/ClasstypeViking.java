@@ -349,6 +349,7 @@ public class ClasstypeViking extends Classtype {
 
     private void execAbility4() {
         int f = this.gharacter.actionTimer;
+        this.gharacter.sheilded = true;
         if (f == (ability4AT * 11 / 12)) {
             //System.out.println("1");
         } else if ((f < (ability4AT * 9 / 12)) && (f > (ability4AT * 1 / 12))) {
@@ -396,7 +397,7 @@ public class ClasstypeViking extends Classtype {
             Game.instance.space.addConstruct(ib);
             Game.instance.space.addConstruct(boltIb);
             Game.instance.space.addConstruct(db);
-
+            this.gharacter.sheilded = false;
         } //else if (f == 1) {
         //System.out.println("BAM");
         //}

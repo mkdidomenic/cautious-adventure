@@ -5,14 +5,17 @@
  */
 package game;
 
+import game.classtype.Classtype;
 import game.classtype.ClasstypeAssassin;
 import game.classtype.ClasstypeDummySkeleton;
+import game.classtype.ClasstypeNecromancer;
+import game.classtype.ClasstypeViking;
 import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.NonPlayerCharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import game.constructs.entity.character.ai.AI;
-import game.constructs.entity.character.ai.AIDummySkeleton;
+import game.constructs.entity.character.ai.AISimple;
 import java.util.ArrayList;
 import java.util.Random;
 import main.Command;
@@ -64,9 +67,10 @@ public class Game {
                                       0);
             //Spatial size = new Spatial(100, 100, 10);
             PlayerCharacter pc = new PlayerCharacter(p, pos);
-            pc.setClasstype(new ClasstypeAssassin(pc));
+            //pc.setClasstype(new ClasstypeAssassin(pc));
             //pc.setClasstype(new ClasstypeViking(pc));
             //pc.setClasstype(new ClasstypeDummySkeleton(pc));
+            pc.setClasstype(new ClasstypeNecromancer(pc));
             this.space.addPlayerC(pc);
         }
 
@@ -81,9 +85,10 @@ public class Game {
         //npc.setClasstype(new ClasstypeViking(npc));
         //npc.setClasstype(new ClasstypeAssassin(npc));
         npc.setClasstype(new ClasstypeDummySkeleton(npc));
-        //AISimple ai = new AISimple(npc);
+        AISimple ai = new AISimple(npc);
+        //ai.action = Command.ACTION1;
         //AISmack ai = new AISmack(npc);
-        AIDummySkeleton ai = new AIDummySkeleton(npc);
+        //AIDummySkeleton ai = new AIDummySkeleton(npc);
         AI gai = (AI) ai;
         npc.setAI(gai);
         Construct con = new Construct(new Spatial(10, 10, 0),
@@ -135,6 +140,15 @@ public class Game {
                 }
             }
         }
+    }
+
+    private void unused() {
+        Gharacter g = new Gharacter(new Spatial(0, 0, 0));
+        Classtype ct = new ClasstypeAssassin(g);
+        ct = new ClasstypeViking(g);
+        ct = new ClasstypeDummySkeleton(g);
+        ct = new ClasstypeNecromancer(g);
+
     }
 
 }

@@ -79,11 +79,10 @@ public class AIDummySkeleton extends AI {
                 this.attackTarget();
             }
             if (this.task == aitask.APPROACH) {
-                double original = this.gharacter.move_speed;
                 this.gharacter.move_speed /= 2;
                 this.approachTargetX();
                 this.approachTargetY();
-                this.gharacter.move_speed = original;
+                this.gharacter.move_speed = this.gharacter.normal_move_speed;
             }
             if (this.task == aitask.RETREAT) {
                 this.retreatFromTarget();
