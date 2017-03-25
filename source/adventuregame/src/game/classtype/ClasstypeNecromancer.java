@@ -26,10 +26,12 @@ import utility.Spatial;
 public class ClasstypeNecromancer extends Classtype {
 
     ArrayList<Gharacter> minions;
+    public int currentMinionIndex;
 
     public ClasstypeNecromancer(Gharacter g) {
         super(g);
         this.minions = new ArrayList();
+        this.currentMinionIndex = -1;
     }
 
     @Override
@@ -94,6 +96,38 @@ public class ClasstypeNecromancer extends Classtype {
         return this.minions.size() == maxMinions;
     }
 
+    public Gharacter nextMinion() {
+        if (this.minions.isEmpty()) {
+            return null;
+        } else {
+            this.incrementCurrentMinionIndex();
+            if (this.currentMinionIndex == -1) {
+                return null;
+            } else {
+                return this.minions.get(this.currentMinionIndex);
+            }
+        }
+    }
+
+    public Gharacter getCurrentMinion() {
+        if (this.minions.isEmpty()) {
+            return null;
+        } else {
+            if (this.currentMinionIndex == -1) {
+                return null;
+            } else {
+                return this.minions.get(this.currentMinionIndex);
+            }
+        }
+    }
+
+    public void incrementCurrentMinionIndex() {
+        this.currentMinionIndex++;
+        if (this.currentMinionIndex >= this.minions.size()) {
+            this.currentMinionIndex = -1;
+        }
+    }
+
     @Override
     public void update() {
         super.update();
@@ -105,6 +139,28 @@ public class ClasstypeNecromancer extends Classtype {
 
     private void handleMinions() {
         removeDeadMinions();
+        highlightCurrentMinion();
+    }
+
+    private void highlightCurrentMinion() {
+        if (this.currentMinionIndex == -1) {
+            for (Gharacter g : ((ArrayList<Gharacter>) (this.minions.clone()))) {
+                this.drawCurrentMinionImage(g);
+            }
+        } else {
+            Gharacter g = this.getCurrentMinion();
+            if (g != null) {
+                this.drawCurrentMinionImage(g);
+            }
+        }
+    }
+
+    private void drawCurrentMinionImage(Gharacter g) {
+
+        ImageBox ib = new ImageBox(g.position, g.size, 1, g.x_orientation);
+        ib.setImage("necromancer", "MARK");
+        Game.instance.space.addConstruct(ib);
+
     }
 
     private void removeDeadMinions() {
@@ -211,8 +267,8 @@ public class ClasstypeNecromancer extends Classtype {
     private void ability1Reset() {
         if (this.gharacter.state != State.ABILITY1) {
             if (this.ability1ATimer > 0) {
-                System.out.println("tapped");
                 this.ability1ATimer = 0;
+                this.nextMinion();
             }
         }
     }
@@ -228,16 +284,46 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void execAbility1() {
-        for (NonPlayerCharacter npc : ((ArrayList<NonPlayerCharacter>) (this.minions.clone()))) {
-            if (this.gharacter.x_orientation > 0) {
-                npc.handleCommand(Command.MOVE_RIGHT);
-            } else {
-                npc.handleCommand(Command.MOVE_LEFT);
-            }
-            AIMinionSkeleton ai = (AIMinionSkeleton) npc.ai;
-            ai.approachTargetY(this.gharacter.position);
+        Gharacter targetenemy = Game.instance.space.trace(this.gharacter,
+                                                          !this.gharacter.isAlly(),
+                                                          1);
+        if (this.currentMinionIndex == -1) {
+            for (NonPlayerCharacter npc : ((ArrayList<NonPlayerCharacter>) (this.minions.clone()))) {
+                AIMinionSkeleton ai = (AIMinionSkeleton) npc.ai;
+                if (targetenemy != null) {
+                    ai.setTarget(targetenemy);
+                }
+                ai.setTarget(targetenemy);
+                if (!ai.hasTarget()) {
+                    sendMinion(npc, ai);
+                };
 
+            }
+        } else {
+            NonPlayerCharacter npc = (NonPlayerCharacter) this.getCurrentMinion();
+            if (npc != null) {
+                AIMinionSkeleton ai = (AIMinionSkeleton) npc.ai;
+                //if (targetenemy != null) {
+                //    ai.setTarget(targetenemy);
+                //}
+                ai.setTarget(targetenemy);
+                if (!ai.hasTarget()) {
+                    sendMinion(npc, ai);
+                }
+
+            }
         }
+
+    }
+
+    private void sendMinion(NonPlayerCharacter npc, AIMinionSkeleton ai) {
+        if (this.gharacter.x_orientation > 0) {
+            npc.handleCommand(Command.MOVE_RIGHT);
+        } else {
+            npc.handleCommand(Command.MOVE_LEFT);
+        }
+
+        ai.approachTargetY(this.gharacter.position);
     }
 
     private String ability1Image(String filename) {
@@ -282,7 +368,9 @@ public class ClasstypeNecromancer extends Classtype {
         g.position.x += this.gharacter.x_orientation * ability2SpawnDistance;
         g.setParent(this.gharacter);
         //g.ally = true;
-        g.setClasstype(new ClasstypeDummySkeleton(g));
+        ClasstypeDummySkeleton ct = new ClasstypeDummySkeleton(g);
+        //ct.ability1Damage = 5;
+        g.setClasstype(ct);
         g.setAI(new AIMinionSkeleton(g));
 
         Game.instance.space.addConstruct(g);

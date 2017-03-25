@@ -69,7 +69,11 @@ public class Space {
             Gharacter g = (Gharacter) c;
             this.gharacters.add(g);
         }
-        this.constructs.sort(null);
+        try {
+            this.constructs.sort(null);//sort for view ordering
+        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException e) {
+            System.out.println("ERROR SORTING LIST - NONESSENTIAL");
+        }
     }
 
     public LinkedList<PlayerCharacter> getPlayers() {
@@ -186,6 +190,34 @@ public class Space {
             found_infraction = true;
         }
         return found_infraction;
+    }
+
+    /**
+     *
+     * Finds the character g is looking at.
+     *
+     * @param g character to check from
+     * @param allied - only trace characters with specified allegiance
+     * @param precision precision to check with
+     * @return character g is looking at
+     */
+    public Gharacter trace(Gharacter g, boolean allied, double precision) {
+        Spatial pos = g.position.copy();
+        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        while (!(outsideBounds(pos))) {
+            for (Construct c : this.getConstructs()) {
+                if (c instanceof Gharacter) {
+                    Gharacter b = (Gharacter) c;
+                    if (b.isAlly() == allied) {
+                        if (CollisionHandler.checkCollision(b.hitbox, pos)) {
+                            return b;
+                        }
+                    }
+                }
+            }
+            pos.x = pos.x + (g.x_orientation * precision);
+        }
+        return null;
     }
 
     /**

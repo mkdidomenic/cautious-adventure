@@ -51,7 +51,7 @@ public class AIMinionSkeleton extends AI {
         this.gharacter.setOrientation(-1);
     }
 
-    private void setTarget(Gharacter g) {
+    public void setTarget(Gharacter g) {
         this.target = g;
     }
 
@@ -67,6 +67,8 @@ public class AIMinionSkeleton extends AI {
         super.update();
         if (this.hasTarget()) {
             faceTarget();
+            this.approachTargetX(this.target.position);
+            this.approachTargetY(this.target.position);
             this.attackTargetIfInRange();
 
         } else if (this.hasParent()) {
@@ -75,7 +77,9 @@ public class AIMinionSkeleton extends AI {
         } else {
             this.gharacter.die();
         }
-        this.attackNearbyEnemy();
+        if (!this.hasTarget()) {
+            this.attackNearbyEnemy();
+        }
 
     }
 

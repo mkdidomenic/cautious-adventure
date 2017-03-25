@@ -49,7 +49,7 @@ public class Construct implements Comparable {
 
     public Construct parent;
 
-    public boolean ally;
+    private boolean ally;
 
     public Construct(Spatial position, Spatial size) {
         this.position = position;
@@ -81,6 +81,10 @@ public class Construct implements Comparable {
 
     public long ticksExisted() {
         return (GController.instance.getCurrentFrame() - this.starttick);
+    }
+
+    public void setAlly(boolean allegiance) {
+        this.ally = allegiance;
     }
 
     public void handleTimers() {

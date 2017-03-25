@@ -28,11 +28,7 @@ public class NonPlayerCharacter extends Gharacter {
 
     private void setupNPC() {
         this.ai = null;
-        this.ally = false;
-    }
-
-    public void setAlly(boolean ally) {
-        this.ally = ally;
+        this.setAlly(false);
     }
 
     public void setAI(AI ai) {
