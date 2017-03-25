@@ -22,6 +22,7 @@ public class Space {
 
     public Spatial dimensions;
     public LinkedList<Construct> constructs;
+    public LinkedList<Gharacter> gharacters;
     public LinkedList<PlayerCharacter> players;
 
     /**
@@ -33,6 +34,7 @@ public class Space {
     public Space(Spatial dimensions) {
         this.dimensions = dimensions;
         this.constructs = new LinkedList();
+        this.gharacters = new LinkedList();
         this.players = new LinkedList();
 
     }
@@ -63,11 +65,19 @@ public class Space {
 
     public void addConstruct(Construct c) {
         this.constructs.add(c);
+        if (c instanceof Gharacter) {
+            Gharacter g = (Gharacter) c;
+            this.gharacters.add(g);
+        }
         this.constructs.sort(null);
     }
 
     public LinkedList<PlayerCharacter> getPlayers() {
         return (LinkedList) this.players.clone();
+    }
+
+    public LinkedList<PlayerCharacter> getGharacters() {
+        return (LinkedList) this.gharacters.clone();
     }
 
     public LinkedList<Construct> getConstructs() {
@@ -105,6 +115,14 @@ public class Space {
         // remove everything that needs to be removed
         for (Construct c : removed) {
             this.constructs.remove(c);
+            if (c instanceof Gharacter) {
+                Gharacter g = (Gharacter) c;
+                this.gharacters.remove(g);
+                if (g instanceof PlayerCharacter) {
+                    PlayerCharacter p = (PlayerCharacter) g;
+                    this.players.remove(p);
+                }
+            }
         }
         // handle collisions
         consts = this.getConstructs();

@@ -156,6 +156,16 @@ public class Construct implements Comparable {
         }
     }
 
+    public boolean isInFrontOf(Spatial pos) {
+        if (this.position.x > pos.x) {
+            return (this.x_orientation < 0);
+        } else if (this.position.x < pos.x) {
+            return (this.x_orientation > 0);
+        } else {
+            return false;
+        }
+    }
+
     public boolean isAlly() {
         if (this.ally) {
             return true;

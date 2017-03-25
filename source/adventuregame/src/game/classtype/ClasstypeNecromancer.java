@@ -11,8 +11,10 @@ import game.constructs.StunBox;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import game.constructs.entity.character.NonPlayerCharacter;
+import game.constructs.entity.character.ai.AIMinionSkeleton;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import main.Command;
 import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
@@ -136,9 +138,10 @@ public class ClasstypeNecromancer extends Classtype {
                     this.initAbility4();
                     break;
             }
-        } else if ((i == 1)){
+        } else if ((i == 1)) {
             this.ability1Update();
         }
+
     }
 
     private boolean startAbility(int cooldown, double cost) {
@@ -181,6 +184,9 @@ public class ClasstypeNecromancer extends Classtype {
                 }
                 break;
         }
+        if (this.gharacter.state != State.ABILITY1) {
+            this.ability1Reset();
+        }
 
     }
 
@@ -191,19 +197,28 @@ public class ClasstypeNecromancer extends Classtype {
     public int ability1ExecFrame = 0;
     public int ability1ATime = 18;
     public int ability1ATimer = 0;
-    
-    private void ability1Update(){
-        if (this.ability1ATimer > 0){
+
+    private void ability1Update() {
+        if (this.ability1ATimer > 0) {
             this.ability1ATimer--;
-        } 
+        }
         this.gharacter.interruptActionTimer();
         this.gharacter.setActionTimer(this.ability1AT);
         this.gharacter.state = Gharacter.State.ABILITY1;
-        
+
+    }
+
+    private void ability1Reset() {
+        if (this.gharacter.state != State.ABILITY1) {
+            if (this.ability1ATimer > 0) {
+                System.out.println("tapped");
+                this.ability1ATimer = 0;
+            }
+        }
     }
 
     private void initAbility1() {
-        if (this.gharacter.state != Gharacter.State.ABILITY1){
+        if (this.gharacter.state != Gharacter.State.ABILITY1) {
             if (this.gharacter.setActionTimer(ability1AT) && (this.ability1ATimer == 0)) {
                 this.gharacter.state = Gharacter.State.ABILITY1;
                 this.ability1ATimer = this.ability1ATime;
@@ -213,7 +228,16 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void execAbility1() {
-        System.out.println("go");
+        for (NonPlayerCharacter npc : ((ArrayList<NonPlayerCharacter>) (this.minions.clone()))) {
+            if (this.gharacter.x_orientation > 0) {
+                npc.handleCommand(Command.MOVE_RIGHT);
+            } else {
+                npc.handleCommand(Command.MOVE_LEFT);
+            }
+            AIMinionSkeleton ai = (AIMinionSkeleton) npc.ai;
+            ai.approachTargetY(this.gharacter.position);
+
+        }
     }
 
     private String ability1Image(String filename) {
@@ -259,7 +283,7 @@ public class ClasstypeNecromancer extends Classtype {
         g.setParent(this.gharacter);
         //g.ally = true;
         g.setClasstype(new ClasstypeDummySkeleton(g));
-        //g.setAI(new AISimple(g));
+        g.setAI(new AIMinionSkeleton(g));
 
         Game.instance.space.addConstruct(g);
         this.minions.add(g);
