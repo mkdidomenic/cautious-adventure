@@ -230,7 +230,7 @@ public class ClasstypeNecromancer extends Classtype {
                 }
                 break;
             case ABILITY3:
-                if (this.gharacter.actionTimer == this.ability3ExecFrame) {
+                if (this.gharacter.actionTimer < this.ability3ExecFrame) {
                     this.execAbility3();
                 }
                 break;
@@ -422,13 +422,12 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void execAbility3() {
-        Gharacter target = Game.instance.space.trace(this.gharacter,
-                                                     Gharacter.DEFAULT_SIZE.x / 2);
-        if (target != null) {
-            this.gharacter.position.set(target.position);
-            this.gharacter.position.x += target.x_orientation * -1 * (this.gharacter.size.x / 2 + target.size.x / 2);
-            this.gharacter.x_orientation = target.x_orientation;
-        }
+        this.gharacter.interruptActionTimer();
+        this.gharacter.setActionTimer(this.ability3ExecFrame);
+        Gharacter v = Game.instance.space.trace(this.gharacter,
+                                                !this.gharacter.isAlly(), 10,
+                                                1);
+        System.out.println(v);
     }
 
     private String ability3Image(String filename) {

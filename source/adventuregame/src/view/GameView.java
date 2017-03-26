@@ -123,16 +123,20 @@ public class GameView extends JFrame {
         } else {
             PlayerCharacter pc = this.game.space.getPlayerCharacter(
                     this.game.player);
-            x0 = this.spacePanel.mapX(pc.position.x);
-            x0 = x0 - this.viewport.getWidth() / 2;
-            if (Math.abs(x0 - this.viewport.getViewPosition().x) <= scrollAmount) {
-                x0 = this.viewport.getViewPosition().x;
-            } else if (x0 > this.viewport.getViewPosition().x) {
-                x0 = this.viewport.getViewPosition().x + scrollAmount;
-            } else if (x0 < this.viewport.getViewPosition().x) {
-                x0 = this.viewport.getViewPosition().x - scrollAmount;
+            if (pc != null) {
+                x0 = this.spacePanel.mapX(pc.position.x);
+                x0 = x0 - this.viewport.getWidth() / 2;
+                if (Math.abs(x0 - this.viewport.getViewPosition().x) <= scrollAmount) {
+                    x0 = this.viewport.getViewPosition().x;
+                } else if (x0 > this.viewport.getViewPosition().x) {
+                    x0 = this.viewport.getViewPosition().x + scrollAmount;
+                } else if (x0 < this.viewport.getViewPosition().x) {
+                    x0 = this.viewport.getViewPosition().x - scrollAmount;
+                } else {
+                    x0 = this.viewport.getViewPosition().x;
+                }
             } else {
-                x0 = this.viewport.getViewPosition().x;
+                x0 = (this.spacePanel.getWidth() - this.viewport.getWidth()) / 2;
             }
         }
         if (x0 < 0) {

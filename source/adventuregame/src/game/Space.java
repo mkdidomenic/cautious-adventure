@@ -11,6 +11,7 @@ import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import utility.CollisionHandler;
 import utility.Spatial;
 
@@ -71,7 +72,7 @@ public class Space {
         }
         try {
             this.constructs.sort(null);//sort for view ordering
-        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException e) {
+        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException | NoSuchElementException e) {
             System.out.println("ERROR SORTING LIST - NONESSENTIAL");
         }
     }
@@ -198,6 +199,37 @@ public class Space {
      *
      * @param g character to check from
      * @param allied - only trace characters with specified allegiance
+     * @param limit - distance limited to tracing
+     * @param precision precision to check with
+     * @return character g is looking at
+     */
+    public Gharacter trace(Gharacter g, boolean allied, double limit,
+                           double precision) {
+        Spatial pos = g.position.copy();
+        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        double initialX = pos.x;
+        while ((!(outsideBounds(pos))) && (Math.abs(pos.x - initialX) < limit)) {
+            for (Construct c : this.getConstructs()) {
+                if (c instanceof Gharacter) {
+                    Gharacter b = (Gharacter) c;
+                    if (b.isAlly() == allied) {
+                        if (CollisionHandler.checkCollision(b.hitbox, pos)) {
+                            return b;
+                        }
+                    }
+                }
+            }
+            pos.x = pos.x + (g.x_orientation * precision);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * Finds the character g is looking at.
+     *
+     * @param g character to check from
+     * @param allied - only trace characters with specified allegiance
      * @param precision precision to check with
      * @return character g is looking at
      */
@@ -212,6 +244,33 @@ public class Space {
                         if (CollisionHandler.checkCollision(b.hitbox, pos)) {
                             return b;
                         }
+                    }
+                }
+            }
+            pos.x = pos.x + (g.x_orientation * precision);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * Finds the character g is looking at.
+     *
+     * @param g character to check from
+     * @param limit
+     * @param precision precision to check with
+     * @return character g is looking at
+     */
+    public Gharacter trace(Gharacter g, double limit, double precision) {
+        Spatial pos = g.position.copy();
+        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        double initialX = pos.x;
+        while (!(outsideBounds(pos)) && (Math.abs(pos.x - initialX) < limit)) {
+            for (Construct c : this.getConstructs()) {
+                if (c instanceof Gharacter) {
+                    Gharacter b = (Gharacter) c;
+                    if (CollisionHandler.checkCollision(b.hitbox, pos)) {
+                        return b;
                     }
                 }
             }
