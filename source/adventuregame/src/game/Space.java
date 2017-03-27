@@ -206,7 +206,7 @@ public class Space {
     public Gharacter trace(Gharacter g, boolean allied, double limit,
                            double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
         double initialX = pos.x;
         while ((!(outsideBounds(pos))) && (Math.abs(pos.x - initialX) < limit)) {
             for (Construct c : this.getConstructs()) {
@@ -214,6 +214,7 @@ public class Space {
                     Gharacter b = (Gharacter) c;
                     if (b.isAlly() == allied) {
                         if (CollisionHandler.checkCollision(b.hitbox, pos)) {
+                            System.out.println(pos);
                             return b;
                         }
                     }
@@ -235,7 +236,7 @@ public class Space {
      */
     public Gharacter trace(Gharacter g, boolean allied, double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
         while (!(outsideBounds(pos))) {
             for (Construct c : this.getConstructs()) {
                 if (c instanceof Gharacter) {
@@ -263,7 +264,7 @@ public class Space {
      */
     public Gharacter trace(Gharacter g, double limit, double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
         double initialX = pos.x;
         while (!(outsideBounds(pos)) && (Math.abs(pos.x - initialX) < limit)) {
             for (Construct c : this.getConstructs()) {
@@ -289,7 +290,7 @@ public class Space {
      */
     public Gharacter trace(Gharacter g, double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * (g.size.x + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
         while (!(outsideBounds(pos))) {
             for (Construct c : this.getConstructs()) {
                 if (c instanceof Gharacter) {

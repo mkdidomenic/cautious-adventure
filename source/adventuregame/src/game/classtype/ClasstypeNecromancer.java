@@ -415,8 +415,10 @@ public class ClasstypeNecromancer extends Classtype {
     public int ability3ActingTime = 0;
 
     public double ability3Damage = 1;
-    public double ability3Range = 40;
-    public double ability3speed = .2;
+    public double ability3heal = 0.1 * ability3Damage;
+    public int ability3Stun = 2;
+    public double ability3Range = 20;
+    public double ability3speed = 1;
 
     private void initAbility3() {
         if (this.ability3CDTimer == 0) {
@@ -437,26 +439,32 @@ public class ClasstypeNecromancer extends Classtype {
     private void execAbility3() {
         this.gharacter.interruptActionTimer();
         this.gharacter.setActionTimer(this.ability3ExecFrame);
-        this.ability3ActingTime++;
         double range;
         int maxTravelFrame = (int)(this.ability3Range / this.ability3speed);
-        range = (int)(((double)this.ability3ActingTime) / ((double)maxTravelFrame) * ((double)this.ability3Range));
+        range = (((double)this.ability3ActingTime) / ((double)maxTravelFrame) * ((double)this.ability3Range));
+        System.out.println(this.gharacter.position.x);
+        System.out.println(range + "\n");
         Gharacter v = Game.instance.space.trace(this.gharacter,
                                                 !this.gharacter.isAlly(), range,
                                                 0.2);
         if (v != null){
             if (v.vulnerable(this.gharacter)){
                 v.damage(this.ability3Damage);
+                v.stun(this.ability3Stun);
                 range = Math.abs(v.position.x - this.gharacter.position.x);
             }
+        } else if (this.ability3ActingTime < maxTravelFrame){
+            this.ability3ActingTime++;
         }
                 
         // image
         Spatial iPos = this.gharacter.position.copy();
-        if (range < 0.1){ range = 0.1;}
+        iPos.z = iPos.z + this.gharacter.size.z / 2;
+        if (range < 1.01){ range = 1.01;}
         iPos.x = iPos.x + (range * this.gharacter.x_orientation)/2;
         Spatial iSize = new Spatial(range,2,4);
-        ImageBox ib = new ImageBox(iPos, iSize, 1, this.gharacter.x_orientation);
+        int direction = (Game.instance.random.nextDouble() > 0.5) ? 1 : -1;
+        ImageBox ib = new ImageBox(iPos, iSize, 1, direction);
         ib.setImage("necromancer", "DRAIN");
         Game.instance.space.addConstruct(ib);
     }
