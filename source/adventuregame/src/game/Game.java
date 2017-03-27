@@ -16,6 +16,7 @@ import game.constructs.entity.character.NonPlayerCharacter;
 import game.constructs.entity.character.PlayerCharacter;
 import game.constructs.entity.character.ai.AI;
 import game.constructs.entity.character.ai.AIDummySkeleton;
+import game.constructs.entity.character.ai.AISimple;
 import java.util.ArrayList;
 import java.util.Random;
 import main.Command;
@@ -85,10 +86,10 @@ public class Game {
         //npc.setClasstype(new ClasstypeViking(npc));
         //npc.setClasstype(new ClasstypeAssassin(npc));
         npc.setClasstype(new ClasstypeDummySkeleton(npc));
-        //AISimple ai = new AISimple(npc);
+        AISimple ai = new AISimple(npc);
         //ai.action = Command.ACTION1;
         //AISmack ai = new AISmack(npc);
-        AIDummySkeleton ai = new AIDummySkeleton(npc);
+        //AIDummySkeleton ai = new AIDummySkeleton(npc);
         AI gai = (AI) ai;
         npc.setAI(gai);
         Construct con = new Construct(new Spatial(10, 10, 0),

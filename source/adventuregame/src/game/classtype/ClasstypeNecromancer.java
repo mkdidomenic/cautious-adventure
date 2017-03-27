@@ -196,9 +196,13 @@ public class ClasstypeNecromancer extends Classtype {
             }
         } else if ((i == 1)) {
             this.ability1Update();
+        } else if ((i == 3)){
+            ability3update(); 
         }
 
     }
+
+    
 
     private boolean startAbility(int cooldown, double cost) {
         return (this.gharacter.setActionTimer(cooldown) && this.gharacter.useEnergy(
@@ -230,9 +234,7 @@ public class ClasstypeNecromancer extends Classtype {
                 }
                 break;
             case ABILITY3:
-                if (this.gharacter.actionTimer < this.ability3ExecFrame) {
-                    this.execAbility3();
-                }
+                
                 break;
             case ABILITY4:
                 if (this.gharacter.actionTimer == this.ability4ExecFrame) {
@@ -409,25 +411,54 @@ public class ClasstypeNecromancer extends Classtype {
     public int ability3ExecFrame = 2;
     public int ability3CD = 30 + ability3AT;
     public int ability3CDTimer = 0;
+    
+    public int ability3ActingTime = 0;
 
-    public double ability3Damage = 15;
+    public double ability3Damage = 1;
+    public double ability3Range = 40;
+    public double ability3speed = .2;
 
     private void initAbility3() {
         if (this.ability3CDTimer == 0) {
             if (this.startAbility(this.ability3AT, this.ability3Cost)) {
                 this.gharacter.state = Gharacter.State.ABILITY3;
                 this.ability3CDTimer = this.ability3CD;
+                this.ability3ActingTime = 0;
             }
+        }
+    }
+    
+    private void ability3update() {
+        if (this.gharacter.actionTimer < this.ability3ExecFrame) {
+            this.execAbility3();
         }
     }
 
     private void execAbility3() {
         this.gharacter.interruptActionTimer();
         this.gharacter.setActionTimer(this.ability3ExecFrame);
+        this.ability3ActingTime++;
+        double range;
+        int maxTravelFrame = (int)(this.ability3Range / this.ability3speed);
+        range = (int)(((double)this.ability3ActingTime) / ((double)maxTravelFrame) * ((double)this.ability3Range));
         Gharacter v = Game.instance.space.trace(this.gharacter,
-                                                !this.gharacter.isAlly(), 10,
-                                                1);
-        System.out.println(v);
+                                                !this.gharacter.isAlly(), range,
+                                                0.2);
+        if (v != null){
+            if (v.vulnerable(this.gharacter)){
+                v.damage(this.ability3Damage);
+                range = Math.abs(v.position.x - this.gharacter.position.x);
+            }
+        }
+                
+        // image
+        Spatial iPos = this.gharacter.position.copy();
+        if (range < 0.1){ range = 0.1;}
+        iPos.x = iPos.x + (range * this.gharacter.x_orientation)/2;
+        Spatial iSize = new Spatial(range,2,4);
+        ImageBox ib = new ImageBox(iPos, iSize, 1, this.gharacter.x_orientation);
+        ib.setImage("necromancer", "DRAIN");
+        Game.instance.space.addConstruct(ib);
     }
 
     private String ability3Image(String filename) {
