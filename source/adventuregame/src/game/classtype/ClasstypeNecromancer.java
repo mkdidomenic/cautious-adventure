@@ -195,9 +195,9 @@ public class ClasstypeNecromancer extends Classtype {
                     this.initAbility4();
                     break;
             }
-        } else if ((i == 1)) {
+        } else if ((i == 1) && (this.gharacter.state == State.ABILITY1)) {
             this.ability1Update();
-        } else if ((i == 3)){
+        } else if ((i == 3) && (this.gharacter.state == State.ABILITY3)){
             ability3update(); 
         }
 

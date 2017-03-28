@@ -27,6 +27,9 @@ public class GController {
 
     public GController() {
         GController.instance = this;
+    }
+
+    public void run() {
         this.game = new Game();
         this.currentFrame = 0;
 
@@ -36,10 +39,7 @@ public class GController {
         this.keyHandler = new KeyHandler(this.view);
 
         this.game.addPlayer("Mike");
-
-    }
-
-    public void run() {
+        
         this.running = true;
         double starttime;
         double endtime;
