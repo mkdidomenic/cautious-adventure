@@ -86,10 +86,10 @@ public class Game {
         //npc.setClasstype(new ClasstypeViking(npc));
         //npc.setClasstype(new ClasstypeAssassin(npc));
         npc.setClasstype(new ClasstypeDummySkeleton(npc));
-        AISimple ai = new AISimple(npc);
+        //AISimple ai = new AISimple(npc);
         //ai.action = Command.ACTION1;
         //AISmack ai = new AISmack(npc);
-        //AIDummySkeleton ai = new AIDummySkeleton(npc);
+        AIDummySkeleton ai = new AIDummySkeleton(npc);
         AI gai = (AI) ai;
         npc.setAI(gai);
         Construct con = new Construct(new Spatial(10, 10, 0),
@@ -149,6 +149,8 @@ public class Game {
         ct = new ClasstypeViking(g);
         ct = new ClasstypeDummySkeleton(g);
         ct = new ClasstypeNecromancer(g);
+        AI ai = new AISimple(g);
+        ai = new AIDummySkeleton(g);
 
     }
 

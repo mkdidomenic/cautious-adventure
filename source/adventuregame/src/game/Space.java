@@ -72,7 +72,7 @@ public class Space {
         }
         try {
             this.constructs.sort(null);//sort for view ordering
-        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException | NoSuchElementException e) {
+        } catch (Exception e) {
             System.out.println("ERROR SORTING LIST - NONESSENTIAL");
         }
     }
@@ -103,7 +103,7 @@ public class Space {
         //System.out.println("SPACE: " + this.getConstructs());
         try {
             this.constructs.sort(null);//sort for view ordering
-        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException e) {
+        } catch (Exception e) {
             System.out.println("ERROR SORTING LIST - NONESSENTIAL");
         }
         //setup update loop
@@ -206,15 +206,14 @@ public class Space {
     public Gharacter trace(Gharacter g, boolean allied, double limit,
                            double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
         double initialX = pos.x;
+        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
         while ((!(outsideBounds(pos))) && (Math.abs(pos.x - initialX) < limit)) {
             for (Construct c : this.getConstructs()) {
                 if (c instanceof Gharacter) {
                     Gharacter b = (Gharacter) c;
                     if (b.isAlly() == allied) {
                         if (CollisionHandler.checkCollision(b.hitbox, pos)) {
-                            System.out.println(pos);
                             return b;
                         }
                     }

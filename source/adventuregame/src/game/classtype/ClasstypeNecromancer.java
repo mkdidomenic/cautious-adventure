@@ -245,6 +245,9 @@ public class ClasstypeNecromancer extends Classtype {
         if (this.gharacter.state != State.ABILITY1) {
             this.ability1Reset();
         }
+        if (this.gharacter.state != State.ABILITY3) {
+            this.ability3Reset();
+        }
 
     }
 
@@ -348,7 +351,7 @@ public class ClasstypeNecromancer extends Classtype {
      * Ability 2
      */
     public int ability2AT = 24;
-    public double ability2Cost = 20;
+    public double ability2Cost = 60;
     public int ability2ExecFrame = 2;
     public int ability2CD = 2 + ability2AT;
     public int ability2CDTimer = 0;
@@ -407,17 +410,17 @@ public class ClasstypeNecromancer extends Classtype {
      * Ability 3
      */
     public int ability3AT = 20;
-    public double ability3Cost = 40;
+    public double ability3Cost = 1;
     public int ability3ExecFrame = 2;
     public int ability3CD = 30 + ability3AT;
     public int ability3CDTimer = 0;
     
     public int ability3ActingTime = 0;
 
-    public double ability3Damage = 1;
-    public double ability3heal = 0.1 * ability3Damage;
+    public double ability3Damage = 0.15;
+    public double ability3heal = 1.0 * ability3Damage;
     public int ability3Stun = 2;
-    public double ability3Range = 20;
+    public double ability3Range = 25;
     public double ability3speed = 1;
 
     private void initAbility3() {
@@ -437,21 +440,32 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void execAbility3() {
+        if (this.gharacter.energy < this.ability3Cost){
+            return;
+        }
+        this.gharacter.energy -= this.ability3Cost;
         this.gharacter.interruptActionTimer();
         this.gharacter.setActionTimer(this.ability3ExecFrame);
         double range;
         int maxTravelFrame = (int)(this.ability3Range / this.ability3speed);
         range = (((double)this.ability3ActingTime) / ((double)maxTravelFrame) * ((double)this.ability3Range));
-        System.out.println(this.gharacter.position.x);
-        System.out.println(range + "\n");
+        //System.out.println(this.gharacter.position.x);
+        //System.out.println(range + "\n");
         Gharacter v = Game.instance.space.trace(this.gharacter,
                                                 !this.gharacter.isAlly(), range,
                                                 0.2);
+        
+        
         if (v != null){
             if (v.vulnerable(this.gharacter)){
                 v.damage(this.ability3Damage);
                 v.stun(this.ability3Stun);
-                range = Math.abs(v.position.x - this.gharacter.position.x);
+                this.ability3MinionHeal();
+                if ((this.gharacter.position.x < v.position.x) != ((this.gharacter.position.x + range) < v.position.x)){
+                    range = Math.abs(v.position.x - this.gharacter.position.x);
+                } else if (this.ability3ActingTime < maxTravelFrame){
+                    this.ability3ActingTime++;
+                }
             }
         } else if (this.ability3ActingTime < maxTravelFrame){
             this.ability3ActingTime++;
@@ -461,12 +475,33 @@ public class ClasstypeNecromancer extends Classtype {
         Spatial iPos = this.gharacter.position.copy();
         iPos.z = iPos.z + this.gharacter.size.z / 2;
         if (range < 1.01){ range = 1.01;}
-        iPos.x = iPos.x + (range * this.gharacter.x_orientation)/2;
-        Spatial iSize = new Spatial(range,2,4);
+        iPos.x = iPos.x + ((range + this.gharacter.size.x / 4) * this.gharacter.x_orientation)/2;
+        if (range > this.gharacter.size.x / 4){
+            range -= this.gharacter.size.x / 4;
+        }
+        Spatial iSize = new Spatial(range, 2, 4);
         int direction = (Game.instance.random.nextDouble() > 0.5) ? 1 : -1;
         ImageBox ib = new ImageBox(iPos, iSize, 1, direction);
         ib.setImage("necromancer", "DRAIN");
         Game.instance.space.addConstruct(ib);
+    }
+    
+    private void ability3MinionHeal(){
+        if (this.minions.size() > 0){
+            for (NonPlayerCharacter npc : ((ArrayList<NonPlayerCharacter>) (this.minions.clone()))) {
+                npc.heal(this.ability3heal);
+                ImageBox ib = new ImageBox(npc.position, npc.size, 5, npc.x_orientation);
+                ib.setImage("necromancer", "DARKHEAL");
+                Game.instance.space.addConstruct(ib);
+
+            }
+        }
+    }
+    
+    private void ability3Reset(){
+        if (this.gharacter.state != State.ABILITY3){
+            this.ability3ActingTime = 0;
+        }
     }
 
     private String ability3Image(String filename) {
