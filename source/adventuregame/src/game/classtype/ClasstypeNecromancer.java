@@ -8,6 +8,7 @@ package game.classtype;
 import game.Game;
 import game.constructs.ImageBox;
 import game.constructs.StunBox;
+import game.constructs.entity.EntityHaunter;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import game.constructs.entity.character.NonPlayerCharacter;
@@ -351,7 +352,7 @@ public class ClasstypeNecromancer extends Classtype {
      * Ability 2
      */
     public int ability2AT = 24;
-    public double ability2Cost = 60;
+    public double ability2Cost = 80;
     public int ability2ExecFrame = 2;
     public int ability2CD = 2 + ability2AT;
     public int ability2CDTimer = 0;
@@ -410,7 +411,7 @@ public class ClasstypeNecromancer extends Classtype {
      * Ability 3
      */
     public int ability3AT = 20;
-    public double ability3Cost = 1;
+    public double ability3Cost = 1.5;
     public int ability3ExecFrame = 2;
     public int ability3CD = 30 + ability3AT;
     public int ability3CDTimer = 0;
@@ -525,9 +526,9 @@ public class ClasstypeNecromancer extends Classtype {
     /**
      * Ability 4
      */
-    public int ability4AT = 8;
-    public double ability4Cost = 40;
-    public int ability4ExecFrame = 6;
+    public int ability4AT = 15;
+    public double ability4Cost = 35;
+    public int ability4ExecFrame = 3;
     public int ability4CD = 60 + ability4AT;
     public int ability4CDTimer = 0;
 
@@ -541,24 +542,22 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void execAbility4() {
-        StunBox sb = new StunBox(
-                this.gharacter.position.copy(),
-                new Spatial(4, 2, 10));
-        sb.setParent(this.gharacter);
-        sb.setStun(30);
-        sb.setDamage(2);
-        sb.position.x += this.gharacter.x_orientation * (this.gharacter.size.x / 2 + sb.size.x / 2 + 0.01);
-        //System.out.println(sb);
-        Game.instance.space.addConstruct(sb);
+        Spatial pos = this.gharacter.position.copy();
+        pos.x += this.gharacter.size.x / 2 * this.gharacter.x_orientation;
+        pos.z += this.gharacter.size.z / 2;
+        Spatial size = new Spatial(6,2,6);
+        int lifetime = 300;
+        EntityHaunter h = new EntityHaunter(pos, size, lifetime, this.gharacter);
+        Game.instance.space.addConstruct(h);
     }
 
     private String ability4Image(String filename) {
         // ABILITY4
         if (this.gharacter.state == State.ABILITY4) {
             int f = this.gharacter.actionTimer;
-            if (f > 6) {
+            if (f > 9) {
                 f = 0;
-            } else if (f > 4) {
+            } else if (f > 3) {
                 f = 1;
             } else {
                 f = 2;
