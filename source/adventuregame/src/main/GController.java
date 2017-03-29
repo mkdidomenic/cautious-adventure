@@ -21,6 +21,8 @@ public class GController {
     public GameView view;
     public KeyHandler keyHandler;
 
+    public boolean isHost;
+
     public boolean friendlyFire;
 
     public final static int FPS = 30; // frames per second
@@ -34,6 +36,7 @@ public class GController {
         GController.instance = this;
         this.playerandct = new ArrayList();
         this.friendlyFire = false;
+        this.isHost = true;
     }
 
     public void setup() {
@@ -69,12 +72,18 @@ public class GController {
     }
 
     public void update() {
-        this.handleKeys();
-        this.handleCommand();
-        this.game.update();
-        this.view.update();
-        if (this.game.debug != this.view.spacePanel.debug) {
-            this.view.spacePanel.debug = this.game.debug;
+        if (this.isHost) {
+            this.handleLocalCommand();
+            this.game.update();
+            this.view.update();
+            if (this.game.debug != this.view.spacePanel.debug) {
+                this.view.spacePanel.debug = this.game.debug;
+            }
+        } else {
+            this.view.update();
+            if (this.game.debug != this.view.spacePanel.debug) {
+                this.view.spacePanel.debug = this.game.debug;
+            }
         }
 
     }
@@ -83,22 +92,7 @@ public class GController {
         return this.currentFrame;
     }
 
-    public void handleKeys() {
-
-        //this.game.
-        boolean debug = true;
-        if (debug) {
-            //boolean b = this.keyHandler.haskey();
-            //System.out.println(b);
-            //System.out.println(this.keyHandler.getKeys());
-            //if (this.keyHandler.haskey()) {
-            //    System.out.println("lkjadsf");
-            //    System.out.println(this.keyHandler.currentkeys);
-            //}
-        }
-    }
-
-    public void handleCommand() {
+    public void handleLocalCommand() {
         for (char key : this.keyHandler.getKeys()) {
             game.handleCommand(0, Command.map(key));
 

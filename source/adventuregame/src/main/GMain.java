@@ -5,8 +5,6 @@
  */
 package main;
 
-import utility.NetworkHandler;
-
 /**
  *
  * @author Mike
@@ -17,10 +15,9 @@ public class GMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //GClient client = new GClient();
-        //client.start();
+        GClient client = new GClient();
+        client.start();
 
-        NetworkHandler.test();
     }
 
 }
