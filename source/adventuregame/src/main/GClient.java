@@ -45,7 +45,6 @@ public class GClient {
 
     public void run() {
         this.controller.setup();
-        System.out.println(this.controller.game.friendlyFire);
         this.controller.run();
     }
 

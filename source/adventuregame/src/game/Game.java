@@ -17,6 +17,7 @@ import game.constructs.entity.character.PlayerCharacter;
 import game.constructs.entity.character.ai.AI;
 import game.constructs.entity.character.ai.AIDummySkeleton;
 import game.constructs.entity.character.ai.AISimple;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import main.Command;
@@ -26,7 +27,7 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class Game {
+public class Game implements Serializable {
 
     public ArrayList<Player> players;
     public Player player;
