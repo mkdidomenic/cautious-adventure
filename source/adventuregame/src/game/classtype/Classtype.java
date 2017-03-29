@@ -7,12 +7,13 @@ package game.classtype;
 
 import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
  *
  * @author Mike
  */
-public abstract class Classtype {
+public abstract class Classtype implements Serializable {
 
     public Gharacter gharacter;
 

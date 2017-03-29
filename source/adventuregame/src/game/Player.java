@@ -5,11 +5,13 @@
  */
 package game;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Mike
  */
-public class Player {
+public class Player implements Serializable {
 
     public static int num_players = 0;
 

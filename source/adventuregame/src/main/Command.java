@@ -5,11 +5,13 @@
  */
 package main;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Mike
  */
-public enum Command {
+public enum Command implements Serializable {
 
     NULL(false),
     MOVE_UP(true),

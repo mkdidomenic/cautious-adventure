@@ -5,11 +5,13 @@
  */
 package utility;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Mike
  */
-public class Spatial {
+public class Spatial implements Serializable {
 
     public double x;
     public double y;

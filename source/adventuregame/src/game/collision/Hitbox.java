@@ -5,13 +5,14 @@
  */
 package game.collision;
 
+import java.io.Serializable;
 import utility.Spatial;
 
 /**
  *
  * @author Mike
  */
-public class Hitbox {
+public class Hitbox implements Serializable {
 
     public Spatial position;
     public Spatial size;

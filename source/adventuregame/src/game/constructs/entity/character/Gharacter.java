@@ -11,6 +11,7 @@ import game.classtype.ClasstypeAssassin;
 import game.constructs.Construct;
 import game.constructs.entity.Entity;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import main.Command;
 import main.GController;
@@ -373,7 +374,7 @@ public class Gharacter extends Entity {
         this.classtype.ability(i);
     }
 
-    public enum State {
+    public enum State implements Serializable {
         IDLE,
         MOVING,
         JUMPING,

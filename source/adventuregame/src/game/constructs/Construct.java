@@ -9,6 +9,7 @@ import game.Game;
 import game.collision.Hitbox;
 import game.constructs.entity.character.Gharacter;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import main.GController;
 import utility.ImageHandler;
@@ -18,7 +19,7 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class Construct implements Comparable {
+public class Construct implements Comparable, Serializable {
 
     // space handling things
     public Spatial position;

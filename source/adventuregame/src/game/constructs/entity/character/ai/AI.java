@@ -7,6 +7,7 @@ package game.constructs.entity.character.ai;
 
 import game.Game;
 import game.constructs.entity.character.Gharacter;
+import java.io.Serializable;
 import java.util.Random;
 import main.GController;
 
@@ -14,7 +15,7 @@ import main.GController;
  *
  * @author Mike
  */
-public abstract class AI {
+public abstract class AI implements Serializable {
 
     public int timer;
     public int timerMax;

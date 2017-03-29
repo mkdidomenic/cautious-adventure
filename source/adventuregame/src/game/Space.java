@@ -8,10 +8,9 @@ package game;
 import game.constructs.Construct;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.PlayerCharacter;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import utility.CollisionHandler;
 import utility.Spatial;
 
@@ -19,7 +18,7 @@ import utility.Spatial;
  *
  * @author Mike
  */
-public class Space {
+public class Space implements Serializable {
 
     public Spatial dimensions;
     public LinkedList<Construct> constructs;
@@ -207,7 +206,7 @@ public class Space {
                            double precision) {
         Spatial pos = g.position.copy();
         double initialX = pos.x;
-        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x / 2) + precision));
         while ((!(outsideBounds(pos))) && (Math.abs(pos.x - initialX) < limit)) {
             for (Construct c : this.getConstructs()) {
                 if (c instanceof Gharacter) {
@@ -235,7 +234,7 @@ public class Space {
      */
     public Gharacter trace(Gharacter g, boolean allied, double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x / 2) + precision));
         while (!(outsideBounds(pos))) {
             for (Construct c : this.getConstructs()) {
                 if (c instanceof Gharacter) {
@@ -263,7 +262,7 @@ public class Space {
      */
     public Gharacter trace(Gharacter g, double limit, double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x / 2) + precision));
         double initialX = pos.x;
         while (!(outsideBounds(pos)) && (Math.abs(pos.x - initialX) < limit)) {
             for (Construct c : this.getConstructs()) {
@@ -289,7 +288,7 @@ public class Space {
      */
     public Gharacter trace(Gharacter g, double precision) {
         Spatial pos = g.position.copy();
-        pos.x = pos.x + (g.x_orientation * ((g.size.x/2) + precision));
+        pos.x = pos.x + (g.x_orientation * ((g.size.x / 2) + precision));
         while (!(outsideBounds(pos))) {
             for (Construct c : this.getConstructs()) {
                 if (c instanceof Gharacter) {

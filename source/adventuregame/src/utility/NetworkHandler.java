@@ -106,7 +106,7 @@ public class NetworkHandler {
                                                                     ex);
                     }
                     Game g = (Game) SEND;
-                    //g.addPlayer("mikey", "ka bam");
+                    g.addPlayer("mikey", "ka bam");
                 }
             }
         };
