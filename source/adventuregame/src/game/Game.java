@@ -56,7 +56,7 @@ public class Game {
         this.setupLevel();
     }
 
-    public void addPlayer(String name) {
+    public void addPlayer(String name, String classtype) {
         Player p = new Player(name);
         if (this.players.isEmpty()) {
             this.player = p;
@@ -68,10 +68,7 @@ public class Game {
                                       0);
             //Spatial size = new Spatial(100, 100, 10);
             PlayerCharacter pc = new PlayerCharacter(p, pos);
-            //pc.setClasstype(new ClasstypeAssassin(pc));
-            //pc.setClasstype(new ClasstypeViking(pc));
-            //pc.setClasstype(new ClasstypeDummySkeleton(pc));
-            pc.setClasstype(new ClasstypeNecromancer(pc));
+            game.classtype.Classtype.setClasstype(pc, classtype);
             this.space.addPlayerC(pc);
         }
 

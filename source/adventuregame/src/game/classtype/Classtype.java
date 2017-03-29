@@ -20,6 +20,21 @@ public abstract class Classtype {
         this.gharacter = g;
     }
 
+    public static void setClasstype(Gharacter g, String ctype) {
+        if (ctype.equals("Assassin")) {
+            g.setClasstype(new ClasstypeAssassin(g));
+        }
+        if (ctype.equals("Viking")) {
+            g.setClasstype(new ClasstypeViking(g));
+        }
+        if (ctype.equals("DummySkeleton")) {
+            g.setClasstype(new ClasstypeDummySkeleton(g));
+        }
+        if (ctype.equals("Necromancer")) {
+            g.setClasstype(new ClasstypeNecromancer(g));
+        }
+    }
+
     /**
      * setup the attributes for each specific class
      */

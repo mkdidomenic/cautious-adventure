@@ -15,8 +15,8 @@ public class GMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GController controller = new GController();
-        controller.run();
+        GClient client = new GClient();
+        client.start();
     }
 
 }

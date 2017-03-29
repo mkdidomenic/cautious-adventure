@@ -6,6 +6,7 @@
 package main;
 
 import game.Game;
+import java.util.ArrayList;
 import utility.KeyHandler;
 import view.GameView;
 
@@ -25,11 +26,14 @@ public class GController {
     public static GController instance;
     private long currentFrame;
 
+    public ArrayList<ArrayList<String>> playerandct;
+
     public GController() {
         GController.instance = this;
+        playerandct = new ArrayList();
     }
 
-    public void run() {
+    public void setup() {
         this.game = new Game();
         this.currentFrame = 0;
 
@@ -38,8 +42,12 @@ public class GController {
         this.view = new GameView(this.game);
         this.keyHandler = new KeyHandler(this.view);
 
-        this.game.addPlayer("Mike");
-        
+        for (ArrayList a : this.playerandct) {
+            this.game.addPlayer((String) a.get(0), (String) a.get(1));
+        }
+    }
+
+    public void run() {
         this.running = true;
         double starttime;
         double endtime;
