@@ -37,6 +37,7 @@ public class GClient {
         al.add(pname);
         al.add(ct);
         this.controller.playerandct.add(al);
+        this.controller.friendlyFire = this.startMenu.getFriendlyFireRadio();
         this.startMenu.setVisible(false);
         this.startMenu.dispose();
         this.run();
@@ -44,6 +45,7 @@ public class GClient {
 
     public void run() {
         this.controller.setup();
+        System.out.println(this.controller.game.friendlyFire);
         this.controller.run();
     }
 

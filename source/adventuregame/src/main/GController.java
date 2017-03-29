@@ -21,6 +21,8 @@ public class GController {
     public GameView view;
     public KeyHandler keyHandler;
 
+    public boolean friendlyFire;
+
     public final static int FPS = 30; // frames per second
     public final static double SPF = 1 / ((double) FPS); // seconds per frame
     public static GController instance;
@@ -30,12 +32,15 @@ public class GController {
 
     public GController() {
         GController.instance = this;
-        playerandct = new ArrayList();
+        this.playerandct = new ArrayList();
+        this.friendlyFire = false;
     }
 
     public void setup() {
         this.game = new Game();
         this.currentFrame = 0;
+
+        this.game.friendlyFire = this.friendlyFire;
 
         this.game.setupSpace();
 
