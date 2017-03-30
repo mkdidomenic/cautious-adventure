@@ -15,8 +15,25 @@ public class GMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GClient client = new GClient();
-        client.start();
+        Thread t1;
+        t1 = new Thread() {
+            @Override
+            public void run() {
+                GClient client1 = new GClient();
+                client1.start();
+            }
+        };
+        t1.start();
+
+        Thread t2;
+        t2 = new Thread() {
+            @Override
+            public void run() {
+                GClient client2 = new GClient();
+                client2.start();
+            }
+        };
+        t2.start();
 
     }
 

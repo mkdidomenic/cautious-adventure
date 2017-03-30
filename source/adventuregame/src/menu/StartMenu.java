@@ -12,6 +12,7 @@ package menu;
 public class StartMenu extends javax.swing.JFrame {
 
     public boolean start;
+    private boolean shouldSendJoinRequest;
     public String playername;
 
     /**
@@ -20,6 +21,7 @@ public class StartMenu extends javax.swing.JFrame {
     public StartMenu() {
         initComponents();
         this.start = false;
+        this.shouldSendJoinRequest = false;
         this.playername = "No one";
     }
 
@@ -70,14 +72,14 @@ public class StartMenu extends javax.swing.JFrame {
 
         jRadioButton2.setText("Host");
 
-        jTextField2.setText("IP Address");
+        jTextField2.setText("localhost");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Join:");
+        jLabel3.setText("Join IP Address:");
 
         jLabel4.setText("Players: ");
 
@@ -174,7 +176,7 @@ public class StartMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (!this.isHost()) {
             String ip = this.jTextField2.getText();
-            //System.out.println("Joining: " + ip);
+            this.shouldSendJoinRequest = true;
             this.jLabel5.setText("Joining: " + ip);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -251,5 +253,11 @@ public class StartMenu extends javax.swing.JFrame {
 
     public boolean isHost() {
         return this.jRadioButton2.isSelected();
+    }
+
+    public synchronized boolean sendJoinRequest() {
+        boolean v = this.shouldSendJoinRequest;
+        this.shouldSendJoinRequest = false;
+        return v;
     }
 }
