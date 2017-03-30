@@ -7,9 +7,9 @@ package main;
 
 import java.util.ArrayList;
 import menu.StartMenu;
-import utility.NetListener;
-import utility.NetPackage;
-import utility.NetSpeaker;
+import utility.networking.NetListener;
+import utility.networking.NetPackage;
+import utility.networking.NetSpeaker;
 
 /**
  *

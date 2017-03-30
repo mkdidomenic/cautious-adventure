@@ -20,6 +20,7 @@ public class GMain {
             @Override
             public void run() {
                 GClient client1 = new GClient();
+                client1.netl.port = 8061;
                 client1.start();
             }
         };
@@ -30,6 +31,7 @@ public class GMain {
             @Override
             public void run() {
                 GClient client2 = new GClient();
+                client2.netl.port = 8062;
                 client2.start();
             }
         };
