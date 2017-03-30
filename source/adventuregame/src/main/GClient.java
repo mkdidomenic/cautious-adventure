@@ -71,12 +71,22 @@ public class GClient {
 
     public void handleRequests() {
         Object message = this.netl.getMessage();
-        if (message != null) {
+        if ((message != null) && false) {
             System.out.println(message);
         }
         if (message instanceof NetPackage) {
-            Object payload = ((NetPackage) message).payload;
-            System.out.println("Package: " + payload);
+            NetPackage pack = (NetPackage) message;
+            if (pack.packageType == NetPackage.Packtype.PAYLOAD) {
+                Object payload = ((NetPackage) message).payload;
+                //System.out.println("Package: " + payload);
+            } else if (pack.packageType == NetPackage.Packtype.JOINREQUEST) {
+                ArrayList<String> data = (ArrayList<String>) pack.payload;
+                String name = data.get(0);
+                String ct = data.get(1);
+                this.controller.playerandct.add(data);
+                this.startMenu.addPlayerToList(name, ct);
+                // System.out.println("got: " + name + " (" + ct + ")");
+            }
         }
 
     }
@@ -91,8 +101,12 @@ public class GClient {
     public void sendJoinRequest() {
         String ip = this.startMenu.getIP();
         String name = this.startMenu.getNameFromTextfield();
+        String ct = this.startMenu.getClassTypeFromMenu();
+        ArrayList<String> s = new ArrayList();
+        s.add(name);
+        s.add(ct);
         NetPackage payload = new NetPackage(NetPackage.Packtype.JOINREQUEST,
-                                            name);
+                                            s);
         nets.addMessage(payload);
 
     }

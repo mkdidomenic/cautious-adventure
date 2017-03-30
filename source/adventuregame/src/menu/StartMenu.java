@@ -260,4 +260,17 @@ public class StartMenu extends javax.swing.JFrame {
         this.shouldSendJoinRequest = false;
         return v;
     }
+
+    public void addPlayerToList(String name, String ct) {
+        String currentText;
+        if (this.jLabel4.getText().startsWith("<html>")) {
+            currentText = this.jLabel4.getText().substring(6,
+                                                           this.jLabel4.getText().length() - 7);
+        } else {
+            currentText = this.jLabel4.getText();
+        }
+
+        this.jLabel4.setText("<html>" + currentText
+                             + "<br>" + name + " (" + ct + ")" + "</html>");
+    }
 }

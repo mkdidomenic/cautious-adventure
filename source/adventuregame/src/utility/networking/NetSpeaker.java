@@ -11,14 +11,13 @@ import java.util.ArrayList;
  *
  * @author Mike
  */
-public class NetSpeaker {
+public class NetSpeaker extends Thread {
 
     public ArrayList<Object> outbox;
     public String ip;
     public int port;
     public int timeout;
     public boolean alive;
-    private Thread speakThread;
 
     public NetSpeaker() {
         this.ip = "localhost";
@@ -28,20 +27,29 @@ public class NetSpeaker {
 
     }
 
-    public synchronized void start() {
-        speakThread = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (outbox.size() > 0) {
-                        Object o = outbox.get(0);
-                        outbox.remove(0);
-                        NetworkHandler.sendMessage(ip, o, timeout);
-                    }
-                }
-            }
-        };
-        speakThread.start();
+    @Override
+    public void run() {
+        while (true) {
+            this.send();
+        }
+    }
+
+    public void send() {
+        if (this.outboxSize() > 0) {
+            Object o = this.getObject0();
+            //System.out.println("sending: " + o);
+            NetworkHandler.sendMessageTCP(ip, port, o, timeout);
+        }
+    }
+
+    private synchronized int outboxSize() {
+        return this.outbox.size();
+    }
+
+    private synchronized Object getObject0() {
+        Object o = this.outbox.get(0);
+        this.outbox.remove(0);
+        return o;
     }
 
     public synchronized void addMessage(Object message) {

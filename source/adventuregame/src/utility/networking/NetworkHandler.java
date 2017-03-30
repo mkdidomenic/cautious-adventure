@@ -136,12 +136,13 @@ public class NetworkHandler {
         return recv;
     }
 
-    public static void sendMessageVerify(String ip, Object message, int timeout) {
+    public static Object sendMessageTCP(String ip, int port, Object message,
+                                        int timeout) {
         Object recv = null;
         try {
             ObjectOutputStream outToServer;
             ObjectInputStream inFromServer;
-            try (Socket sock = new Socket(ip, NetworkHandler.mainPort)) {
+            try (Socket sock = new Socket(ip, port)) {
                 outToServer = new ObjectOutputStream(
                         sock.getOutputStream());
                 inFromServer = new ObjectInputStream(sock.getInputStream());
@@ -159,15 +160,15 @@ public class NetworkHandler {
             ex.printStackTrace();
         }
         //System.out.println("Sender - message: " + recv + "\n");
-
+        return recv;
     }
 
-    public static Object receiveMessageVerify(int timeout) {
+    public static Object receiveMessageTCP(int port, int timeout) {
         Object recv = null;
         try {
             ObjectInputStream inToServer;
             ObjectOutputStream outFromServer;
-            ServerSocket ssock = new ServerSocket(NetworkHandler.mainPort);
+            ServerSocket ssock = new ServerSocket(port);
             try (Socket sock = ssock.accept()) {
                 inToServer = new ObjectInputStream(sock.getInputStream());
                 outFromServer = new ObjectOutputStream(
