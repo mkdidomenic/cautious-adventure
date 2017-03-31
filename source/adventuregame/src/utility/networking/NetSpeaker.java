@@ -5,7 +5,11 @@
  */
 package utility.networking;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -58,6 +62,33 @@ public class NetSpeaker extends Thread {
     
     public synchronized void setIP(String ip){
         this.ip = ip;
+    }
+    
+    public Object sendMessage(Object message) {
+        //System.out.println("sending to: " + this.ip + ":" + this.port);
+        Object recv = null;
+        try {
+            ObjectOutputStream outToServer;
+            ObjectInputStream inFromServer;
+            try (Socket sock = new Socket(this.ip, this.port)) {
+                outToServer = new ObjectOutputStream(
+                        sock.getOutputStream());
+                inFromServer = new ObjectInputStream(sock.getInputStream());
+                outToServer.writeObject(message);
+                sock.setSoTimeout(this.timeout);
+                recv = inFromServer.readObject();
+                sock.close();
+            }
+            outToServer.close();
+            inFromServer.close();
+        } catch (Exception ex) {
+            System.out.println("Error sending TCP");
+            System.out.println(Arrays.toString(ex.getStackTrace()));
+            System.out.println("");
+            ex.printStackTrace();
+        }
+        //System.out.println("Sender - message: " + recv + "\n");
+        return recv;
     }
 
 }

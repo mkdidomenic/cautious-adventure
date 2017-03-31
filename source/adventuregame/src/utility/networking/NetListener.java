@@ -5,7 +5,12 @@
  */
 package utility.networking;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -17,11 +22,10 @@ public class NetListener extends Thread {
     public String ip;
     public int port;
     public int timeout;
-    public boolean alive;
 
     public NetListener() {
         this.ip = "localhost";
-        this.port = NetworkHandler.mainPort;
+        this.port = 8601;
         this.timeout = 0;
         this.inbox = new ArrayList();
 
@@ -35,10 +39,7 @@ public class NetListener extends Thread {
     }
 
     public void receive() {
-        Object o = NetworkHandler.receiveMessageTCP(port, timeout);
-        if (o != null) {
-            addObject(o);
-        }
+        this.receiveMessage();
     }
     
     private synchronized ArrayList<Object> getInbox(){
@@ -61,5 +62,44 @@ public class NetListener extends Thread {
         }
 
     }
+    
+    
+    public Object receiveMessage(){
+        Object recv = null;
+        try {
+            ObjectInputStream inToServer;
+            ObjectOutputStream outFromServer;
+            ServerSocket ssock = new ServerSocket(this.port);
+            try (Socket sock = ssock.accept()) {
+                //System.out.println("Accepting at: " + this.port);
+                inToServer = new ObjectInputStream(sock.getInputStream());
+                outFromServer = new ObjectOutputStream(
+                        sock.getOutputStream());
+
+                sock.setSoTimeout(this.timeout);
+                recv = inToServer.readObject();
+                recv = handleMessage(recv);
+                outFromServer.writeObject(recv);
+
+                outFromServer.close();
+                inToServer.close();
+                sock.close();
+                ssock.close();
+            }
+        } catch (Exception ex) {
+            System.out.println("Error receiving TCP");
+            System.out.println(Arrays.toString(ex.getStackTrace()));
+            System.out.println("");
+        }
+        //System.out.println("Reciever - message: " + recv + "\n");
+
+        return recv;
+    }
+    
+    public Object handleMessage(Object o){
+        return o;
+    }
+    
 
 }
+

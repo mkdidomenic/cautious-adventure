@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import menu.StartMenu;
 import utility.networking.NetListener;
 import utility.networking.NetPackage;
+import utility.networking.NetServer;
 import utility.networking.NetSpeaker;
 
 /**
@@ -20,30 +21,36 @@ public class GClient {
 
     public GController controller;
     public StartMenu startMenu;
-    public NetListener netl;
+    public NetServer netl;
     public NetSpeaker nets;
 
     public boolean isHost;
 
     public GClient() {
         this.controller = new GController();
-        this.netl = new NetListener();
+        this.netl = new NetServer(this);
         this.nets = new NetSpeaker();
     }
 
     public void start() {
-        this.netl.start();
-        this.nets.start();
+        //this.netl.start();
+        //this.nets.start();
         this.startMenu = new StartMenu();
         this.startMenu.setVisible(true);
 
         while (!this.startMenu.start) {
+            System.out.println(this.netl.isAlive());
 
             this.isHost = this.startMenu.isHost();
             if (this.isHost) {
-                this.handleRequests();
+                 if (!this.netl.isAlive() || this.netl.isInterrupted()){
+                    this.netl.start();
+                }
 
             } else {
+                if (this.netl.isAlive() && !this.netl.isInterrupted()){
+                    this.netl.interrupt();
+                }
                 this.handleSends();
                 this.handleResponses();
             }
@@ -131,7 +138,7 @@ public class GClient {
         NetPackage payload = new NetPackage(NetPackage.Packtype.JOINREQUEST,
                                             s);
         nets.setIP(ip);
-        nets.addMessage(payload);
+        nets.sendMessage(payload);
 
     }
 
