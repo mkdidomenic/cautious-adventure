@@ -16,10 +16,12 @@ public class Player implements Serializable {
     public static int num_players = 0;
 
     public String name;
+    public String classtype;
     public int ID;
 
-    public Player(String name) {
+    public Player(String name, String classtype) {
         this.name = name;
+        this.classtype = classtype;
         this.ID = num_players;
         num_players++;
 

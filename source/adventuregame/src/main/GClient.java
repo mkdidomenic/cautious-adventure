@@ -5,6 +5,7 @@
  */
 package main;
 
+import game.Player;
 import java.util.ArrayList;
 import menu.StartMenu;
 import utility.networking.NetListener;
@@ -44,6 +45,7 @@ public class GClient {
 
             } else {
                 this.handleSends();
+                this.handleResponses();
             }
         }
         this.setup();
@@ -54,10 +56,8 @@ public class GClient {
     private void setup() {
         String pname = this.startMenu.getNameFromTextfield();
         String ct = this.startMenu.getClassTypeFromMenu();
-        ArrayList<String> al = new ArrayList();
-        al.add(pname);
-        al.add(ct);
-        this.controller.playerandct.add(al);
+        this.controller.localplayer = new Player(pname, ct);
+        this.controller.players.add(this.controller.localplayer);
         this.controller.isHost = this.isHost;
         this.controller.friendlyFire = this.startMenu.getFriendlyFireRadio();
         this.startMenu.setVisible(false);
@@ -83,7 +83,30 @@ public class GClient {
                 ArrayList<String> data = (ArrayList<String>) pack.payload;
                 String name = data.get(0);
                 String ct = data.get(1);
-                this.controller.playerandct.add(data);
+                this.controller.players.add(new Player(name, ct));
+                this.startMenu.addPlayerToList(name, ct);
+                // System.out.println("got: " + name + " (" + ct + ")");
+            }
+        }
+
+    }
+    
+    
+    public void handleResponses() {
+        Object message = this.netl.getMessage();
+        if ((message != null) && false) {
+            System.out.println(message);
+        }
+        if (message instanceof NetPackage) {
+            NetPackage pack = (NetPackage) message;
+            if (pack.packageType == NetPackage.Packtype.PAYLOAD) {
+                Object payload = ((NetPackage) message).payload;
+                //System.out.println("Package: " + payload);
+            } else if (pack.packageType == NetPackage.Packtype.JOINRESPONSE) {
+                ArrayList<String> data = (ArrayList<String>) pack.payload;
+                String name = data.get(0);
+                String ct = data.get(1);
+                this.controller.players.add(new Player(name, ct));
                 this.startMenu.addPlayerToList(name, ct);
                 // System.out.println("got: " + name + " (" + ct + ")");
             }

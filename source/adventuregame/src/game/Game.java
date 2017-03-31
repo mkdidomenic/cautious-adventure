@@ -56,9 +56,26 @@ public class Game implements Serializable {
         }
         this.setupLevel();
     }
+    
+     public void addPlayer(Player p) {;
+        if (this.players.isEmpty()) {
+            this.player = p;
+        }
+        this.players.add(p);
+        if (this.space != null) {
+            Spatial pos = new Spatial(this.space.dimensions.x / 2,
+                                      this.space.dimensions.y / 2,
+                                      0);
+            //Spatial size = new Spatial(100, 100, 10);
+            PlayerCharacter pc = new PlayerCharacter(p, pos);
+            game.classtype.Classtype.setClasstype(pc, p.classtype);
+            this.space.addPlayerC(pc);
+        }
+
+    }
 
     public void addPlayer(String name, String classtype) {
-        Player p = new Player(name);
+        Player p = new Player(name, classtype);
         if (this.players.isEmpty()) {
             this.player = p;
         }

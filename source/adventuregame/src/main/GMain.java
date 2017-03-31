@@ -21,7 +21,7 @@ public class GMain {
             public void run() {
                 GClient client1 = new GClient();
                 client1.netl.port = 8061;
-                client1.nets.port = 8061;
+                client1.nets.port = 8062;
                 client1.start();
             }
         };

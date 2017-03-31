@@ -6,6 +6,7 @@
 package main;
 
 import game.Game;
+import game.Player;
 import java.util.ArrayList;
 import utility.KeyHandler;
 import view.GameView;
@@ -30,13 +31,16 @@ public class GController {
     public static GController instance;
     private long currentFrame;
 
-    public ArrayList<ArrayList<String>> playerandct;
+    public ArrayList<Player> players;
+    
+    public Player localplayer;
 
     public GController() {
         GController.instance = this;
-        this.playerandct = new ArrayList();
+        this.players = new ArrayList();
         this.friendlyFire = false;
         this.isHost = true;
+        this.localplayer = null;
     }
 
     public void setup() {
@@ -50,8 +54,8 @@ public class GController {
         this.view = new GameView(this.game);
         this.keyHandler = new KeyHandler(this.view);
 
-        for (ArrayList a : this.playerandct) {
-            this.game.addPlayer((String) a.get(0), (String) a.get(1));
+        for (Player p : this.players) {
+            this.game.addPlayer(p);
         }
     }
 
@@ -94,7 +98,7 @@ public class GController {
 
     public void handleLocalCommand() {
         for (char key : this.keyHandler.getKeys()) {
-            game.handleCommand(0, Command.map(key));
+            game.handleCommand(this.localplayer.ID, Command.map(key));
 
         }
     }

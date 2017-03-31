@@ -23,6 +23,7 @@ public class NetPackage implements Serializable {
 
     public enum Packtype {
         JOINREQUEST,
+        JOINRESPONSE,
         PAYLOAD,
         NULL;
 
