@@ -176,7 +176,6 @@ public class NetworkHandler {
 
                 sock.setSoTimeout(timeout);
                 recv = inToServer.readObject();
-                System.out.println("recv: " + recv);
                 //String r = (String) recv;
                 //r += "-SERVER";
                 outFromServer.writeObject(recv);

@@ -55,5 +55,9 @@ public class NetSpeaker extends Thread {
     public synchronized void addMessage(Object message) {
         this.outbox.add(message);
     }
+    
+    public synchronized void setIP(String ip){
+        this.ip = ip;
+    }
 
 }

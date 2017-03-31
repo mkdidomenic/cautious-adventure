@@ -107,6 +107,7 @@ public class GClient {
         s.add(ct);
         NetPackage payload = new NetPackage(NetPackage.Packtype.JOINREQUEST,
                                             s);
+        nets.setIP(ip);
         nets.addMessage(payload);
 
     }

@@ -39,7 +39,6 @@ public class NetListener extends Thread {
         if (o != null) {
             addObject(o);
         }
-        System.out.println(this.getInbox());
     }
     
     private synchronized ArrayList<Object> getInbox(){
