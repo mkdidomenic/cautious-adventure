@@ -127,18 +127,25 @@ public class GClient {
 
     public void sendLobbyUpdateRequest() {
         NetPackage p = new NetPackage(NetPackage.Packtype.LOBBYUPDATE, null);
-        Object o = this.nets.sendMessage(p);
+        Object o = null;
+        try {
+            o = this.nets.sendMessage(p);
+        } catch (Exception e) {
+            System.out.println("NONESSENTIAL - error getting lobby update");
+        }
         //System.out.println(o);
-        NetPackage np = (NetPackage) o;
-        if (np.packageType == NetPackage.Packtype.LOBBYUPDATE) {
-            if ((this.startMenu != null) && (o != null)) {
-                Object pl = np.payload;
-                if (pl != null) {
-                    this.startMenu.start = (boolean) pl;
+        if (o != null) {
+            NetPackage np = (NetPackage) o;
+            if (np.packageType == NetPackage.Packtype.LOBBYUPDATE) {
+                if ((this.startMenu != null)) {
+                    Object pl = np.payload;
+                    if (pl != null) {
+                        this.startMenu.start = (boolean) pl;
+                    }
                 }
+            } else if (np.packageType == NetPackage.Packtype.GAME) {
+                this.startMenu.start = true;
             }
-        } else if (np.packageType == NetPackage.Packtype.GAME) {
-            this.startMenu.start = true;
         }
 
     }
@@ -162,12 +169,10 @@ public class GClient {
 
     }
 
-    public void sendGameMessage() {
+    public Game sendGameMessage() {
         NetPackage n = new NetPackage(NetPackage.Packtype.GAME, null);
         Game g = (Game) ((NetPackage) this.nets.sendMessage(n)).payload;
-        if (g != null) {
-            this.controller.game = g;
-        }
+        return g;
     }
 
     public void sendGameToClient() {

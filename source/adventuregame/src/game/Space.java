@@ -97,6 +97,15 @@ public class Space implements Serializable {
         return null;
     }
 
+    public PlayerCharacter getPlayerCharacter(int id) {
+        for (PlayerCharacter p : this.getPlayers()) {
+            if (p.player.ID == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public void update() {
         //debug();
         //System.out.println("SPACE: " + this.getConstructs());

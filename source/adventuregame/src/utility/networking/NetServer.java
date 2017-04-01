@@ -40,6 +40,8 @@ public class NetServer extends NetListener {
                 o = handleJoinRequest(pack);
             } else if (pack.packageType == NetPackage.Packtype.LOBBYUPDATE) {
                 ((NetPackage) o).payload = this.client.startMenu.start;
+            } else if (pack.packageType == NetPackage.Packtype.GAME) {
+                ((NetPackage) o).payload = this.client.controller.game;
             }
         }
         return o;

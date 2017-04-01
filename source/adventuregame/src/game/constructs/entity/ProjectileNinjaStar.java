@@ -22,7 +22,7 @@ public class ProjectileNinjaStar extends Projectile {
 
     public ProjectileNinjaStar(Spatial position) {
         super(position, new Spatial(2, 2, 2));
-        this.images.remove(0);
+        this.imageNames.remove(0);
         this.damage = default_damage;
         this.tangibility = false;
     }

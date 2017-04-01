@@ -28,7 +28,7 @@ public class Construct implements Comparable, Serializable {
     public boolean exists;
 
     //image stuff
-    public ArrayList<BufferedImage> images;
+    public ArrayList<String> imageNames;
     public int imageIndex;
 
     // orientation (mostly for images)
@@ -56,7 +56,7 @@ public class Construct implements Comparable, Serializable {
         this.position = position;
         this.size = size;
         this.x_orientation = 1;
-        this.images = new ArrayList();
+        this.imageNames = new ArrayList();
         this.imageIndex = 0;
         this.actionTimer = 0;
         this.hitbox = new Hitbox(position, size);
@@ -69,15 +69,15 @@ public class Construct implements Comparable, Serializable {
     }
 
     public void addImage(String filename) {
-        this.images.add(ImageHandler.getImage(filename));
+        this.imageNames.add(filename);
     }
 
     public void clearImages() {
-        this.images.clear();
+        this.imageNames.clear();
     }
 
     public void addpng(String filename) {
-        this.images.add(ImageHandler.getImage("src/res/" + filename + ".png"));
+        this.imageNames.add("src/res/" + filename + ".png");
     }
 
     public long ticksExisted() {
@@ -210,7 +210,7 @@ public class Construct implements Comparable, Serializable {
     }
 
     public BufferedImage getImage() {
-        return this.images.get(imageIndex);
+        return ImageHandler.getImage(this.imageNames.get(imageIndex));
     }
 
     public void remove() {

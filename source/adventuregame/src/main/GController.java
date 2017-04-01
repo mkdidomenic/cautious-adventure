@@ -7,6 +7,7 @@ package main;
 
 import game.Game;
 import game.Player;
+import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
 import utility.KeyHandler;
 import view.GameView;
@@ -84,7 +85,14 @@ public class GController {
             }
         } else {
             if (this.client != null) {
-                this.client.sendGameMessage();
+                Game g = this.client.sendGameMessage();
+                System.out.println("got message");
+                if (g != null) {
+                    this.game = g;
+                    System.out.println("set game");
+                }
+                PlayerCharacter p = this.game.space.getPlayerCharacter(
+                        localplayer.ID);
             }
             this.view.update();
             if (this.game.debug != this.view.spacePanel.debug) {

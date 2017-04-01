@@ -17,7 +17,7 @@ public class ProjectileArrow extends Projectile {
 
     public ProjectileArrow(Spatial position, Spatial size) {
         super(position, size);
-        this.images.remove(0);
+        this.imageNames.remove(0);
         this.addpng("arrow");
         this.damage = default_damage;
         this.tangibility = false;

@@ -15,7 +15,7 @@ import utility.Spatial;
  */
 public class ImageBox extends Construct {
 
-    public BufferedImage image;
+    public String imageName;
     public int lifespan;
     public boolean hasParent;
 
@@ -33,7 +33,7 @@ public class ImageBox extends Construct {
         this.lifespan = lifespan;
         this.tangibility = false;
         this.x_orientation = orientation;
-        this.image = null;
+        this.imageName = "null.png";
         this.hasParent = false;
     }
 
@@ -43,16 +43,12 @@ public class ImageBox extends Construct {
         this.hasParent = true;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
     public void setImage(String filename) {
-        this.image = ImageHandler.getPNG(filename);
+        this.imageName = filename;
     }
 
     public void setImage(String folder, String filename) {
-        this.image = ImageHandler.getPNG(folder, filename);
+        this.imageName = folder + "/" + filename;
     }
 
     @Override
@@ -68,7 +64,7 @@ public class ImageBox extends Construct {
 
     @Override
     public BufferedImage getImage() {
-        return this.image;
+        return ImageHandler.getPNG(this.imageName);
     }
 
 }
