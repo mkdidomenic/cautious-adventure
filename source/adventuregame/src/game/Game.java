@@ -34,6 +34,8 @@ public class Game implements Serializable {
     public Space space;
     public static Game instance;
 
+    private long currentFrame;
+
     public boolean friendlyFire;
 
     public Random random;
@@ -43,6 +45,7 @@ public class Game implements Serializable {
         this.players = new ArrayList();
         this.random = new Random();
         this.friendlyFire = false;
+        this.currentFrame = 0;
     }
 
     public void setupSpace() {
@@ -56,8 +59,8 @@ public class Game implements Serializable {
         }
         this.setupLevel();
     }
-    
-     public void addPlayer(Player p) {;
+
+    public void addPlayer(Player p) {;
         if (this.players.isEmpty()) {
             this.player = p;
         }
@@ -93,6 +96,7 @@ public class Game implements Serializable {
     }
 
     public void update() {
+        this.currentFrame++;
         this.space.update();
     }
 
@@ -156,6 +160,10 @@ public class Game implements Serializable {
                 }
             }
         }
+    }
+
+    public long getCurrentFrame() {
+        return this.currentFrame;
     }
 
     private void unused() {

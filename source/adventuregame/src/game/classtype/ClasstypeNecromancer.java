@@ -7,7 +7,6 @@ package game.classtype;
 
 import game.Game;
 import game.constructs.ImageBox;
-import game.constructs.StunBox;
 import game.constructs.entity.EntityHaunter;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
@@ -16,7 +15,6 @@ import game.constructs.entity.character.ai.AIMinionSkeleton;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.Command;
-import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
 
@@ -57,7 +55,7 @@ public class ClasstypeNecromancer extends Classtype {
         // MOVING
         if (this.gharacter.state == State.MOVING) {
             // mod number of moving images
-            filename = State.MOVING.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+            filename = State.MOVING.name() + "-" + (Game.instance.getCurrentFrame() % 3);
         }
 
         // abilities
@@ -72,7 +70,7 @@ public class ClasstypeNecromancer extends Classtype {
         // STUNNED
         if (this.gharacter.state == State.STUNNED) {
             // mod number of moving images
-            filename = State.STUNNED.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+            filename = State.STUNNED.name() + "-" + (Game.instance.getCurrentFrame() % 3);
         }
         // HITSTUNNED
         if (this.gharacter.state == State.HITSTUNNED) {
@@ -197,13 +195,11 @@ public class ClasstypeNecromancer extends Classtype {
             }
         } else if ((i == 1) && (this.gharacter.state == State.ABILITY1)) {
             this.ability1Update();
-        } else if ((i == 3) && (this.gharacter.state == State.ABILITY3)){
-            ability3update(); 
+        } else if ((i == 3) && (this.gharacter.state == State.ABILITY3)) {
+            ability3update();
         }
 
     }
-
-    
 
     private boolean startAbility(int cooldown, double cost) {
         return (this.gharacter.setActionTimer(cooldown) && this.gharacter.useEnergy(
@@ -235,7 +231,7 @@ public class ClasstypeNecromancer extends Classtype {
                 }
                 break;
             case ABILITY3:
-                
+
                 break;
             case ABILITY4:
                 if (this.gharacter.actionTimer == this.ability4ExecFrame) {
@@ -415,7 +411,7 @@ public class ClasstypeNecromancer extends Classtype {
     public int ability3ExecFrame = 2;
     public int ability3CD = 30 + ability3AT;
     public int ability3CDTimer = 0;
-    
+
     public int ability3ActingTime = 0;
 
     public double ability3Damage = 0.15;
@@ -433,7 +429,7 @@ public class ClasstypeNecromancer extends Classtype {
             }
         }
     }
-    
+
     private void ability3update() {
         if (this.gharacter.actionTimer < this.ability3ExecFrame) {
             this.execAbility3();
@@ -441,43 +437,44 @@ public class ClasstypeNecromancer extends Classtype {
     }
 
     private void execAbility3() {
-        if (this.gharacter.energy < this.ability3Cost){
+        if (this.gharacter.energy < this.ability3Cost) {
             return;
         }
         this.gharacter.energy -= this.ability3Cost;
         this.gharacter.interruptActionTimer();
         this.gharacter.setActionTimer(this.ability3ExecFrame);
         double range;
-        int maxTravelFrame = (int)(this.ability3Range / this.ability3speed);
-        range = (((double)this.ability3ActingTime) / ((double)maxTravelFrame) * ((double)this.ability3Range));
+        int maxTravelFrame = (int) (this.ability3Range / this.ability3speed);
+        range = (((double) this.ability3ActingTime) / ((double) maxTravelFrame) * ((double) this.ability3Range));
         //System.out.println(this.gharacter.position.x);
         //System.out.println(range + "\n");
         Gharacter v = Game.instance.space.trace(this.gharacter,
                                                 !this.gharacter.isAlly(), range,
                                                 0.2);
-        
-        
-        if (v != null){
-            if (v.vulnerable(this.gharacter)){
+
+        if (v != null) {
+            if (v.vulnerable(this.gharacter)) {
                 v.damage(this.ability3Damage);
                 v.stun(this.ability3Stun);
                 this.ability3MinionHeal();
-                if ((this.gharacter.position.x < v.position.x) != ((this.gharacter.position.x + range) < v.position.x)){
+                if ((this.gharacter.position.x < v.position.x) != ((this.gharacter.position.x + range) < v.position.x)) {
                     range = Math.abs(v.position.x - this.gharacter.position.x);
-                } else if (this.ability3ActingTime < maxTravelFrame){
+                } else if (this.ability3ActingTime < maxTravelFrame) {
                     this.ability3ActingTime++;
                 }
             }
-        } else if (this.ability3ActingTime < maxTravelFrame){
+        } else if (this.ability3ActingTime < maxTravelFrame) {
             this.ability3ActingTime++;
         }
-                
+
         // image
         Spatial iPos = this.gharacter.position.copy();
         iPos.z = iPos.z + this.gharacter.size.z / 2;
-        if (range < 1.01){ range = 1.01;}
-        iPos.x = iPos.x + ((range + this.gharacter.size.x / 4) * this.gharacter.x_orientation)/2;
-        if (range > this.gharacter.size.x / 4){
+        if (range < 1.01) {
+            range = 1.01;
+        }
+        iPos.x = iPos.x + ((range + this.gharacter.size.x / 4) * this.gharacter.x_orientation) / 2;
+        if (range > this.gharacter.size.x / 4) {
             range -= this.gharacter.size.x / 4;
         }
         Spatial iSize = new Spatial(range, 2, 4);
@@ -486,21 +483,22 @@ public class ClasstypeNecromancer extends Classtype {
         ib.setImage("necromancer", "DRAIN");
         Game.instance.space.addConstruct(ib);
     }
-    
-    private void ability3MinionHeal(){
-        if (this.minions.size() > 0){
+
+    private void ability3MinionHeal() {
+        if (this.minions.size() > 0) {
             for (NonPlayerCharacter npc : ((ArrayList<NonPlayerCharacter>) (this.minions.clone()))) {
                 npc.heal(this.ability3heal);
-                ImageBox ib = new ImageBox(npc.position, npc.size, 5, npc.x_orientation);
+                ImageBox ib = new ImageBox(npc.position, npc.size, 5,
+                                           npc.x_orientation);
                 ib.setImage("necromancer", "DARKHEAL");
                 Game.instance.space.addConstruct(ib);
 
             }
         }
     }
-    
-    private void ability3Reset(){
-        if (this.gharacter.state != State.ABILITY3){
+
+    private void ability3Reset() {
+        if (this.gharacter.state != State.ABILITY3) {
             this.ability3ActingTime = 0;
         }
     }
@@ -545,7 +543,7 @@ public class ClasstypeNecromancer extends Classtype {
         Spatial pos = this.gharacter.position.copy();
         pos.x += this.gharacter.size.x / 2 * this.gharacter.x_orientation;
         pos.z += this.gharacter.size.z / 2;
-        Spatial size = new Spatial(6,2,6);
+        Spatial size = new Spatial(6, 2, 6);
         int lifetime = 300;
         EntityHaunter h = new EntityHaunter(pos, size, lifetime, this.gharacter);
         Game.instance.space.addConstruct(h);

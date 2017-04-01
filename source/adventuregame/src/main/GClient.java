@@ -5,10 +5,10 @@
  */
 package main;
 
+import game.Game;
 import game.Player;
 import java.util.ArrayList;
 import menu.StartMenu;
-import utility.networking.NetListener;
 import utility.networking.NetPackage;
 import utility.networking.NetServer;
 import utility.networking.NetSpeaker;
@@ -25,32 +25,28 @@ public class GClient {
     public NetSpeaker nets;
 
     public boolean isHost;
+    public boolean joined;
 
     public GClient() {
         this.controller = new GController();
         this.netl = new NetServer(this);
         this.nets = new NetSpeaker();
+        this.isHost = false;
+        this.joined = false;
     }
 
     public void start() {
-        //this.netl.start();
+        this.netl.start();
         //this.nets.start();
         this.startMenu = new StartMenu();
         this.startMenu.setVisible(true);
 
         while (!this.startMenu.start) {
-            System.out.println(this.netl.isAlive());
-
             this.isHost = this.startMenu.isHost();
             if (this.isHost) {
-                 if (!this.netl.isAlive() || this.netl.isInterrupted()){
-                    this.netl.start();
-                }
 
             } else {
-                if (this.netl.isAlive() && !this.netl.isInterrupted()){
-                    this.netl.interrupt();
-                }
+                this.controller.client = this;
                 this.handleSends();
                 this.handleResponses();
             }
@@ -97,8 +93,7 @@ public class GClient {
         }
 
     }
-    
-    
+
     public void handleResponses() {
         Object message = this.netl.getMessage();
         if ((message != null) && false) {
@@ -123,9 +118,29 @@ public class GClient {
 
     public void handleSends() {
         //System.out.println(this.startMenu.sendJoinRequest());
-        if (this.startMenu.sendJoinRequest()) {
+        if (this.joined) {
+            this.sendLobbyUpdateRequest();
+        } else if (this.startMenu.sendJoinRequest()) {
             this.sendJoinRequest();
         }
+    }
+
+    public void sendLobbyUpdateRequest() {
+        NetPackage p = new NetPackage(NetPackage.Packtype.LOBBYUPDATE, null);
+        Object o = this.nets.sendMessage(p);
+        //System.out.println(o);
+        NetPackage np = (NetPackage) o;
+        if (np.packageType == NetPackage.Packtype.LOBBYUPDATE) {
+            if ((this.startMenu != null) && (o != null)) {
+                Object pl = np.payload;
+                if (pl != null) {
+                    this.startMenu.start = (boolean) pl;
+                }
+            }
+        } else if (np.packageType == NetPackage.Packtype.GAME) {
+            this.startMenu.start = true;
+        }
+
     }
 
     public void sendJoinRequest() {
@@ -138,8 +153,21 @@ public class GClient {
         NetPackage payload = new NetPackage(NetPackage.Packtype.JOINREQUEST,
                                             s);
         nets.setIP(ip);
-        nets.sendMessage(payload);
+        Object got = nets.sendMessage(payload);
+        int id = ((int) (((NetPackage) got).payload));
+        this.controller.localplayer = new Player(name, ct);
+        this.controller.localplayer.ID = id;
+        this.joined = true;
+        this.startMenu.setJoinLabelText("Joined with ID: " + id);
 
+    }
+
+    public void sendGameMessage() {
+        NetPackage n = new NetPackage(NetPackage.Packtype.GAME, null);
+        Game g = (Game) ((NetPackage) this.nets.sendMessage(n)).payload;
+        if (g != null) {
+            this.controller.game = g;
+        }
     }
 
     public void sendGameToClient() {

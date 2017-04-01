@@ -41,8 +41,8 @@ public class NetListener extends Thread {
     public void receive() {
         this.receiveMessage();
     }
-    
-    private synchronized ArrayList<Object> getInbox(){
+
+    private synchronized ArrayList<Object> getInbox() {
         return (ArrayList<Object>) this.inbox.clone();
     }
 
@@ -62,9 +62,8 @@ public class NetListener extends Thread {
         }
 
     }
-    
-    
-    public Object receiveMessage(){
+
+    public Object receiveMessage() {
         Object recv = null;
         try {
             ObjectInputStream inToServer;
@@ -78,8 +77,8 @@ public class NetListener extends Thread {
 
                 sock.setSoTimeout(this.timeout);
                 recv = inToServer.readObject();
-                recv = handleMessage(recv);
-                outFromServer.writeObject(recv);
+                Object ret = handleMessage(recv);
+                outFromServer.writeObject(ret);
 
                 outFromServer.close();
                 inToServer.close();
@@ -95,11 +94,9 @@ public class NetListener extends Thread {
 
         return recv;
     }
-    
-    public Object handleMessage(Object o){
+
+    public Object handleMessage(Object o) {
         return o;
     }
-    
 
 }
-

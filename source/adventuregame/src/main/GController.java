@@ -21,6 +21,7 @@ public class GController {
     public Game game;
     public GameView view;
     public KeyHandler keyHandler;
+    public GClient client;
 
     public boolean isHost;
 
@@ -29,10 +30,9 @@ public class GController {
     public final static int FPS = 30; // frames per second
     public final static double SPF = 1 / ((double) FPS); // seconds per frame
     public static GController instance;
-    private long currentFrame;
 
     public ArrayList<Player> players;
-    
+
     public Player localplayer;
 
     public GController() {
@@ -41,11 +41,11 @@ public class GController {
         this.friendlyFire = false;
         this.isHost = true;
         this.localplayer = null;
+        this.client = null;
     }
 
     public void setup() {
         this.game = new Game();
-        this.currentFrame = 0;
 
         this.game.friendlyFire = this.friendlyFire;
 
@@ -70,7 +70,6 @@ public class GController {
                 endtime = (double) System.currentTimeMillis() / 1000.0;
                 //System.out.println(this.currentFrame);
             } while ((endtime - starttime) < SPF);
-            this.currentFrame++;
         }
 
     }
@@ -84,16 +83,15 @@ public class GController {
                 this.view.spacePanel.debug = this.game.debug;
             }
         } else {
+            if (this.client != null) {
+                this.client.sendGameMessage();
+            }
             this.view.update();
             if (this.game.debug != this.view.spacePanel.debug) {
                 this.view.spacePanel.debug = this.game.debug;
             }
         }
 
-    }
-
-    public long getCurrentFrame() {
-        return this.currentFrame;
     }
 
     public void handleLocalCommand() {

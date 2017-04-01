@@ -24,6 +24,8 @@ public class NetPackage implements Serializable {
     public enum Packtype {
         JOINREQUEST,
         JOINRESPONSE,
+        LOBBYUPDATE,
+        GAME,
         PAYLOAD,
         NULL;
 

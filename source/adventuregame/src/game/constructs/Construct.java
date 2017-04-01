@@ -61,7 +61,7 @@ public class Construct implements Comparable, Serializable {
         this.actionTimer = 0;
         this.hitbox = new Hitbox(position, size);
         this.exists = true;
-        this.starttick = GController.instance.getCurrentFrame();
+        this.starttick = Game.instance.getCurrentFrame();
         this.tangibility = true;
         this.damage = 0;
         this.parent = null;
@@ -81,7 +81,7 @@ public class Construct implements Comparable, Serializable {
     }
 
     public long ticksExisted() {
-        return (GController.instance.getCurrentFrame() - this.starttick);
+        return (Game.instance.getCurrentFrame() - this.starttick);
     }
 
     public void setAlly(boolean allegiance) {

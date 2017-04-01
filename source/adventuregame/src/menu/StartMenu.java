@@ -177,7 +177,7 @@ public class StartMenu extends javax.swing.JFrame {
         if (!this.isHost()) {
             String ip = this.jTextField2.getText();
             this.shouldSendJoinRequest = true;
-            this.jLabel5.setText("Joining: " + ip);
+            this.setJoinLabelText("Joining: " + ip);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -251,7 +251,7 @@ public class StartMenu extends javax.swing.JFrame {
         return this.jRadioButton1.isSelected();
     }
 
-    public boolean isHost() {
+    public synchronized boolean isHost() {
         return this.jRadioButton2.isSelected();
     }
 
@@ -272,5 +272,9 @@ public class StartMenu extends javax.swing.JFrame {
 
         this.jLabel4.setText("<html>" + currentText
                              + "<br>" + name + " (" + ct + ")" + "</html>");
+    }
+
+    public void setJoinLabelText(String text) {
+        this.jLabel5.setText(text);
     }
 }

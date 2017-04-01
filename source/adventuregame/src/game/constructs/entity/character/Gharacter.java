@@ -14,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import main.Command;
-import main.GController;
 import utility.Spatial;
 
 /**
@@ -70,7 +69,7 @@ public class Gharacter extends Entity {
         this.sheilded = false;
         this.immune = false;
         // movement
-        this.lastMove = GController.instance.getCurrentFrame();
+        this.lastMove = Game.instance.getCurrentFrame();
         // classtype
         this.classtype = new ClasstypeAssassin(this);
         this.classtype.setupAttributes();
@@ -104,22 +103,22 @@ public class Gharacter extends Entity {
         if (this.canMove()) {
             if (this.state == State.IDLE) {
                 super.move(x, y, z);
-                this.lastMove = GController.instance.getCurrentFrame();
+                this.lastMove = Game.instance.getCurrentFrame();
                 this.state = State.MOVING;
             } else if (this.state == State.MOVING) {
                 super.move(x, y, z);
-                this.lastMove = GController.instance.getCurrentFrame();
+                this.lastMove = Game.instance.getCurrentFrame();
             } // should not be able to move in the air while doing other things
             else if ((this.state == State.JUMPING) && false) {
                 super.move(x, y, z);
-                this.lastMove = GController.instance.getCurrentFrame();
+                this.lastMove = Game.instance.getCurrentFrame();
             } // should be able to move in the air while doing other things?
             else if ((!this.isGrounded()) && true) {
                 super.move(x, y, z);
-                this.lastMove = GController.instance.getCurrentFrame();
+                this.lastMove = Game.instance.getCurrentFrame();
             } else if ((this.mobileStates.contains(this.state)) && true) {
                 super.move(x, y, z);
-                this.lastMove = GController.instance.getCurrentFrame();
+                this.lastMove = Game.instance.getCurrentFrame();
             }
         }
 
@@ -169,7 +168,7 @@ public class Gharacter extends Entity {
     }
 
     public long getFramesSinceLastMovement() {
-        return GController.instance.getCurrentFrame() - this.lastMove;
+        return Game.instance.getCurrentFrame() - this.lastMove;
     }
 
     private void collideWith(Construct c) {
@@ -183,7 +182,7 @@ public class Gharacter extends Entity {
                 return;
             }
             // dont move if you shouldnt be moving
-            if ((GController.instance.getCurrentFrame() - this.lastMove) > 9) {
+            if ((Game.instance.getCurrentFrame() - this.lastMove) > 9) {
                 return;
             }
         }

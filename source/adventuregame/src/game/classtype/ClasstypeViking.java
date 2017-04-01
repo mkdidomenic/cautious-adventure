@@ -13,7 +13,6 @@ import game.constructs.StunBox;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import java.awt.image.BufferedImage;
-import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
 
@@ -50,7 +49,7 @@ public class ClasstypeViking extends Classtype {
         // MOVING
         if (this.gharacter.state == State.MOVING) {
             // mod number of moving images
-            filename = State.MOVING.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+            filename = State.MOVING.name() + "-" + (Game.instance.getCurrentFrame() % 3);
         }
 
         // abilities
@@ -65,7 +64,7 @@ public class ClasstypeViking extends Classtype {
         // STUNNED
         if (this.gharacter.state == State.STUNNED) {
             // mod number of moving images
-            filename = State.STUNNED.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+            filename = State.STUNNED.name() + "-" + (Game.instance.getCurrentFrame() % 3);
         }
         // HITSTUNNED
         if (this.gharacter.state == State.HITSTUNNED) {
@@ -359,7 +358,7 @@ public class ClasstypeViking extends Classtype {
             ImageBox ib = new ImageBox(skypos, cloudsize, 1,
                                        this.gharacter.x_orientation);
             ib.setImage("viking",
-                        "THUNDER-" + GController.instance.getCurrentFrame() % 3);
+                        "THUNDER-" + Game.instance.getCurrentFrame() % 3);
 
             Spatial skypos2 = skypos.copy();
             skypos2.x += ability4defaultdistance * this.gharacter.x_orientation;

@@ -5,8 +5,8 @@
  */
 package game.constructs.entity;
 
+import game.Game;
 import java.awt.image.BufferedImage;
-import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
 
@@ -30,7 +30,7 @@ public class ProjectileNinjaStar extends Projectile {
     @Override
     public BufferedImage getImage() {
         return ImageHandler.getPNG("projectileNinjaStar", Long.toString(
-                                   GController.instance.getCurrentFrame() % 3));
+                                   Game.instance.getCurrentFrame() % 3));
     }
 
     @Override

@@ -11,7 +11,6 @@ import game.constructs.ImageBox;
 import game.constructs.entity.character.Gharacter;
 import game.constructs.entity.character.Gharacter.State;
 import java.awt.image.BufferedImage;
-import main.GController;
 import utility.ImageHandler;
 import utility.Spatial;
 
@@ -48,7 +47,7 @@ public class ClasstypeDummySkeleton extends Classtype {
         // MOVING
         if (this.gharacter.state == State.MOVING) {
             // mod number of moving images
-            filename = State.MOVING.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+            filename = State.MOVING.name() + "-" + (Game.instance.getCurrentFrame() % 3);
         }
 
         // abilities
@@ -59,7 +58,7 @@ public class ClasstypeDummySkeleton extends Classtype {
         // STUNNED
         if (this.gharacter.state == State.STUNNED) {
             // mod number of moving images
-            filename = State.STUNNED.name() + "-" + (GController.instance.getCurrentFrame() % 3);
+            filename = State.STUNNED.name() + "-" + (Game.instance.getCurrentFrame() % 3);
         }
         // HITSTUNNED
         if (this.gharacter.state == State.HITSTUNNED) {
