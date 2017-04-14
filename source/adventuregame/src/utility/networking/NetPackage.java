@@ -15,10 +15,12 @@ public class NetPackage implements Serializable {
 
     public Packtype packageType;
     public Object payload;
+    public int ID;
 
-    public NetPackage(Packtype p, Object payload) {
+    public NetPackage(int ID, Packtype p, Object payload) {
         this.packageType = p;
         this.payload = payload;
+        this.ID = ID;
     }
 
     public enum Packtype {

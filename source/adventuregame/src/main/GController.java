@@ -9,6 +9,7 @@ import game.Game;
 import game.Player;
 import game.constructs.entity.character.PlayerCharacter;
 import java.util.ArrayList;
+import java.util.List;
 import utility.KeyHandler;
 import view.GameView;
 
@@ -34,14 +35,14 @@ public class GController {
 
     public ArrayList<Player> players;
 
-    public Player localplayer;
+    public int localID;
 
     public GController() {
         GController.instance = this;
         this.players = new ArrayList();
         this.friendlyFire = false;
         this.isHost = true;
-        this.localplayer = null;
+        this.localID = 0;
         this.client = null;
     }
 
@@ -92,22 +93,27 @@ public class GController {
                     Game.instance = this.game;
                 }
                 PlayerCharacter p = this.game.space.getPlayerCharacter(
-                        localplayer.ID);
+                        localID);
             }
             this.view.update();
             if (this.game.debug != this.view.spacePanel.debug) {
                 this.view.spacePanel.debug = this.game.debug;
             }
         }
-        System.out.println(this.localplayer.ID);
+        //System.out.println(this.localID);
 
     }
 
     public void handleLocalCommand() {
-        for (char key : this.keyHandler.getKeys()) {
-            game.handleCommand(this.localplayer.ID, Command.map(key));
+        this.handleCommands(this.localID, this.keyHandler.getKeys());
+    }
+    
+    public void handleCommands(int id, List<Character> keys){
+        for (char key : keys) {
+            game.handleCommand(id, Command.map(key));
 
         }
+        
     }
 
 }

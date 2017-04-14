@@ -91,7 +91,7 @@ public class NetListener extends Thread {
             System.out.println("");
         }
         //System.out.println("Reciever - message: " + recv + "\n");
-
+        //System.out.println("closed rec socket");
         return recv;
     }
 

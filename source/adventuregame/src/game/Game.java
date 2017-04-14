@@ -72,6 +72,7 @@ public class Game implements Serializable {
             //Spatial size = new Spatial(100, 100, 10);
             PlayerCharacter pc = new PlayerCharacter(p, pos);
             game.classtype.Classtype.setClasstype(pc, p.classtype);
+            //pc.position.y += pc.size.y * Player.num_players;
             this.space.addPlayerC(pc);
         }
 

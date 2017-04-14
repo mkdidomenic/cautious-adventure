@@ -15,10 +15,19 @@ public class GMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GClient client1 = new GClient();
-        client1.netl.port = Integer.valueOf(args[0]);
-        client1.nets.port = Integer.valueOf(args[1]);
-        client1.start();
+        GClient client = new GClient();
+        if (args.length == 1){
+           client.netl.port =  Integer.valueOf(args[0]);
+           client.nets.port =  Integer.valueOf(args[0]);
+        } else if (args.length < 2){
+            client.netl.port = 8091;
+            client.nets.port = 8092;
+        } else {
+            client.netl.port = Integer.valueOf(args[0]);
+            client.nets.port = Integer.valueOf(args[1]);
+        }
+        
+        client.start();
     }
 
 }

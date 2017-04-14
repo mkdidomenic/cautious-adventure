@@ -41,6 +41,7 @@ public class NetServer extends NetListener {
             } else if (pack.packageType == NetPackage.Packtype.LOBBYUPDATE) {
                 ((NetPackage) o).payload = this.client.startMenu.start;
             } else if (pack.packageType == NetPackage.Packtype.GAME) {
+                this.client.controller.handleCommands(pack.ID, (ArrayList<Character>)pack.payload);
                 ((NetPackage) o).payload = this.client.controller.game;
             }
         }
@@ -56,7 +57,7 @@ public class NetServer extends NetListener {
         this.client.startMenu.addPlayerToList(name, ct);
         // System.out.println("got: " + name + " (" + ct + ")");
         int id = newPlayer.ID;
-        NetPackage ret = new NetPackage(NetPackage.Packtype.JOINRESPONSE, id);
+        NetPackage ret = new NetPackage(this.client.controller.localID, NetPackage.Packtype.JOINRESPONSE, id);
         return ret;
     }
 

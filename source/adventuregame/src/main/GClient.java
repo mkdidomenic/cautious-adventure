@@ -8,6 +8,7 @@ package main;
 import game.Game;
 import game.Player;
 import java.util.ArrayList;
+import java.util.List;
 import menu.StartMenu;
 import utility.networking.NetPackage;
 import utility.networking.NetServer;
@@ -59,8 +60,9 @@ public class GClient {
     private void setup() {
         String pname = this.startMenu.getNameFromTextfield();
         String ct = this.startMenu.getClassTypeFromMenu();
-        this.controller.localplayer = new Player(pname, ct);
-        this.controller.players.add(this.controller.localplayer);
+        Player p = new Player(pname, ct);
+        this.controller.localID = p.ID;
+        this.controller.players.add(p);
         this.controller.isHost = this.isHost;
         this.controller.friendlyFire = this.startMenu.getFriendlyFireRadio();
         this.startMenu.setVisible(false);
@@ -126,7 +128,7 @@ public class GClient {
     }
 
     public void sendLobbyUpdateRequest() {
-        NetPackage p = new NetPackage(NetPackage.Packtype.LOBBYUPDATE, null);
+        NetPackage p = new NetPackage(this.controller.localID, NetPackage.Packtype.LOBBYUPDATE, null);
         Object o = null;
         try {
             o = this.nets.sendMessage(p);
@@ -157,20 +159,21 @@ public class GClient {
         ArrayList<String> s = new ArrayList();
         s.add(name);
         s.add(ct);
-        NetPackage payload = new NetPackage(NetPackage.Packtype.JOINREQUEST,
+        NetPackage payload = new NetPackage(this.controller.localID, NetPackage.Packtype.JOINREQUEST,
                                             s);
         nets.setIP(ip);
         Object got = nets.sendMessage(payload);
         int id = ((int) (((NetPackage) got).payload));
-        this.controller.localplayer = new Player(name, ct);
-        this.controller.localplayer.ID = id;
+        this.controller.localID = id;
         this.joined = true;
         this.startMenu.setJoinLabelText("Joined with ID: " + id);
 
     }
 
     public Game sendGameMessage() {
-        NetPackage n = new NetPackage(NetPackage.Packtype.GAME, null);
+        List<Character> keys = this.controller.keyHandler.getKeys();
+        List<Object> pack;
+        NetPackage n = new NetPackage(this.controller.localID, NetPackage.Packtype.GAME, keys);
         Game g = (Game) ((NetPackage) this.nets.sendMessage(n)).payload;
         return g;
     }

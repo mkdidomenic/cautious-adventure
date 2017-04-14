@@ -13,6 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
+import main.GController;
 
 /**
  *
@@ -126,7 +127,7 @@ public class GameView extends JFrame {
 
         } else {
             PlayerCharacter pc = this.game.space.getPlayerCharacter(
-                    this.game.player);
+                    GController.instance.localID);
             if (pc != null) {
                 x0 = this.spacePanel.mapX(pc.position.x);
                 x0 = x0 - this.viewport.getWidth() / 2;
