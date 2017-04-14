@@ -128,7 +128,8 @@ public class GClient {
     }
 
     public void sendLobbyUpdateRequest() {
-        NetPackage p = new NetPackage(this.controller.localID, NetPackage.Packtype.LOBBYUPDATE, null);
+        NetPackage p = new NetPackage(this.controller.localID,
+                                      NetPackage.Packtype.LOBBYUPDATE, null);
         Object o = null;
         try {
             o = this.nets.sendMessage(p);
@@ -159,7 +160,8 @@ public class GClient {
         ArrayList<String> s = new ArrayList();
         s.add(name);
         s.add(ct);
-        NetPackage payload = new NetPackage(this.controller.localID, NetPackage.Packtype.JOINREQUEST,
+        NetPackage payload = new NetPackage(this.controller.localID,
+                                            NetPackage.Packtype.JOINREQUEST,
                                             s);
         nets.setIP(ip);
         Object got = nets.sendMessage(payload);
@@ -173,9 +175,17 @@ public class GClient {
     public Game sendGameMessage() {
         List<Character> keys = this.controller.keyHandler.getKeys();
         List<Object> pack;
-        NetPackage n = new NetPackage(this.controller.localID, NetPackage.Packtype.GAME, keys);
+
         // TODO FIX NULL POINTER ERROR ON LINE 178 when sending
-        Game g = (Game) ((NetPackage) this.nets.sendMessage(n)).payload;
+        Game g;
+        try {
+            NetPackage n = new NetPackage(this.controller.localID,
+                                          NetPackage.Packtype.GAME, keys);
+            g = (Game) ((NetPackage) this.nets.sendMessage(n)).payload;
+        } catch (Exception e) {
+            System.out.println("error receiving package");
+            g = this.controller.game;
+        }
         return g;
     }
 
