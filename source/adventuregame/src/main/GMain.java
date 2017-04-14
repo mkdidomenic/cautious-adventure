@@ -20,8 +20,8 @@ public class GMain {
            client.netl.port =  Integer.valueOf(args[0]);
            client.nets.port =  Integer.valueOf(args[0]);
         } else if (args.length < 2){
-            client.netl.port = 8091;
-            client.nets.port = 8092;
+            client.netl.port = 8264;
+            client.nets.port = 8265;
         } else {
             client.netl.port = Integer.valueOf(args[0]);
             client.nets.port = Integer.valueOf(args[1]);
