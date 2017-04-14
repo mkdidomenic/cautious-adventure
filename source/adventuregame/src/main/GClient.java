@@ -174,6 +174,7 @@ public class GClient {
         List<Character> keys = this.controller.keyHandler.getKeys();
         List<Object> pack;
         NetPackage n = new NetPackage(this.controller.localID, NetPackage.Packtype.GAME, keys);
+        // TODO FIX NULL POINTER ERROR ON LINE 178 when sending
         Game g = (Game) ((NetPackage) this.nets.sendMessage(n)).payload;
         return g;
     }
