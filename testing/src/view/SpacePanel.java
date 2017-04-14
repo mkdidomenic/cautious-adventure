@@ -5,7 +5,6 @@
  */
 package view;
 
-import game.Game;
 import game.Space;
 import game.collision.Hitbox;
 import game.constructs.Construct;
@@ -27,6 +26,8 @@ public class SpacePanel extends JPanel {
 
     public boolean debug = false;
 
+    public Space space;
+
     private int width;
     private int height;
     private boolean scalechange;
@@ -39,16 +40,12 @@ public class SpacePanel extends JPanel {
     public BufferedImage background;
     public BufferedImage defaultShadow;
 
-    public SpacePanel() {
+    public SpacePanel(Space space) {
         super();
+        this.space = space;
         this.background = ImageHandler.getBackground();
         this.defaultShadow = ImageHandler.getPNG("shadow");
         this.scalechange = false;
-    }
-    
-    
-    public Space getSpace(){
-        return Game.instance.space;
     }
 
     public void setScale() {
@@ -56,9 +53,9 @@ public class SpacePanel extends JPanel {
         int h = this.getHeight();
         if ((w != this.width) && (h != this.height)) {
             this.scalechange = true;
-            xm = ((double) w) / this.getSpace().dimensions.x;
-            ym = ((double) h) / this.getSpace().dimensions.y;
-            vm = ((double) h) / (this.getSpace().dimensions.y * Math.sin(screenAngle) + this.getSpace().dimensions.z * Math.cos(
+            xm = ((double) w) / this.space.dimensions.x;
+            ym = ((double) h) / this.space.dimensions.y;
+            vm = ((double) h) / (this.space.dimensions.y * Math.sin(screenAngle) + this.space.dimensions.z * Math.cos(
                     screenAngle));
             this.setBackgroundImage(this.background);
         } else {
@@ -90,8 +87,8 @@ public class SpacePanel extends JPanel {
         }
 
         // draw components
-        if (this.getSpace() != null && this.getSpace().getConstructs() != null) {
-            for (Construct c : this.getSpace().getConstructs()) {
+        if (this.space != null && this.space.getConstructs() != null) {
+            for (Construct c : this.space.getConstructs()) {
                 if ((c instanceof Entity)) {
                     Entity e = (Entity) c;
                     if (e instanceof Gharacter) {

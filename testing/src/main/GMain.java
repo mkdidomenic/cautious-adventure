@@ -16,8 +16,8 @@ public class GMain {
      */
     public static void main(String[] args) {
         GClient client1 = new GClient();
-        client1.netl.port = Integer.valueOf(args[0]);
-        client1.nets.port = Integer.valueOf(args[1]);
+        client1.netl.port = 8061;
+        client1.nets.port = 8062;
         client1.start();
     }
 

@@ -75,7 +75,7 @@ public class GameView extends JFrame {
         // spacepanel subcomponent
         w = w * 2;
         h = h * 2;
-        this.spacePanel = new SpacePanel();
+        this.spacePanel = new SpacePanel(game.space);
         //this.contentPanel.add(this.spacePanel);
         this.spacePanel.setSize(w, h);
         this.spacePanel.setPreferredSize(new Dimension(w, h));
@@ -83,10 +83,6 @@ public class GameView extends JFrame {
         this.spacePanel.setVisible(true);
         //this.contentPanel.add(this.spacePanel);
         this.viewport.setView(this.spacePanel);
-    }
-    
-    public void setGame(Game game){
-        this.game = game;
     }
 
     public synchronized void update() {

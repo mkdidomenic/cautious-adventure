@@ -86,10 +86,10 @@ public class GController {
         } else {
             if (this.client != null) {
                 Game g = this.client.sendGameMessage();
+                System.out.println("got message");
                 if (g != null) {
                     this.game = g;
-                    this.view.setGame(this.game);
-                    Game.instance = this.game;
+                    System.out.println("set game");
                 }
                 PlayerCharacter p = this.game.space.getPlayerCharacter(
                         localplayer.ID);
@@ -99,7 +99,6 @@ public class GController {
                 this.view.spacePanel.debug = this.game.debug;
             }
         }
-        System.out.println(this.localplayer.ID);
 
     }
 
